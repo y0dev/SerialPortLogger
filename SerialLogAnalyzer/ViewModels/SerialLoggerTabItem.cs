@@ -15,8 +15,24 @@ namespace SerialLogAnalyzer.ViewModels
 		public SerialLoggerTabItem(string portName)
 		{
 			this.portName = portName;
-			this.Header = portName; // Set the tab header to the COM port name
+			// this.Header = portName; // Set the tab header to the COM port name
 			this.isLogging = false;
+
+			// Create the Close Button
+			Button closeButton = new Button
+			{
+				Content = "X",
+				Width = 20,
+				Margin = new Thickness(5)
+			};
+			closeButton.Click += CloseButton_Click;
+
+			// Optionally, add the Close button to the header of the TabItem
+			this.Header = new StackPanel
+			{
+				Orientation = Orientation.Horizontal,
+				Children = { new TextBlock { Text = portName }, closeButton }
+			};
 			InitializeComponents();
 		}
 
@@ -61,6 +77,29 @@ namespace SerialLogAnalyzer.ViewModels
 			// Set the StackPanel as the content of the TabItem
 			this.Content = stackPanel;
 		}
+
+		private void CloseButton_Click(object sender, RoutedEventArgs e)
+		{
+			// Logic to close the tab
+			CloseTab();
+		}
+
+		public void CloseTab()
+		{
+			// Logic to remove this tab from its parent
+			var parentTabControl = GetParentTabControl();
+			if (parentTabControl != null)
+			{
+				parentTabControl.Items.Remove(this);
+			}
+		}
+
+		private TabControl GetParentTabControl()
+		{
+			// Get the parent TabControl (you may need to adjust the logic based on your hierarchy)
+			return this.Parent as TabControl;
+		}
+
 
 		private void StartLoggerButton_Click(object sender, RoutedEventArgs e)
 		{

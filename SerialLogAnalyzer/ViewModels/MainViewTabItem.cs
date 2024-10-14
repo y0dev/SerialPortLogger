@@ -404,23 +404,12 @@ namespace SerialLogAnalyzer.ViewModels
 		private void StopLoggingButton_Click(object sender, RoutedEventArgs e)
 		{
 			// Get the currently selected tab item from the tab control
-			if (serialTabControl.SelectedItem is SerialLoggerTabItem selectedLoggerTab)
+			foreach (var item in serialTabControl.Items)
 			{
-				// Check if it is currently logging
-				if (selectedLoggerTab.isLogging)
+				if (item is SerialLoggerTabItem loggerTab && loggerTab.isLogging)
 				{
-					// Call the StopLogging method
-					selectedLoggerTab.StopLogging();
-					isLogging = false; // Update your logging state
+					loggerTab.StopLogging(); // Implement this method in SerialLoggerTabItem
 				}
-				else
-				{
-					MessageBox.Show("No logging is currently active for this tab.");
-				}
-			}
-			else
-			{
-				MessageBox.Show("Please select a valid logging tab.");
 			}
 			UpdateLoggingButtons();
 		}
