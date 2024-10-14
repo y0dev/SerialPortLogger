@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SerialLogAnalyzer.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,17 @@ namespace SerialLogAnalyzer
 		public MainWindow()
 		{
 			InitializeComponent();
+			/*
+			// Access the TabControl items
+			foreach (var tabItem in MainTabControl.Items)
+			{
+				if (tabItem is MainViewTabItem mainViewTabItem)
+				{
+					string tabHeader = mainViewTabItem.TabHeader;
+					MessageBox.Show($"Tab Header: {tabHeader}");
+				}
+			}
+			*/
 		}
 	}
 }
