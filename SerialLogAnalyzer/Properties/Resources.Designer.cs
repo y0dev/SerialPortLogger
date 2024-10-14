@@ -61,7 +61,7 @@ namespace SerialLogAnalyzer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to F:\Programming\WPF\SerialLogAnalyzer\config.xml.
+        ///   Looks up a localized string similar to F:\Programming\WPF\SerialLogAnalyzer\Scripts\config.xml.
         /// </summary>
         internal static string CONFIG_PATH {
             get {

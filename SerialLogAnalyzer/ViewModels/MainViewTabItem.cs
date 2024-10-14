@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO.Ports;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,11 +17,14 @@ namespace SerialLogAnalyzer.ViewModels
 			DependencyProperty.Register("TabHeader", typeof(string), typeof(MainViewTabItem),
 			new PropertyMetadata(string.Empty, OnTabHeaderChanged));
 
+		public ObservableCollection<string> AvailablePorts { get; private set; }
+
 		public string TabHeader
 		{
 			get { return (string)GetValue(TabHeaderProperty); }
 			set { SetValue(TabHeaderProperty, value); }
 		}
+		
 
 		// Fields for buttons
 		private Button analyzeButton;
@@ -30,6 +36,8 @@ namespace SerialLogAnalyzer.ViewModels
 		// Fields for ComboBox
 		private ComboBox portComboBox = new ComboBox();
 		private ComboBox baudRateComboBox = new ComboBox();
+
+		private TabControl serialTabControl = new TabControl();
 
 
 		// Common button width and height
@@ -53,6 +61,7 @@ namespace SerialLogAnalyzer.ViewModels
 		protected override void OnInitialized(EventArgs e)
 		{
 			base.OnInitialized(e);
+			AvailablePorts = new ObservableCollection<string>(SerialPort.GetPortNames());
 			UpdateUI(); // Call the method to setup the content
 		}
 
@@ -120,8 +129,8 @@ namespace SerialLogAnalyzer.ViewModels
 			// Add ComboBox for Serial Port selection
 			portComboBox = new ComboBox
 			{
-				ItemsSource = SerialPort.GetPortNames(),
-				Margin = new Thickness(10, 0, 0, 10) // Margin for left and bottom spacing
+				ItemsSource = AvailablePorts,
+				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
 			};
 			Grid.SetRow(portComboBox, 1);
 			Grid.SetColumn(portComboBox, 1);
@@ -137,11 +146,23 @@ namespace SerialLogAnalyzer.ViewModels
 			baudRateComboBox = new ComboBox
 			{
 				ItemsSource = new[] { 9600, 19200, 38400, 57600, 115200 },
-				Margin = new Thickness(10, 0, 0, 10) // Margin for left and bottom spacing
+				SelectedItem = 115200, // Set a default value
+				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
 			};
+
 			Grid.SetRow(baudRateComboBox, 2);
 			Grid.SetColumn(baudRateComboBox, 1);
 			grid.Children.Add(baudRateComboBox);
+
+			// Add TabControl for Serial Port Loggers
+			TabControl serialTabControl = new TabControl
+			{
+				Height = 230,
+				Margin = new Thickness(10, 0, 10, 5) // Margin for left and bottom spacing
+			};
+			Grid.SetRow(serialTabControl, 3);
+			Grid.SetColumnSpan(serialTabControl, 2); // Span across both columns
+			grid.Children.Add(serialTabControl);
 
 			// Create a StackPanel for buttons and align to the right
 			StackPanel buttonPanel = new StackPanel
@@ -155,18 +176,18 @@ namespace SerialLogAnalyzer.ViewModels
 			// Add Start Logging Button
 			Button logButton = new Button
 			{
-				Content = "Start Logging",
+				Content = "Create Logger",
 				Width = buttonWidth,
 				Height = buttonHeight,
 				Margin = new Thickness(0, 0, 5, 0) // Right margin for spacing between buttons
 			};
-			logButton.Click += LogButton_Click; // Assuming you have a method to handle logging
+			logButton.Click += CreateLoggerButton_Click; // Assuming you have a method to handle logging
 			buttonPanel.Children.Add(logButton);
 
 			// Add Stop Logging Button
 			Button stopLoggingButton = new Button
 			{
-				Content = "Stop Logging",
+				Content = "Stop All Loggers",
 				Width = buttonWidth,
 				Height = buttonHeight,
 				IsEnabled = false, // Initially disabled
@@ -181,6 +202,7 @@ namespace SerialLogAnalyzer.ViewModels
 			grid.Children.Add(buttonPanel);
 
 			// Store the button references for later use
+			this.serialTabControl = serialTabControl;
 			this.logButton = logButton;
 			this.stopLoggingButton = stopLoggingButton;
 		} // End of ConfigureLoggerUI()
@@ -339,7 +361,7 @@ namespace SerialLogAnalyzer.ViewModels
 			}
 		}
 
-		private void LogButton_Click(object sender, RoutedEventArgs e)
+		private void CreateLoggerButton_Click(object sender, RoutedEventArgs e)
 		{
 			// Logic to start logging from the selected COM port
 			string selectedPort = portComboBox.SelectedItem as string;
@@ -350,24 +372,56 @@ namespace SerialLogAnalyzer.ViewModels
 			{
 				// Create a new logger tab for the selected port
 				SerialLoggerTabItem loggerTab = new SerialLoggerTabItem(selectedPort);
-				// Add the logger tab to the main tab control (assume it's named "mainTabControl")
-				// mainTabControl.Items.Add(loggerTab);
+				// Add the logger tab to the main tab control
+				serialTabControl.Items.Add(loggerTab); // Adding the logger tab to the tab control
 
-				// Optionally: remove the port from the ComboBox
-				portComboBox.Items.Remove(selectedPort);
+				// Remove the selected port from the AvailablePorts collection
+				AvailablePorts.Remove(selectedPort); // This will update the ComboBox automatically
+
 				isLogging = true;
+				stopLoggingButton.IsEnabled = true;
+
+				// Disable logButton only if no ports are left in the portComboBox
+				logButton.IsEnabled = AvailablePorts.Count > 0;
+
+				// Start a new thread for logging
+				Thread loggerThread = new Thread(() =>
+				{
+					// Add your logging logic here
+					// For example: StartLogging(selectedPort);
+				});
+
+				loggerThread.IsBackground = true; // Make it a background thread
+				loggerThread.Start();
 			}
 			else
 			{
 				MessageBox.Show("Please select a COM port.");
 			}
-
 		}
+
 
 		private void StopLoggingButton_Click(object sender, RoutedEventArgs e)
 		{
-			// Logic to stop logging (this could be implemented in the SerialLoggerTabItem)
-			isLogging = false;
+			// Get the currently selected tab item from the tab control
+			if (serialTabControl.SelectedItem is SerialLoggerTabItem selectedLoggerTab)
+			{
+				// Check if it is currently logging
+				if (selectedLoggerTab.isLogging)
+				{
+					// Call the StopLogging method
+					selectedLoggerTab.StopLogging();
+					isLogging = false; // Update your logging state
+				}
+				else
+				{
+					MessageBox.Show("No logging is currently active for this tab.");
+				}
+			}
+			else
+			{
+				MessageBox.Show("Please select a valid logging tab.");
+			}
 			UpdateLoggingButtons();
 		}
 

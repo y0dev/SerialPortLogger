@@ -10,11 +10,13 @@ namespace SerialLogAnalyzer.ViewModels
 		private Button startLoggerButton;
 		private Button stopLoggerButton;
 		private string portName;
+		public bool isLogging { get; private set; }
 
 		public SerialLoggerTabItem(string portName)
 		{
 			this.portName = portName;
 			this.Header = portName; // Set the tab header to the COM port name
+			this.isLogging = false;
 			InitializeComponents();
 		}
 
@@ -64,6 +66,7 @@ namespace SerialLogAnalyzer.ViewModels
 		{
 			// Logic to start logging from the COM port
 			logTextBox.AppendText($"Started logging from {portName}...\n");
+			this.StartLogging();
 
 			// Enable/Disable buttons accordingly
 			startLoggerButton.IsEnabled = false; // Disable Start Logger button
@@ -77,12 +80,25 @@ namespace SerialLogAnalyzer.ViewModels
 		{
 			// Logic to stop logging
 			logTextBox.AppendText($"Stopped logging from {portName}.\n");
-
+			this.StopLogging();
 			// Enable/Disable buttons accordingly
 			startLoggerButton.IsEnabled = true; // Enable Start Logger button
 			stopLoggerButton.IsEnabled = false; // Disable Stop Logger button
 
 			// Here you can add the logic to stop logging and close the SerialPort if applicable
+		}
+
+		public void StartLogging()
+		{
+
+			this.isLogging = true;
+			// Your logging logic here...
+		}
+
+		public void StopLogging()
+		{
+			this.isLogging = false;
+			// Logic to stop logging...
 		}
 	}
 }
