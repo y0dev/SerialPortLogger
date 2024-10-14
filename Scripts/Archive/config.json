@@ -1,0 +1,95 @@
+{
+  "Items": {
+    "Item": [
+      {
+        "@attributes": {
+          "name": "item1"
+        },
+        "Modes": {
+          "Mode": [
+            {
+              "@attributes": {
+                "name": "mode1"
+              },
+              "KeywordGroup": [
+                {
+                  "Keywords": {
+                    "Keyword": "keyword1"
+                  },
+                  "OutputFile": "output1.h"
+                },
+                {
+                  "Keywords": {
+                    "Keyword": "keyword2"
+                  },
+                  "OutputFile": "output1.csv"
+                }
+              ]
+            },
+            {
+              "@attributes": {
+                "name": "mode2"
+              },
+              "KeywordGroup": {
+                "Keywords": {
+                  "Keyword": "keyword3"
+                },
+                "OutputFile": "output2.h"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "@attributes": {
+          "name": "item2"
+        },
+        "Modes": {
+          "Mode": [
+            {
+              "@attributes": {
+                "name": "mode1"
+              },
+              "KeywordGroup": [
+                {
+                  "Keywords": {
+                    "Keyword": "keyword1"
+                  },
+                  "OutputFile": "output1.h"
+                },
+                {
+                  "Keywords": {
+                    "Keyword": "keyword2"
+                  },
+                  "OutputFile": "output1.csv"
+                }
+              ]
+            },
+            {
+              "@attributes": {
+                "name": "mode2"
+              },
+              "KeywordGroup": {
+                "Keywords": {
+                  "Keyword": "keyword3"
+                },
+                "OutputFile": "output2.h"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "Settings": {
+    "Theme": "light",
+    "FontSize": "8"
+  },
+  "LastFileParsed": {
+    "LastFiles": {
+      "File": "F:/Documents/sa.txt"
+    },
+    "Status": "failure",
+    "TotalFailureCount": "2"
+  }
+}

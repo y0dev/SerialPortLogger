@@ -7,8 +7,20 @@
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
         mc:Ignorable="d"
         Title="Serial Log Analyzer" Height="450" Width="800">
-	<TabControl x:Name="MainTabControl">
-		<vm:MainViewTabItem Header="Serial Logger" TabHeader="Logger"/>
-		<vm:MainViewTabItem Header="Serial Analyzer" TabHeader="Analyzer"/>
-	</TabControl>
+
+	<Window.Resources>
+		<vm:MainViewModel x:Key="MainViewModel"/>
+		<!-- Add MainViewModel as a resource -->
+	</Window.Resources>
+
+	<Grid>
+		<Grid.DataContext>
+			<StaticResource ResourceKey="MainViewModel"/>
+			<!-- Set the DataContext to MainViewModel -->
+		</Grid.DataContext>
+		<TabControl x:Name="MainTabControl">
+			<vm:MainViewTabItem Header="Serial Logger" TabHeader="Logger"/>
+			<vm:MainViewTabItem Header="Serial Analyzer" TabHeader="Analyzer"/>
+		</TabControl>
+	</Grid>
 </Window>

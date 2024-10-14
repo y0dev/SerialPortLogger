@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Configuration>
+  <Items>
+    <Item name="item1">
+      <Modes>
+        <Mode name="mode1">
+          <KeywordGroup>
+            <Keywords>
+              <Keyword>keyword1</Keyword>
+            </Keywords>
+            <OutputFile>output1.h</OutputFile>
+          </KeywordGroup>
+          <KeywordGroup>
+            <Keywords>
+              <Keyword>keyword2</Keyword>
+            </Keywords>
+            <OutputFile>output1.csv</OutputFile>
+          </KeywordGroup>
+        </Mode>
+        <Mode name="mode2">
+          <KeywordGroup>
+            <Keywords>
+              <Keyword>keyword3</Keyword>
+            </Keywords>
+            <OutputFile>output2.h</OutputFile>
+          </KeywordGroup>
+        </Mode>
+      </Modes>
+    </Item>
+    <Item name="item2">
+      <Modes>
+        <Mode name="mode1">
+          <KeywordGroup>
+            <Keywords>
+              <Keyword>keyword1</Keyword>
+            </Keywords>
+            <OutputFile>output1.h</OutputFile>
+          </KeywordGroup>
+          <KeywordGroup>
+            <Keywords>
+              <Keyword>keyword2</Keyword>
+            </Keywords>
+            <OutputFile>output1.csv</OutputFile>
+          </KeywordGroup>
+        </Mode>
+        <Mode name="mode2">
+          <KeywordGroup>
+            <Keywords>
+              <Keyword>keyword3</Keyword>
+            </Keywords>
+            <OutputFile>output2.h</OutputFile>
+          </KeywordGroup>
+        </Mode>
+      </Modes>
+    </Item>
+  </Items>
+  <Settings>
+    <Theme>light</Theme>
+    <FontSize>8</FontSize>
+  </Settings>
+  <LastFileParsed>
+    <LastFiles>
+      <File>F:/Documents/sa.txt</File>
+    </LastFiles>
+    <Status>failure</Status>
+    <TotalFailureCount>2</TotalFailureCount>
+  </LastFileParsed>
+</Configuration>

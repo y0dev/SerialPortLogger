@@ -23,17 +23,6 @@ namespace SerialLogAnalyzer
 		public MainWindow()
 		{
 			InitializeComponent();
-			/*
-			// Access the TabControl items
-			foreach (var tabItem in MainTabControl.Items)
-			{
-				if (tabItem is MainViewTabItem mainViewTabItem)
-				{
-					string tabHeader = mainViewTabItem.TabHeader;
-					MessageBox.Show($"Tab Header: {tabHeader}");
-				}
-			}
-			*/
 		}
 	}
 }
