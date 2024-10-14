@@ -23,6 +23,7 @@ namespace SerialLogAnalyzer.ViewModels
 		// Fields for buttons
 		private Button analyzeButton;
 		private Button cancelButton;
+		private TextBox directoryTextBox;
 		private Button logButton;
 		private Button stopLoggingButton;
 
@@ -36,6 +37,7 @@ namespace SerialLogAnalyzer.ViewModels
 		private double buttonHeight = 30; // Set desired height
 		private bool isAnalyzing = false;
 		private List<string> selectedFiles = new List<string>();
+		private bool isLogging;
 
 		// This method will be triggered when the TabHeader changes
 		private static void OnTabHeaderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -60,22 +62,15 @@ namespace SerialLogAnalyzer.ViewModels
 			// Create a Grid as content
 			Grid grid = new Grid();
 
-			// Define rows for the grid
 			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the header label
-			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the ComboBoxes
-			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the Buttons
-			grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }); // Row for the ListView
 
-			// Define columns for ComboBoxes and Labels
-			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Column for Labels
-			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Column for ComboBoxes
 
 			// Add a Label for the header
 			var headerLabel = new Label
 			{
 				Content = $"Serial {TabHeader}",
 				FontSize = 16,
-				Margin = new Thickness(0, 0, 0, 10) // Margin for bottom spacing
+				Margin = new Thickness(10, 0, 0, 10) // Margin for left and bottom spacing
 			};
 			Grid.SetRow(headerLabel, 0); // Place the label in the first row
 			Grid.SetColumnSpan(headerLabel, 2); // Span across both columns
@@ -101,6 +96,17 @@ namespace SerialLogAnalyzer.ViewModels
 		// Helper method to configure Logger UI
 		private void ConfigureLoggerUI(Grid grid)
 		{
+			// Create the rows for the grid
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for Serial Port
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for Baud Rate
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for Buttons
+			grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }); // Fill remaining space
+
+
+			// Define columns for ComboBoxes and Labels
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Column for Labels
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Column for ComboBoxes
+
 			// Add Label for Serial Port
 			var portLabel = new Label
 			{
@@ -137,18 +143,25 @@ namespace SerialLogAnalyzer.ViewModels
 			Grid.SetColumn(baudRateComboBox, 1);
 			grid.Children.Add(baudRateComboBox);
 
-			// Add Log Button to log serial output
-			Button logButton = new Button
+			// Create a StackPanel for buttons and align to the right
+			StackPanel buttonPanel = new StackPanel
 			{
-				Content = "Log Serial Output",
-				Width = buttonWidth,
-				Height = buttonHeight,
+				Orientation = Orientation.Horizontal,
+				HorizontalAlignment = HorizontalAlignment.Right,
+				VerticalAlignment = VerticalAlignment.Bottom,
 				Margin = new Thickness(0, 10, 0, 0) // Margin for top spacing
 			};
+
+			// Add Start Logging Button
+			Button logButton = new Button
+			{
+				Content = "Start Logging",
+				Width = buttonWidth,
+				Height = buttonHeight,
+				Margin = new Thickness(0, 0, 5, 0) // Right margin for spacing between buttons
+			};
 			logButton.Click += LogButton_Click; // Assuming you have a method to handle logging
-			Grid.SetRow(logButton, 3);
-			Grid.SetColumnSpan(logButton, 2); // Span across both columns
-			grid.Children.Add(logButton);
+			buttonPanel.Children.Add(logButton);
 
 			// Add Stop Logging Button
 			Button stopLoggingButton = new Button
@@ -157,13 +170,15 @@ namespace SerialLogAnalyzer.ViewModels
 				Width = buttonWidth,
 				Height = buttonHeight,
 				IsEnabled = false, // Initially disabled
-				Margin = new Thickness(5) // Margin for spacing
+				Margin = new Thickness(0, 0, 0, 0) // No margin
 			};
-			stopLoggingButton.Click += StopLoggingButton_Click; // Add a method to handle stopping logging
-			Grid.SetRow(stopLoggingButton, 3);
-			Grid.SetColumn(stopLoggingButton, 2); // Place next to Log button
-			grid.Children.Add(stopLoggingButton);
+			stopLoggingButton.Click += StopLoggingButton_Click; // Assuming you have a method to handle logging
+			buttonPanel.Children.Add(stopLoggingButton);
 
+			// Add the button panel to the grid
+			Grid.SetRow(buttonPanel, 4); // Place in the third row
+			Grid.SetColumnSpan(buttonPanel, 2); // Span across both columns
+			grid.Children.Add(buttonPanel);
 
 			// Store the button references for later use
 			this.logButton = logButton;
@@ -173,17 +188,29 @@ namespace SerialLogAnalyzer.ViewModels
 		// Helper method to configure Analyzer UI
 		private void ConfigureAnalyzerUI(Grid grid)
 		{
-			// Add ListView for displaying selected files
-			var listView = new ListView();
-			listView.ItemsSource = selectedFiles;
-			Grid.SetRow(listView, 3); // Place the ListView in the last row
-			Grid.SetColumnSpan(listView, 2); // Span across both columns
-			grid.Children.Add(listView);
+			// Define rows for the grid
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the TextBox and Browse Button
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the ListView
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the Buttons
 
-			// Add Buttons (Browse, Analyze, Cancel)
-			StackPanel buttonPanel = new StackPanel { Orientation = Orientation.Horizontal };
+			// Create a StackPanel for the TextBox and Browse Button
+			StackPanel browsePanel = new StackPanel
+			{
+				Orientation = Orientation.Horizontal,
+				HorizontalAlignment = HorizontalAlignment.Left,
+				VerticalAlignment = VerticalAlignment.Top,
+				Margin = new Thickness(10, 0, 10, 10) // Margin for bottom spacing
+			};
 
-			// Browse Button
+			// Add TextBox for displaying the current directory
+			TextBox directoryTextBox = new TextBox
+			{
+				Width = 300, // Set width as needed
+				Margin = new Thickness(0, 0, 10, 0) // Margin for right spacing
+			};
+			browsePanel.Children.Add(directoryTextBox);
+
+			// Browse Button next to the TextBox
 			Button browseButton = new Button
 			{
 				Content = "Browse",
@@ -191,9 +218,33 @@ namespace SerialLogAnalyzer.ViewModels
 				Height = buttonHeight,
 				Margin = new Thickness(0, 0, 10, 0) // Margin for right spacing
 			};
+			browseButton.Click += BrowseButton_Click; // Add click event handler
+			browsePanel.Children.Add(browseButton);
 
-			browseButton.Click += BrowseButton_Click;
-			buttonPanel.Children.Add(browseButton);
+			// Add the StackPanel to the grid
+			Grid.SetRow(browsePanel, 1);
+			Grid.SetColumnSpan(browsePanel, 2); // Span across both columns
+			grid.Children.Add(browsePanel);
+
+			// Add ListView for displaying selected files
+			var listView = new ListView
+			{
+				ItemsSource = selectedFiles,
+				Height = 250,
+				Margin = new Thickness(10, 0, 10, 5)
+			};
+			Grid.SetRow(listView, 2); // Place the ListView in the second row
+			Grid.SetColumnSpan(listView, 2); // Span across both columns
+			grid.Children.Add(listView);
+
+			// Create a StackPanel for buttons and align to the right
+			StackPanel buttonPanel = new StackPanel
+			{
+				Orientation = Orientation.Horizontal,
+				HorizontalAlignment = HorizontalAlignment.Right,
+				VerticalAlignment = VerticalAlignment.Bottom,
+				Margin = new Thickness(0, 10, 0, 0) // Margin for top spacing
+			};
 
 			// Analyze Button
 			Button analyzeButton = new Button
@@ -220,13 +271,14 @@ namespace SerialLogAnalyzer.ViewModels
 			buttonPanel.Children.Add(cancelButton);
 
 			// Add Button Panel to grid
-			Grid.SetRow(buttonPanel, 2); // Place the button panel in the third row
+			Grid.SetRow(buttonPanel, 3); // Place the button panel in the third row
 			Grid.SetColumnSpan(buttonPanel, 2); // Span across both columns
 			grid.Children.Add(buttonPanel);
 
 			// Store the button references for later use
 			this.analyzeButton = analyzeButton;
 			this.cancelButton = cancelButton;
+			this.directoryTextBox = directoryTextBox; // Store a reference to the directory TextBox
 		} // End of ConfigureAnalyzerUI()
 
 		// Browse Button Click - To open file dialog and select files
@@ -289,22 +341,41 @@ namespace SerialLogAnalyzer.ViewModels
 
 		private void LogButton_Click(object sender, RoutedEventArgs e)
 		{
+			// Logic to start logging from the selected COM port
+			string selectedPort = portComboBox.SelectedItem as string;
+
 			// Add logic here to log the serial output from the selected port
 			Console.WriteLine("Log serial output clicked.");
+			if (!string.IsNullOrEmpty(selectedPort))
+			{
+				// Create a new logger tab for the selected port
+				SerialLoggerTabItem loggerTab = new SerialLoggerTabItem(selectedPort);
+				// Add the logger tab to the main tab control (assume it's named "mainTabControl")
+				// mainTabControl.Items.Add(loggerTab);
 
-			// Enable/Disable buttons accordingly
-			logButton.IsEnabled = false; // Disable Log button
-			stopLoggingButton.IsEnabled = true; // Enable Stop Logging button
+				// Optionally: remove the port from the ComboBox
+				portComboBox.Items.Remove(selectedPort);
+				isLogging = true;
+			}
+			else
+			{
+				MessageBox.Show("Please select a COM port.");
+			}
+
 		}
 
 		private void StopLoggingButton_Click(object sender, RoutedEventArgs e)
 		{
-			// Add logic here to stop logging the serial output
-			Console.WriteLine("Stop logging clicked.");
-
-			// Enable/Disable buttons accordingly
-			logButton.IsEnabled = true; // Enable Log button
-			stopLoggingButton.IsEnabled = false; // Disable Stop Logging button
+			// Logic to stop logging (this could be implemented in the SerialLoggerTabItem)
+			isLogging = false;
+			UpdateLoggingButtons();
 		}
+
+		private void UpdateLoggingButtons()
+		{
+			logButton.IsEnabled = !isLogging;
+			stopLoggingButton.IsEnabled = isLogging;
+		}
+
 	}
 }
