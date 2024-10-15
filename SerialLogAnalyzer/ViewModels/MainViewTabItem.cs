@@ -38,13 +38,14 @@ namespace SerialLogAnalyzer.ViewModels
 		private ComboBox portComboBox = new ComboBox();
 		private ComboBox baudRateComboBox = new ComboBox();
 
-		private TabControl serialTabControl;
-		private CheckBox consoleOutputCheckBox;
-		private ListView consoleOutputListView;
+		private TabControl serialTabControl = new TabControl();
+		private CheckBox consoleOutputCheckBox = new CheckBox();
+		private ListView consoleOutputListView = new ListView();
 
 		// Common button width and height
 		private double buttonWidth = 120; // Set desired width
 		private double buttonHeight = 30; // Set desired height
+		private double viewHeight = 270; // Set desired height for listview or tabview
 		private bool isAnalyzing = false;
 		private List<string> selectedFiles = new List<string>();
 		private bool isLogging;
@@ -209,8 +210,8 @@ namespace SerialLogAnalyzer.ViewModels
 					// Add ListView for Console Output
 					ListView consoleOutputListView = new ListView
 					{
-						Height = 235,
-						Margin = new Thickness(10, 0, 10, 5) // Margin for left and bottom spacing
+						Height = viewHeight,
+						Margin = new Thickness(10, 0, 10, 5) // Margin for left, right and bottom spacing
 					};
 					Grid.SetRow(consoleOutputListView, 3);
 					Grid.SetColumnSpan(consoleOutputListView, 3); // Span across both columns
@@ -224,8 +225,8 @@ namespace SerialLogAnalyzer.ViewModels
 					// Add TabControl for Serial Port Loggers
 					TabControl serialTabControl = new TabControl
 					{
-						Height = 230,
-						Margin = new Thickness(10, 0, 10, 5) // Margin for left and bottom spacing
+						Height = viewHeight,
+						Margin = new Thickness(10, 0, 10, 5) // Margin for left, right and bottom spacing
 					};
 					Grid.SetRow(serialTabControl, 3);
 					Grid.SetColumnSpan(serialTabControl, 3); // Span across both columns

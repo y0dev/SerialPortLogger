@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SerialLogAnalyzer"
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
         mc:Ignorable="d"
-        Title="Serial Log Analyzer" Height="450" Width="800">
+        Title="Serial Log Analyzer" Height="500" Width="800">
 
 	<Window.Resources>
 		<vm:MainViewModel x:Key="MainViewModel"/>
@@ -18,9 +18,52 @@
 			<StaticResource ResourceKey="MainViewModel"/>
 			<!-- Set the DataContext to MainViewModel -->
 		</Grid.DataContext>
-		<TabControl x:Name="MainTabControl">
-			<vm:MainViewTabItem Header="Serial Logger" TabHeader="Logger"/>
-			<vm:MainViewTabItem Header="Serial Analyzer" TabHeader="Analyzer"/>
-		</TabControl>
+
+		<!-- Add Menu at the top -->
+		<DockPanel>
+			<Menu DockPanel.Dock="Top">
+				<!-- File Menu -->
+				<MenuItem Header="_File">
+					<MenuItem Header="_New" Click="NewMenuItem_Click"/>
+					<MenuItem Header="_Open" Click="OpenMenuItem_Click"/>
+					<MenuItem Header="Open _Config" Click="OpenConfigMenuItem_Click"/>
+					<!-- Added Open Config -->
+					<MenuItem Header="_Save" Click="SaveMenuItem_Click"/>
+					<Separator/>
+					<MenuItem Header="_Exit" Click="ExitMenuItem_Click"/>
+				</MenuItem>
+
+				<!-- View Menu -->
+				<MenuItem Header="_View">
+					<MenuItem Header="_Show Log" Click="ShowLogMenuItem_Click"/>
+					<MenuItem Header="Show _Analysis" Click="ShowAnalysisMenuItem_Click"/>
+					<MenuItem Header="_Themes" Click="ChangeThemeMenuItem_Click"/>
+				</MenuItem>
+
+				<MenuItem Header="_Analysis">
+					<MenuItem Header="Analysis _Options" Click="AnalysisOptionsMenuItem_Click"/>
+					<MenuItem Header="_Generate Report" Click="GenerateReportMenuItem_Click"/>
+				</MenuItem>
+
+				<MenuItem Header="_Tools">
+					<MenuItem Header="_Settings" Click="SettingsMenuItem_Click"/>
+					<MenuItem Header="_Export Data" Click="ExportDataMenuItem_Click"/>
+					<MenuItem Header="_Import Data" Click="ImportDataMenuItem_Click"/>
+				</MenuItem>
+
+				<MenuItem Header="_Help">
+					<MenuItem Header="_View Help" Click="ViewHelpMenuItem_Click"/>
+					<MenuItem Header="_About" Click="AboutMenuItem_Click"/>
+					<MenuItem Header="Check for _Updates" Click="CheckUpdatesMenuItem_Click"/>
+					<MenuItem Header="_Contact Support" Click="ContactSupportMenuItem_Click"/>
+				</MenuItem>
+			</Menu>
+
+			<!-- Your TabControl below the menu -->
+			<TabControl x:Name="MainTabControl" DockPanel.Dock="Bottom">
+				<vm:MainViewTabItem Header="Serial Logger" TabHeader="Logger"/>
+				<vm:MainViewTabItem Header="Serial Analyzer" TabHeader="Analyzer"/>
+			</TabControl>
+		</DockPanel>
 	</Grid>
 </Window>
