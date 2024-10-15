@@ -98,21 +98,7 @@ namespace SerialLogAnalyzer
 			SettingsWindow settingsWindow = new SettingsWindow();
 			settingsWindow.ShowDialog();
 		} // End of OpenConfigMenuItem_Click()
-
-		// Event handler for Show Analysis menu item
-		private void ShowAnalysisMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			// Logic to show the analysis tab or analysis-related data
-			MainTabControl.SelectedIndex = 1; // Assuming the second tab is the Analysis tab
-		}
-
-		// Event handler for Show Log menu item
-		private void ShowLogMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			// Logic to show the logger tab or log-related data
-			MainTabControl.SelectedIndex = 0; // Assuming the first tab is the Logger tab
-		}
-
+		
 		// Event handler for Analysis Options menu item
 		private void AnalysisOptionsMenuItem_Click(object sender, RoutedEventArgs e)
 		{
@@ -155,16 +141,15 @@ namespace SerialLogAnalyzer
 		// Event handler for View Help menu item
 		private void ViewHelpMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			// Logic to show help documentation or help dialog
-			MessageBox.Show("Opening Help...", "Help", MessageBoxButton.OK, MessageBoxImage.Information);
-			// Add actual help documentation display logic here (e.g., open a PDF, show a help window, etc.)
+			HelpPage helpPage = new HelpPage();
+			helpPage.ShowDialog();
 		} // End of ViewHelpMenuItem_Click()
 
 		// Help menu event handler
 		private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show("About this application...");
-			// Implement your about dialog logic here
+			AboutPage aboutPage = new AboutPage();
+			aboutPage.ShowDialog(); // Show it as a dialog
 		} // End of AboutMenuItem_Click()
 
 		// Event handler for Export Data menu item

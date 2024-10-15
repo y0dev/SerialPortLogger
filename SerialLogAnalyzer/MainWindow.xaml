@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SerialLogAnalyzer"
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
         mc:Ignorable="d"
-        Title="Serial Log Analyzer" Height="500" Width="800">
+        Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="500" Width="800">
 
 	<Window.Resources>
 		<vm:MainViewModel x:Key="MainViewModel"/>
@@ -35,8 +35,6 @@
 
 				<!-- View Menu -->
 				<MenuItem Header="_View">
-					<MenuItem Header="_Show Log" Click="ShowLogMenuItem_Click"/>
-					<MenuItem Header="Show _Analysis" Click="ShowAnalysisMenuItem_Click"/>
 					<MenuItem Header="_Themes" Click="ChangeThemeMenuItem_Click"/>
 				</MenuItem>
 

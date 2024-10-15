@@ -31,16 +31,21 @@ namespace SerialLogAnalyzer.Helpers
 			Console.BackgroundColor = backgroundColor;
 			//Console.Clear();
 
-
 			// Add a handler to prevent the console from closing the entire application
 			SetConsoleCtrlHandler(new ConsoleCtrlDelegate(ConsoleCtrlHandler), true);
 
 			// Initialize the SerialPortReader for the specified port
-			_serialPortReader = new SerialPortReader(portName, 115200); // Adjust baud rate as needed
-			_serialPortReader.DataReceived += SerialPortReader_DataReceived;
+			// _serialPortReader = new SerialPortReader(portName, 115200); // Adjust baud rate as needed
+			// _serialPortReader.DataReceived += SerialPortReader_DataReceived;
 
 			// Start reading from the serial port
-			_serialPortReader.StartReading();
+			// _serialPortReader.StartReading();
+		}
+
+		// Public read-only property to expose the value outside the class
+		public bool IsConsoleClosed
+		{
+			get { return isConsoleClosed; }
 		}
 
 		// Event handler for data received from the SerialPortReader
@@ -62,11 +67,13 @@ namespace SerialLogAnalyzer.Helpers
 		// Method to stop the serial port reading
 		public void StopReading()
 		{
+			/*
 			if (_serialPortReader != null)
 			{
 				_serialPortReader.StopReading();
 				_serialPortReader = null; // Clean up the instance
 			}
+			*/
 		}
 
 		// Allocates a new console

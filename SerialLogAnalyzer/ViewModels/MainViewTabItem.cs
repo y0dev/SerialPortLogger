@@ -458,10 +458,24 @@ namespace SerialLogAnalyzer.ViewModels
 				string logData = $"Data from {selectedPort} at {DateTime.Now}";
 				if (consoleOutputCheckBox.IsChecked == true)
 				{
-					// Create a console for this port
-					ConsoleLogger consoleLogger = new ConsoleLogger($"Console {selectedPort}",selectedPort, ConsoleColor.Green, ConsoleColor.Black);
-					consoleLogger.OutputToConsole(logData);
-					consolelLoggers[selectedPort] = consoleLogger;
+					// Create a console for this port in a separate thread
+					Thread consoleThread = new Thread(() =>
+					{
+						ConsoleLogger consoleLogger = new ConsoleLogger($"Console {selectedPort}", selectedPort, ConsoleColor.Green, ConsoleColor.Black);
+						consoleLogger.OutputToConsole(logData);
+						consolelLoggers[selectedPort] = consoleLogger;
+
+						// Keep the console thread alive
+						while (!consoleLogger.IsConsoleClosed)
+						{
+							Thread.Sleep(100); // Adjust this to prevent busy-waiting
+						}
+					});
+
+					consoleThread.IsBackground = true;
+					consoleThread.Start();
+
+					loggerThreads[selectedPort] = consoleThread;
 				}
 				else
 				{
