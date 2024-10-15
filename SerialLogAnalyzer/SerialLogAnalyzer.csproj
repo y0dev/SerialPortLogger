@@ -53,6 +53,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\ConsoleLogger.cs" />
+    <Compile Include="Helpers\FileHandler.cs" />
+    <Compile Include="Helpers\SerialPortReader.cs" />
     <Compile Include="Models\AppConfiguration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

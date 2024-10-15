@@ -1,6 +1,7 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using System.IO.Ports;
+using SerialLogAnalyzer.Helpers;
 
 namespace SerialLogAnalyzer.ViewModels
 {
@@ -9,13 +10,14 @@ namespace SerialLogAnalyzer.ViewModels
 		private TextBox logTextBox;
 		private Button startLoggerButton;
 		private Button stopLoggerButton;
-		private string portName;
+		private SerialPortReader _serialPortReader;
 		public bool isLogging { get; private set; }
+
+		public string portName;
 
 		public SerialLoggerTabItem(string portName)
 		{
 			this.portName = portName;
-			// this.Header = portName; // Set the tab header to the COM port name
 			this.isLogging = false;
 
 			// Create the Close Button
@@ -27,13 +29,15 @@ namespace SerialLogAnalyzer.ViewModels
 			};
 			closeButton.Click += CloseButton_Click;
 
-			// Optionally, add the Close button to the header of the TabItem
+			// Set the tab header to the COM port name with close button
 			this.Header = new StackPanel
 			{
 				Orientation = Orientation.Horizontal,
 				Children = { new TextBlock { Text = portName }, closeButton }
 			};
+
 			InitializeComponents();
+			InitializeSerialPortReader();
 		}
 
 		private void InitializeComponents()
@@ -78,6 +82,33 @@ namespace SerialLogAnalyzer.ViewModels
 			this.Content = stackPanel;
 		}
 
+		private void InitializeSerialPortReader()
+		{
+			// Initialize the SerialPortReader with the specified port and baud rate
+			_serialPortReader = new SerialPortReader(portName, 115200); // Adjust baud rate if necessary
+			_serialPortReader.DataReceived += new EventHandler<DataReceivedEventArgs>(SerialPortReader_DataReceived);
+		}
+
+		private void SerialPortReader_DataReceived(object sender, DataReceivedEventArgs e)
+		{
+			// Append the received data to the logTextBox
+			AppendLog(e.Data);
+		}
+
+		public void AppendLog(string data)
+		{
+			// Ensure the UI is updated on the UI thread
+			if (logTextBox.Dispatcher.CheckAccess())
+			{
+				logTextBox.AppendText(data + Environment.NewLine);
+				logTextBox.ScrollToEnd(); // Auto-scroll to the latest log
+			}
+			else
+			{
+				logTextBox.Dispatcher.Invoke(new Action(() => AppendLog(data)));
+			}
+		}
+
 		private void CloseButton_Click(object sender, RoutedEventArgs e)
 		{
 			// Logic to close the tab
@@ -86,6 +117,9 @@ namespace SerialLogAnalyzer.ViewModels
 
 		public void CloseTab()
 		{
+			// Stop logging and close the SerialPortReader if it's running
+			StopLogging();
+
 			// Logic to remove this tab from its parent
 			var parentTabControl = GetParentTabControl();
 			if (parentTabControl != null)
@@ -96,10 +130,9 @@ namespace SerialLogAnalyzer.ViewModels
 
 		private TabControl GetParentTabControl()
 		{
-			// Get the parent TabControl (you may need to adjust the logic based on your hierarchy)
+			// Get the parent TabControl
 			return this.Parent as TabControl;
 		}
-
 
 		private void StartLoggerButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -111,8 +144,8 @@ namespace SerialLogAnalyzer.ViewModels
 			startLoggerButton.IsEnabled = false; // Disable Start Logger button
 			stopLoggerButton.IsEnabled = true; // Enable Stop Logger button
 
-			// Here you can add the logic to actually start the logging from the specified COM port
-			// For example, initializing a SerialPort instance and reading data
+			// Start reading from the serial port
+			_serialPortReader.StartReading();
 		}
 
 		private void StopLoggerButton_Click(object sender, RoutedEventArgs e)
@@ -120,18 +153,19 @@ namespace SerialLogAnalyzer.ViewModels
 			// Logic to stop logging
 			logTextBox.AppendText($"Stopped logging from {portName}.\n");
 			this.StopLogging();
+
 			// Enable/Disable buttons accordingly
 			startLoggerButton.IsEnabled = true; // Enable Start Logger button
 			stopLoggerButton.IsEnabled = false; // Disable Stop Logger button
 
-			// Here you can add the logic to stop logging and close the SerialPort if applicable
+			// Stop reading from the serial port
+			_serialPortReader.StopReading();
 		}
 
 		public void StartLogging()
 		{
-
 			this.isLogging = true;
-			// Your logging logic here...
+			// Your logging logic can be expanded here...
 		}
 
 		public void StopLogging()

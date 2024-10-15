@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SerialLogAnalyzer.Helpers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,8 +38,9 @@ namespace SerialLogAnalyzer.ViewModels
 		private ComboBox portComboBox = new ComboBox();
 		private ComboBox baudRateComboBox = new ComboBox();
 
-		private TabControl serialTabControl = new TabControl();
-
+		private TabControl serialTabControl;
+		private CheckBox consoleOutputCheckBox;
+		private ListView consoleOutputListView;
 
 		// Common button width and height
 		private double buttonWidth = 120; // Set desired width
@@ -46,6 +48,13 @@ namespace SerialLogAnalyzer.ViewModels
 		private bool isAnalyzing = false;
 		private List<string> selectedFiles = new List<string>();
 		private bool isLogging;
+
+		// Dictionary to keep track of the logger threads for each port
+		private Dictionary<string, Thread> loggerThreads = new Dictionary<string, Thread>();
+
+		// Watchdog thread
+		private Thread watchdogThread;
+		private bool watchdogRunning = true;
 
 		// This method will be triggered when the TabHeader changes
 		private static void OnTabHeaderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -115,6 +124,7 @@ namespace SerialLogAnalyzer.ViewModels
 			// Define columns for ComboBoxes and Labels
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Column for Labels
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Column for ComboBoxes
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Column for Checkbox
 
 			// Add Label for Serial Port
 			var portLabel = new Label
@@ -154,15 +164,83 @@ namespace SerialLogAnalyzer.ViewModels
 			Grid.SetColumn(baudRateComboBox, 1);
 			grid.Children.Add(baudRateComboBox);
 
-			// Add TabControl for Serial Port Loggers
-			TabControl serialTabControl = new TabControl
+
+
+			// Add CheckBox for a feature, e.g., "Enable Auto-Scroll"
+			var checkBoxStackPanel = new StackPanel
 			{
-				Height = 230,
-				Margin = new Thickness(10, 0, 10, 5) // Margin for left and bottom spacing
+				Orientation = Orientation.Horizontal,
+				Margin = new Thickness(10, 0, 10, 0) // Add spacing around the checkbox
 			};
-			Grid.SetRow(serialTabControl, 3);
-			Grid.SetColumnSpan(serialTabControl, 2); // Span across both columns
-			grid.Children.Add(serialTabControl);
+
+			// Label for the CheckBox
+			var checkBoxLabel = new Label
+			{
+				Content = "Console Output:",
+				Margin = new Thickness(0, 0, 5, 0) // Add a small space between label and checkbox
+			};
+			checkBoxStackPanel.Children.Add(checkBoxLabel);
+
+			// The CheckBox itself
+			CheckBox consoleOutputCheckBox = new CheckBox
+			{
+				IsChecked = true, // Default to checked
+				VerticalAlignment = VerticalAlignment.Center
+			};
+			checkBoxStackPanel.Children.Add(consoleOutputCheckBox);
+
+			// Add the StackPanel to the Grid (3rd column)
+			Grid.SetRow(checkBoxStackPanel, 1);
+			Grid.SetColumn(checkBoxStackPanel, 2);
+			grid.Children.Add(checkBoxStackPanel);
+
+			// Add dynamic content: ListView or TabControl based on the CheckBox state
+			UIElement dynamicContent = null;
+
+			void UpdateDynamicContent()
+			{
+				if (dynamicContent != null)
+				{
+					grid.Children.Remove(dynamicContent); // Remove existing UI element
+				}
+
+				if (consoleOutputCheckBox.IsChecked == true)
+				{
+					// Add ListView for Console Output
+					ListView consoleOutputListView = new ListView
+					{
+						Height = 235,
+						Margin = new Thickness(10, 0, 10, 5) // Margin for left and bottom spacing
+					};
+					Grid.SetRow(consoleOutputListView, 3);
+					Grid.SetColumnSpan(consoleOutputListView, 3); // Span across both columns
+					dynamicContent = consoleOutputListView;
+
+					this.consoleOutputCheckBox = consoleOutputCheckBox;
+					this.consoleOutputListView = consoleOutputListView;
+				}
+				else
+				{
+					// Add TabControl for Serial Port Loggers
+					TabControl serialTabControl = new TabControl
+					{
+						Height = 230,
+						Margin = new Thickness(10, 0, 10, 5) // Margin for left and bottom spacing
+					};
+					Grid.SetRow(serialTabControl, 3);
+					Grid.SetColumnSpan(serialTabControl, 3); // Span across both columns
+					dynamicContent = serialTabControl;
+				}
+
+				grid.Children.Add(dynamicContent); // Add the new UI element to the grid
+			}
+
+			// Initial UI setup based on the checkbox state
+			UpdateDynamicContent();
+
+			// Listen to checkbox state change to update the UI
+			consoleOutputCheckBox.Checked += (s, e) => UpdateDynamicContent();
+			consoleOutputCheckBox.Unchecked += (s, e) => UpdateDynamicContent();
 
 			// Create a StackPanel for buttons and align to the right
 			StackPanel buttonPanel = new StackPanel
@@ -170,7 +248,7 @@ namespace SerialLogAnalyzer.ViewModels
 				Orientation = Orientation.Horizontal,
 				HorizontalAlignment = HorizontalAlignment.Right,
 				VerticalAlignment = VerticalAlignment.Bottom,
-				Margin = new Thickness(0, 10, 0, 0) // Margin for top spacing
+				Margin = new Thickness(0, 5, 0, 0) // Margin for top spacing
 			};
 
 			// Add Start Logging Button
@@ -198,11 +276,10 @@ namespace SerialLogAnalyzer.ViewModels
 
 			// Add the button panel to the grid
 			Grid.SetRow(buttonPanel, 4); // Place in the third row
-			Grid.SetColumnSpan(buttonPanel, 2); // Span across both columns
+			Grid.SetColumnSpan(buttonPanel, 3); // Span across both columns
 			grid.Children.Add(buttonPanel);
 
 			// Store the button references for later use
-			this.serialTabControl = serialTabControl;
 			this.logButton = logButton;
 			this.stopLoggingButton = stopLoggingButton;
 		} // End of ConfigureLoggerUI()
@@ -327,27 +404,33 @@ namespace SerialLogAnalyzer.ViewModels
 
 				// Simulate analysis process (replace with actual logic)
 				Console.WriteLine("Analyzing files...");
-				foreach (var file in selectedFiles)
-				{
-					Console.WriteLine($"Analyzing {file}...");
-				}
 
-				/*
-				// Simulate analysis completion after some time
-				Task T = Task.Factory.StartNew(() =>
+				// Start a new thread for file analysis
+				Thread analysisThread = new Thread(() =>
 				{
+					foreach (var file in selectedFiles)
+					{
+						Console.WriteLine($"Analyzing {file}...");
+						Thread.Sleep(1000); // Simulate time taken for analyzing each file
+					}
+
+					// Analysis complete, update UI
 					isAnalyzing = false;
-					Dispatcher.Invoke(() =>
+
+					// Use Dispatcher to update UI controls
+					Dispatcher.Invoke(new Action(delegate
 					{
 						analyzeButton.IsEnabled = true; // Enable analyze button
 						cancelButton.IsEnabled = false; // Disable cancel button
 						Console.WriteLine("Analysis complete.");
-					});
+					}));
 				});
-				*/
 
+				analysisThread.IsBackground = true; // Make the thread a background thread
+				analysisThread.Start(); // Start the analysis thread
 			}
-		}
+		} // End of AnalyzeButton_Click()
+
 
 		// Cancel Button Click - To stop the analysis process
 		private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -363,36 +446,83 @@ namespace SerialLogAnalyzer.ViewModels
 
 		private void CreateLoggerButton_Click(object sender, RoutedEventArgs e)
 		{
-			// Logic to start logging from the selected COM port
 			string selectedPort = portComboBox.SelectedItem as string;
 
-			// Add logic here to log the serial output from the selected port
-			Console.WriteLine("Log serial output clicked.");
 			if (!string.IsNullOrEmpty(selectedPort))
 			{
-				// Create a new logger tab for the selected port
-				SerialLoggerTabItem loggerTab = new SerialLoggerTabItem(selectedPort);
-				// Add the logger tab to the main tab control
-				serialTabControl.Items.Add(loggerTab); // Adding the logger tab to the tab control
+				if (consoleOutputCheckBox.IsChecked == true)
+				{
+					// Create a console for this port
+					ConsoleLogger.CreateConsoleForPort(selectedPort, ConsoleColor.Green, ConsoleColor.Black);
+				}
+				else
+				{
+					// Create a new logger tab for the selected port
+					SerialLoggerTabItem loggerTab = new SerialLoggerTabItem(selectedPort);
+					serialTabControl.Items.Add(loggerTab);
+				}
 
-				// Remove the selected port from the AvailablePorts collection
-				AvailablePorts.Remove(selectedPort); // This will update the ComboBox automatically
+				// Start the logger thread
+				Thread loggerThread = new Thread(delegate ()
+				{
+					while (isLogging)
+					{
+						string logData = $"Data from {selectedPort} at {DateTime.Now}";
+
+						// Check if output should be directed to the console or the tab
+						if (consoleOutputCheckBox.IsChecked == true)
+						{
+							// Update to call OutputToConsole with a single argument
+							ConsoleLogger.OutputToConsole(logData);
+						}
+						else
+						{
+							// Find the logger tab for this port
+							SerialLoggerTabItem loggerTab = null;
+
+							// Iterate through tab items to find the right one
+							foreach (var item in serialTabControl.Items)
+							{
+								loggerTab = item as SerialLoggerTabItem;
+								if (loggerTab != null && loggerTab.portName == selectedPort)
+								{
+									break;
+								}
+							}
+
+							// If the tab is found, append the log data to it
+							if (loggerTab != null)
+							{
+								// Use Dispatcher to update UI element
+								Application.Current.Dispatcher.Invoke(new Action(() =>
+								{
+									loggerTab.AppendLog(logData);
+								}));
+							}
+						}
+
+						Thread.Sleep(1000); // Simulate data logging interval
+					}
+				});
+
+				loggerThread.IsBackground = true;
+				loggerThread.Start();
+
+				// Add the thread to the dictionary for tracking
+				loggerThreads[selectedPort] = loggerThread;
+
+				// Start the watchdog if it's not already running
+				if (watchdogThread == null)
+				{
+					StartWatchdog();
+				}
+
+				// Remove the selected port from the available ports
+				AvailablePorts.Remove(selectedPort);
 
 				isLogging = true;
 				stopLoggingButton.IsEnabled = true;
-
-				// Disable logButton only if no ports are left in the portComboBox
 				logButton.IsEnabled = AvailablePorts.Count > 0;
-
-				// Start a new thread for logging
-				Thread loggerThread = new Thread(() =>
-				{
-					// Add your logging logic here
-					// For example: StartLogging(selectedPort);
-				});
-
-				loggerThread.IsBackground = true; // Make it a background thread
-				loggerThread.Start();
 			}
 			else
 			{
@@ -403,14 +533,25 @@ namespace SerialLogAnalyzer.ViewModels
 
 		private void StopLoggingButton_Click(object sender, RoutedEventArgs e)
 		{
-			// Get the currently selected tab item from the tab control
-			foreach (var item in serialTabControl.Items)
+			isLogging = false;
+			watchdogRunning = false;
+
+			// Stop all logger threads
+			foreach (var loggerThread in loggerThreads.Values)
 			{
-				if (item is SerialLoggerTabItem loggerTab && loggerTab.isLogging)
+				if (loggerThread.IsAlive)
 				{
-					loggerTab.StopLogging(); // Implement this method in SerialLoggerTabItem
+					loggerThread.Join();
 				}
 			}
+
+			// Stop the watchdog thread
+			if (watchdogThread != null && watchdogThread.IsAlive)
+			{
+				watchdogThread.Join();
+			}
+
+			stopLoggingButton.IsEnabled = false;
 			UpdateLoggingButtons();
 		}
 
@@ -420,5 +561,87 @@ namespace SerialLogAnalyzer.ViewModels
 			stopLoggingButton.IsEnabled = isLogging;
 		}
 
+		// Method to start the watchdog thread
+		private void StartWatchdog()
+		{
+			watchdogThread = new Thread(new ThreadStart(delegate
+			{
+				while (watchdogRunning)
+				{
+					foreach (var portThread in loggerThreads)
+					{
+						string port = portThread.Key;
+						Thread loggerThread = portThread.Value;
+
+						// Check if the logger thread is still alive
+						if (!loggerThread.IsAlive)
+						{
+							// Use Dispatcher to show the message box on the UI thread
+							Dispatcher.Invoke(new Action(delegate
+							{
+								MessageBox.Show($"Logger thread for {port} has stopped unexpectedly.");
+							}));
+
+							// Optionally: Restart the thread or handle it based on your use case
+							RestartLoggerThread(port);
+						}
+					}
+
+					Thread.Sleep(2000); // Check every 2 seconds
+				}
+			}));
+
+			watchdogThread.IsBackground = true; // Make it a background thread
+			watchdogThread.Start(); 
+		}
+
+		// Method to restart a logger thread if it stops unexpectedly
+		private void RestartLoggerThread(string port)
+		{
+			Thread newLoggerThread = new Thread(() =>
+			{
+				while (isLogging)
+				{
+					string logData = $"Data from {port} at {DateTime.Now}";
+					if (consoleOutputCheckBox.IsChecked == true)
+					{
+						ConsoleLogger.OutputToConsole(logData);
+					}
+					else
+					{
+						Dispatcher.Invoke(new Action(AppendLogToTabMethod(port, logData)));
+					}
+					Thread.Sleep(1000);
+				}
+			});
+
+			newLoggerThread.IsBackground = true;
+			newLoggerThread.Start();
+
+			// Replace the old thread with the new one
+			loggerThreads[port] = newLoggerThread;
+		} // End of RestartLoggerThread()
+
+		// Method to be called to append log to tab
+		private Action AppendLogToTabMethod(string port, string logData)
+		{
+			return delegate
+			{
+				AppendLogToTab(port, logData); // Call the method that appends log data to the UI
+			};
+		} // End of AppendLogToTabMethod()
+
+		// Method to append log data to the correct tab
+		private void AppendLogToTab(string port, string logData)
+		{
+			foreach (TabItem item in serialTabControl.Items)
+			{
+				if (item.Header.ToString() == port)
+				{
+					// ((SerialLoggerTabItem)item).AppendLog(logData); // Assuming SerialLoggerTabItem has AppendLog method
+					break;
+				}
+			}
+		} // End of AppendLogToTab()
 	}
 }
