@@ -38,9 +38,9 @@ namespace SerialLogAnalyzer.ViewModels
 		private ComboBox portComboBox = new ComboBox();
 		private ComboBox baudRateComboBox = new ComboBox();
 
-		private TabControl serialTabControl = new TabControl();
-		private CheckBox consoleOutputCheckBox = new CheckBox();
-		private ListView consoleOutputListView = new ListView();
+		private TabControl serialTabControl;
+		private CheckBox consoleOutputCheckBox;
+		private ListView consoleOutputListView;
 
 		// Common button width and height
 		private double buttonWidth = 120; // Set desired width
@@ -51,6 +51,8 @@ namespace SerialLogAnalyzer.ViewModels
 		private bool isLogging;
 
 		// Dictionary to keep track of the logger threads for each port
+		private Dictionary<string, ConsoleLogger> consolelLoggers = new Dictionary<string, ConsoleLogger>();
+		private Dictionary<string, SerialLoggerTabItem> serialLoggers = new Dictionary<string, SerialLoggerTabItem>();
 		private Dictionary<string, Thread> loggerThreads = new Dictionary<string, Thread>();
 
 		// Watchdog thread
@@ -231,6 +233,8 @@ namespace SerialLogAnalyzer.ViewModels
 					Grid.SetRow(serialTabControl, 3);
 					Grid.SetColumnSpan(serialTabControl, 3); // Span across both columns
 					dynamicContent = serialTabControl;
+
+					this.serialTabControl = serialTabControl;
 				}
 
 				grid.Children.Add(dynamicContent); // Add the new UI element to the grid
@@ -451,71 +455,20 @@ namespace SerialLogAnalyzer.ViewModels
 
 			if (!string.IsNullOrEmpty(selectedPort))
 			{
+				string logData = $"Data from {selectedPort} at {DateTime.Now}";
 				if (consoleOutputCheckBox.IsChecked == true)
 				{
 					// Create a console for this port
-					ConsoleLogger.CreateConsoleForPort(selectedPort, ConsoleColor.Green, ConsoleColor.Black);
+					ConsoleLogger consoleLogger = new ConsoleLogger($"Console {selectedPort}",selectedPort, ConsoleColor.Green, ConsoleColor.Black);
+					consoleLogger.OutputToConsole(logData);
+					consolelLoggers[selectedPort] = consoleLogger;
 				}
 				else
 				{
 					// Create a new logger tab for the selected port
 					SerialLoggerTabItem loggerTab = new SerialLoggerTabItem(selectedPort);
 					serialTabControl.Items.Add(loggerTab);
-				}
-
-				// Start the logger thread
-				Thread loggerThread = new Thread(delegate ()
-				{
-					while (isLogging)
-					{
-						string logData = $"Data from {selectedPort} at {DateTime.Now}";
-
-						// Check if output should be directed to the console or the tab
-						if (consoleOutputCheckBox.IsChecked == true)
-						{
-							// Update to call OutputToConsole with a single argument
-							ConsoleLogger.OutputToConsole(logData);
-						}
-						else
-						{
-							// Find the logger tab for this port
-							SerialLoggerTabItem loggerTab = null;
-
-							// Iterate through tab items to find the right one
-							foreach (var item in serialTabControl.Items)
-							{
-								loggerTab = item as SerialLoggerTabItem;
-								if (loggerTab != null && loggerTab.portName == selectedPort)
-								{
-									break;
-								}
-							}
-
-							// If the tab is found, append the log data to it
-							if (loggerTab != null)
-							{
-								// Use Dispatcher to update UI element
-								Application.Current.Dispatcher.Invoke(new Action(() =>
-								{
-									loggerTab.AppendLog(logData);
-								}));
-							}
-						}
-
-						Thread.Sleep(1000); // Simulate data logging interval
-					}
-				});
-
-				loggerThread.IsBackground = true;
-				loggerThread.Start();
-
-				// Add the thread to the dictionary for tracking
-				loggerThreads[selectedPort] = loggerThread;
-
-				// Start the watchdog if it's not already running
-				if (watchdogThread == null)
-				{
-					StartWatchdog();
+					serialLoggers[selectedPort] = loggerTab;
 				}
 
 				// Remove the selected port from the available ports
@@ -606,7 +559,7 @@ namespace SerialLogAnalyzer.ViewModels
 					string logData = $"Data from {port} at {DateTime.Now}";
 					if (consoleOutputCheckBox.IsChecked == true)
 					{
-						ConsoleLogger.OutputToConsole(logData);
+						// ConsoleLogger.OutputToConsole(logData);
 					}
 					else
 					{

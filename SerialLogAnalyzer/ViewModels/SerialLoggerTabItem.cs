@@ -20,6 +20,8 @@ namespace SerialLogAnalyzer.ViewModels
 			this.portName = portName;
 			this.isLogging = false;
 
+			Console.WriteLine(portName);
+
 			// Create the Close Button
 			Button closeButton = new Button
 			{
