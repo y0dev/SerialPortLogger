@@ -1,7 +1,3 @@
-Here's a documentation draft for your application, **SLATE: Serial Logging and Analysis Tool for Engineers**.
-
----
-
 # SLATE: Serial Logging and Analysis Tool for Engineers
 
 ## Overview
