@@ -55,6 +55,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\ConsoleLogger.cs" />
     <Compile Include="Helpers\FileHandler.cs" />
+    <Compile Include="Helpers\KeywordParser.cs" />
     <Compile Include="Helpers\SerialPortReader.cs" />
     <Compile Include="Models\AppConfiguration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />

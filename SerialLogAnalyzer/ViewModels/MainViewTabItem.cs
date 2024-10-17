@@ -27,7 +27,7 @@ namespace SerialLogAnalyzer.ViewModels
 			get { return (string)GetValue(TabHeaderProperty); }
 			set { SetValue(TabHeaderProperty, value); }
 		}
-		
+
 
 		// Fields for buttons
 		private Button analyzeButton;
@@ -50,6 +50,7 @@ namespace SerialLogAnalyzer.ViewModels
 		private double buttonWidth = 120; // Set desired width
 		private double buttonHeight = 30; // Set desired height
 		private double viewHeight = 270; // Set desired height for listview or tabview
+		private double comboBoxWidth = 270; 
 		private bool isAnalyzing = false;
 		private List<string> selectedFiles = new List<string>();
 		private bool isLogging;
@@ -147,6 +148,8 @@ namespace SerialLogAnalyzer.ViewModels
 			portComboBox = new ComboBox
 			{
 				ItemsSource = AvailablePorts,
+				Width = comboBoxWidth,
+				HorizontalAlignment = HorizontalAlignment.Left,
 				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
 			};
 			Grid.SetRow(portComboBox, 1);
@@ -164,6 +167,8 @@ namespace SerialLogAnalyzer.ViewModels
 			{
 				ItemsSource = new[] { 9600, 19200, 38400, 57600, 115200 },
 				SelectedItem = 115200, // Set a default value
+				Width = comboBoxWidth,
+				HorizontalAlignment = HorizontalAlignment.Left,
 				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
 			};
 
@@ -309,7 +314,7 @@ namespace SerialLogAnalyzer.ViewModels
 
 			// Access the MainViewModel instance which contains the config settings
 			var viewModel = (MainViewModel)this.FindResource("MainViewModel");
-
+			
 			// Add Label for Serial Port
 			var productLabel = new Label
 			{
@@ -326,6 +331,9 @@ namespace SerialLogAnalyzer.ViewModels
 			{
 				ItemsSource = viewModel.Config.Items,  // Bind the list of items
 				DisplayMemberPath = "Name",            // Set the property to display in the ComboBox
+				Width = comboBoxWidth,
+				HorizontalAlignment = HorizontalAlignment.Left,
+				//SelectedIndex = 0,
 				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
 			};
 			Grid.SetRow(productComboBox, 1);
@@ -352,7 +360,8 @@ namespace SerialLogAnalyzer.ViewModels
 			// Add ComboBox for Mode selection
 			modeComboBox = new ComboBox
 			{
-				ItemsSource = new[] { 9600, 19200, 38400, 57600, 115200 },
+				Width = comboBoxWidth,
+				HorizontalAlignment = HorizontalAlignment.Left,
 				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
 			};
 
@@ -461,7 +470,7 @@ namespace SerialLogAnalyzer.ViewModels
 				// Clear modeComboBox if no product or modes are available
 				modeComboBox.ItemsSource = null;
 			}
-		}
+		} // End of PopulateModesForSelectedProduct()
 
 
 		// Browse Button Click - To open file dialog and select files
@@ -480,14 +489,21 @@ namespace SerialLogAnalyzer.ViewModels
 		// Analyze Button Click - To start analysis
 		private void AnalyzeButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (selectedFiles.Count > 0)
+			if (selectedFiles.Count > 0 && productComboBox.SelectedItem is Item selectedProduct && modeComboBox.SelectedItem is Mode selectedMode)
 			{
 				isAnalyzing = true;
 				analyzeButton.IsEnabled = false; // Disable analyze button
 				cancelButton.IsEnabled = true; // Enable cancel button
 
-				// Simulate analysis process (replace with actual logic)
-				Console.WriteLine("Analyzing files...");
+				// Get keywords from the selected mode
+				var keywords = new List<string>();
+				if (selectedMode.KeywordGroups != null)
+				{
+					foreach (var keywordGroup in selectedMode.KeywordGroups)
+					{
+						keywords.AddRange(keywordGroup.Keywords); // Add all keywords from each group
+					}
+				}
 
 				// Start a new thread for file analysis
 				Thread analysisThread = new Thread(() =>
@@ -495,6 +511,14 @@ namespace SerialLogAnalyzer.ViewModels
 					foreach (var file in selectedFiles)
 					{
 						Console.WriteLine($"Analyzing {file}...");
+
+						// Create the KeywordParser with the file and keywords
+						KeywordParser keywordParser = new KeywordParser(file, keywords);
+						var keywordData = keywordParser.ParseFile(); // Parse the file using the provided keywords
+
+						// Here, you might want to handle or display the results from keywordData as needed
+						// For example, you could log them, display them in a UI element, etc.
+
 						Thread.Sleep(1000); // Simulate time taken for analyzing each file
 					}
 
@@ -512,6 +536,10 @@ namespace SerialLogAnalyzer.ViewModels
 
 				analysisThread.IsBackground = true; // Make the thread a background thread
 				analysisThread.Start(); // Start the analysis thread
+			}
+			else
+			{
+				MessageBox.Show("Please select a product and mode before analyzing.");
 			}
 		} // End of AnalyzeButton_Click()
 
