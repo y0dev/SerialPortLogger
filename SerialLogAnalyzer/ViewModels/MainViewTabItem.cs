@@ -452,16 +452,20 @@ namespace SerialLogAnalyzer.ViewModels
 		private void CreateLoggerButton_Click(object sender, RoutedEventArgs e)
 		{
 			string selectedPort = portComboBox.SelectedItem as string;
+			int selectedBaudRate = Convert.ToInt32(baudRateComboBox.SelectedValue); // Get the selected baud rate
 
 			if (!string.IsNullOrEmpty(selectedPort))
 			{
 				string logData = $"Data from {selectedPort} at {DateTime.Now}";
 				if (consoleOutputCheckBox.IsChecked == true)
 				{
+					string baseDirectory = AppDomain.CurrentDomain.BaseDirectory; // Set base directory to the current application directory
+					string logFileName = $"log_{selectedPort}.txt"; // Create a unique log file name based on the selected port
+
 					// Create a console for this port in a separate thread
 					Thread consoleThread = new Thread(() =>
 					{
-						ConsoleLogger consoleLogger = new ConsoleLogger($"Console {selectedPort}", selectedPort, ConsoleColor.Green, ConsoleColor.Black);
+						ConsoleLogger consoleLogger = new ConsoleLogger($"Console {selectedPort}", selectedPort, selectedBaudRate, "Monokai", baseDirectory, logFileName);
 						consoleLogger.OutputToConsole(logData);
 						consolelLoggers[selectedPort] = consoleLogger;
 

@@ -120,4 +120,7 @@
   <data name="CONFIG_PATH" xml:space="preserve">
     <value>F:\Programming\WPF\SerialLogAnalyzer\Scripts\config.xml</value>
   </data>
+  <data name="SCRIPTS_DIR_PATH" xml:space="preserve">
+    <value>F:\Programming\WPF\SerialLogAnalyzer\Scripts</value>
+  </data>
 </root>

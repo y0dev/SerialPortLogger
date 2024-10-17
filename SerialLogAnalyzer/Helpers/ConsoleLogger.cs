@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace SerialLogAnalyzer.Helpers
 {
@@ -7,39 +7,36 @@ namespace SerialLogAnalyzer.Helpers
 	{
 		private static SerialPortReader _serialPortReader; // Changed to static for consistency
 		private bool isConsoleClosed = false;
+		private Process externalConsoleProcess; // Track the process of the external console
+		private string externalAppPath = Properties.Resources.SCRIPTS_DIR_PATH;
 
-		// DllImport for handling console events
-		[DllImport("Kernel32")]
-		private static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate handler, bool add);
-
-		private delegate bool ConsoleCtrlDelegate(CtrlTypes ctrlType);
-
-		// Console control events
-		private enum CtrlTypes
+		public ConsoleLogger(string consoleTitle, string portName, int baudRate, string schemeName, string baseDirectory, string logFileName)
 		{
-			CTRL_C_EVENT = 0,
-			CTRL_CLOSE_EVENT = 2,
-			CTRL_LOGOFF_EVENT = 5,
-			CTRL_SHUTDOWN_EVENT = 6
+			// Launch the external application (e.g., cmd.exe or custom logger)
+			StartExternalConsole(consoleTitle, portName, baudRate, schemeName, baseDirectory, logFileName);
 		}
 
-		public ConsoleLogger(string consoleTitle, string portName, ConsoleColor foregroundColor, ConsoleColor backgroundColor)
+		// Method to launch an external console (e.g., cmd.exe) for each logger
+		private void StartExternalConsole(string consoleTitle, string portName, int baudRate, string schemeName, string baseDirectory, string logFileName)
 		{
-			AllocConsole();
-			Console.Title = consoleTitle;
-			Console.ForegroundColor = foregroundColor;
-			Console.BackgroundColor = backgroundColor;
-			//Console.Clear();
-
-			// Add a handler to prevent the console from closing the entire application
-			SetConsoleCtrlHandler(new ConsoleCtrlDelegate(ConsoleCtrlHandler), true);
-
-			// Initialize the SerialPortReader for the specified port
-			// _serialPortReader = new SerialPortReader(portName, 115200); // Adjust baud rate as needed
-			// _serialPortReader.DataReceived += SerialPortReader_DataReceived;
-
-			// Start reading from the serial port
-			// _serialPortReader.StartReading();
+			try
+			{
+				externalConsoleProcess = new Process
+				{
+					StartInfo = new ProcessStartInfo
+					{
+						FileName = $"{externalAppPath}\\COM_Port_Logger.exe", // Path to cmd.exe or any external console application
+						Arguments = $"{baseDirectory} {logFileName} {portName} {baudRate} {schemeName} \"{consoleTitle}\"",
+						UseShellExecute = true,			// Ensures the external app launches with a GUI
+						CreateNoWindow = false,			// Optional: set to false to ensure the window is visible
+					}
+				};
+				externalConsoleProcess.Start();
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Failed to launch external console: {ex.Message}");
+			}
 		}
 
 		// Public read-only property to expose the value outside the class
@@ -51,52 +48,28 @@ namespace SerialLogAnalyzer.Helpers
 		// Event handler for data received from the SerialPortReader
 		private void SerialPortReader_DataReceived(object sender, DataReceivedEventArgs e)
 		{
-			// Output the received data to the console
+			// Output the received data to the external application or log it
 			OutputToConsole(e.Data);
 		}
 
-		// Method to output data to the console
+		// Method to output data to the console (can be adapted to send data to the external process)
 		public void OutputToConsole(string logData)
 		{
 			if (!isConsoleClosed)
 			{
-				Console.WriteLine(logData);
+				// You could pass this data to the external console using methods like piping or files
+				Console.WriteLine(logData); // For now, simply log it to the original process console
 			}
 		}
 
 		// Method to stop the serial port reading
 		public void StopReading()
 		{
-			/*
-			if (_serialPortReader != null)
+			// You can stop the external process if needed
+			if (externalConsoleProcess != null && !externalConsoleProcess.HasExited)
 			{
-				_serialPortReader.StopReading();
-				_serialPortReader = null; // Clean up the instance
+				externalConsoleProcess.Kill();
 			}
-			*/
 		}
-
-		// Allocates a new console
-		[DllImport("kernel32.dll", SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool AllocConsole();
-
-		// Console close event handler
-		private bool ConsoleCtrlHandler(CtrlTypes ctrlType)
-		{
-			if (ctrlType == CtrlTypes.CTRL_CLOSE_EVENT)
-			{
-				// Just hide the console when it's closed, but don't exit the app
-				isConsoleClosed = true;
-				FreeConsole();
-				return true; // Suppress the default behavior (which would terminate the app)
-			}
-			return false; // Let the default behavior happen for other control types
-		}
-
-		// Frees the console so the app continues running
-		[DllImport("kernel32.dll", SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool FreeConsole();
 	}
 }

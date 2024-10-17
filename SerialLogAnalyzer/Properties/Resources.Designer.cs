@@ -68,5 +68,14 @@ namespace SerialLogAnalyzer.Properties {
                 return ResourceManager.GetString("CONFIG_PATH", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to F:\Programming\WPF\SerialLogAnalyzer\Scripts.
+        /// </summary>
+        internal static string SCRIPTS_DIR_PATH {
+            get {
+                return ResourceManager.GetString("SCRIPTS_DIR_PATH", resourceCulture);
+            }
+        }
     }
 }
