@@ -56,8 +56,24 @@
   </Items>
   <Settings>
     <Theme>light</Theme>
-    <FontSize>8</FontSize>
+    <FontSize>20</FontSize>
   </Settings>
+  <ComputerConfigs>
+    <ComputerConfig name="cog">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM2">
+          <Title>Darth Vader</Title>
+          <ColorScheme>SolarizedDark</ColorScheme>
+          <FontSize>8</FontSize>
+        </SerialConsoleConfig>
+        <SerialConsoleConfig name="COM3">
+          <Title>Luke Skywalker</Title>
+          <ColorScheme>LightMode</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+  </ComputerConfigs>
   <LastFileParsed>
     <LastFiles>
       <File>F:/Documents/sa.txt</File>

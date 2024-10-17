@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
+using SerialLogAnalyzer.Models;
 using SerialLogAnalyzer.Views;
+using SerialLogAnalyzer.Services;
 using System;
 using System.Windows;
 using System.Xml.Linq;
@@ -63,12 +65,14 @@ namespace SerialLogAnalyzer
 				// Display or process the XML config file
 				try
 				{
+					ConfigurationService configService = new ConfigurationService(Properties.Resources.CONFIG_PATH);
 					// Load and parse the XML file
-					XDocument configXml = XDocument.Load(configFilePath);
-					MessageBox.Show($"Successfully opened config file: {configFilePath}");
-
-					// Process the XML data (example: display root node)
-					MessageBox.Show($"Root node: {configXml.Root.Name}");
+					AppConfiguration customConfig = configService.LoadCustomConfiguration(configFilePath);
+					if (customConfig != null)
+					{
+						MessageBox.Show($"Successfully opened config file: {configFilePath}");
+					}
+					
 
 					// You can now access specific nodes in the XML and process it as needed
 				}

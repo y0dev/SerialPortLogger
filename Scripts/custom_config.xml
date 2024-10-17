@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Configuration>
+  <Settings>
+    <Theme>light</Theme>
+    <FontSize>8</FontSize>
+  </Settings>
+  <ComputerConfigs>
+    <ComputerConfig name="pc1">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig>
+          <ComPortName>COM1</ComPortName>
+          <ColorScheme>SolarizedDark</ColorScheme>
+          <FontSize>8</FontSize>
+        </SerialConsoleConfig>
+        <SerialConsoleConfig>
+          <ComPortName>COM2</ComPortName>
+          <ColorScheme>LightMode</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+  </ComputerConfigs>
+</Configuration>

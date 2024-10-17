@@ -13,6 +13,10 @@ namespace SerialLogAnalyzer.Models
 		[XmlElement("Settings")]
 		public Settings Settings { get; set; }
 
+		[XmlArray("ComputerConfigs")]
+		[XmlArrayItem("ComputerConfig")]
+		public List<ComputerConfig> ComputerConfigs { get; set; }
+
 		[XmlElement("LastFileParsed")]
 		public LastFileParsed LastFileParsed { get; set; }
 	}
@@ -43,6 +47,31 @@ namespace SerialLogAnalyzer.Models
 
 		[XmlElement("FontSize")]
 		public int FontSize { get; set; }
+	}
+
+	public class ComputerConfig
+	{
+		[XmlAttribute("name")]
+		public string Name { get; set; }
+
+		[XmlArray("SerialConsoleConfigs")]
+		[XmlArrayItem("SerialConsoleConfig")]
+		public List<SerialConsoleConfig> SerialConsoleConfigs { get; set; }
+	}
+
+	public class SerialConsoleConfig
+	{
+		[XmlAttribute("name")]
+		public string Name { get; set; }
+
+		[XmlElement("Title")]
+		public string Title { get; set; }
+
+		[XmlElement("ColorScheme")]
+		public string ColorScheme { get; set; }
+
+		[XmlElement("FontSize")]
+		public ushort FontSize { get; set; }
 	}
 
 	public class LastFileParsed

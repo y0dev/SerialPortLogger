@@ -297,6 +297,9 @@ namespace SerialLogAnalyzer.ViewModels
 			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the ListView
 			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the Buttons
 
+			// Access the MainViewModel instance which contains the config settings
+			var viewModel = (MainViewModel)this.FindResource("MainViewModel");
+
 			// Create a StackPanel for the TextBox and Browse Button
 			StackPanel browsePanel = new StackPanel
 			{
@@ -454,18 +457,55 @@ namespace SerialLogAnalyzer.ViewModels
 			string selectedPort = portComboBox.SelectedItem as string;
 			int selectedBaudRate = Convert.ToInt32(baudRateComboBox.SelectedValue); // Get the selected baud rate
 
+			// Access the MainViewModel instance which contains the config settings
+			var viewModel = (MainViewModel)this.FindResource("MainViewModel");
+
 			if (!string.IsNullOrEmpty(selectedPort))
 			{
 				string logData = $"Data from {selectedPort} at {DateTime.Now}";
 				if (consoleOutputCheckBox.IsChecked == true)
 				{
+					string consoleTitle = $"Console {selectedPort}";
+					string colorScheme = "Default"; // Default color scheme
+					ushort fontSize = 14;
+					string currentPcName = Environment.MachineName; // Get the current PC name
+					bool configFound = false; // Flag to check if PC config was found
+					
+					// Loop through each computer configuration
+					foreach (var computerConfig in viewModel.Config.ComputerConfigs)
+					{
+						// Check if the ComputerConfig name matches the current PC name
+						if (computerConfig.Name.Trim().Equals(currentPcName.Trim(), StringComparison.OrdinalIgnoreCase))
+						{
+							// If it matches, check the SerialConsoleConfigs
+							foreach (var serialConfig in computerConfig.SerialConsoleConfigs)
+							{
+								if (serialConfig.Name.Equals(selectedPort, StringComparison.OrdinalIgnoreCase))
+								{
+									// Found the matching configuration, retrieve the serial port information
+									consoleTitle = serialConfig.Title;
+									colorScheme = serialConfig.ColorScheme;
+									fontSize = serialConfig.FontSize;
+									configFound = true; // Set flag to true
+
+									// Optionally break the loop if you only want the first match
+									break;
+								}
+							}
+							if (configFound)
+							{
+								break; // Exit the outer loop if config is found
+							}
+						}
+					}
+
 					string baseDirectory = AppDomain.CurrentDomain.BaseDirectory; // Set base directory to the current application directory
 					string logFileName = $"log_{selectedPort}.txt"; // Create a unique log file name based on the selected port
 
 					// Create a console for this port in a separate thread
 					Thread consoleThread = new Thread(() =>
 					{
-						ConsoleLogger consoleLogger = new ConsoleLogger($"Console {selectedPort}", selectedPort, selectedBaudRate, "Monokai", baseDirectory, logFileName);
+						ConsoleLogger consoleLogger = new ConsoleLogger(consoleTitle, fontSize, selectedPort, selectedBaudRate, colorScheme, baseDirectory, logFileName);
 						consoleLogger.OutputToConsole(logData);
 						consolelLoggers[selectedPort] = consoleLogger;
 
