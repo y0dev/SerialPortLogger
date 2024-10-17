@@ -24,11 +24,10 @@
 			<Menu DockPanel.Dock="Top">
 				<!-- File Menu -->
 				<MenuItem Header="_File">
-					<MenuItem Header="_New" Click="NewMenuItem_Click"/>
-					<MenuItem Header="_Open" Click="OpenMenuItem_Click"/>
+					<MenuItem Header="_New Config" Click="NewMenuItem_Click"/>
 					<MenuItem Header="Open _Config" Click="OpenConfigMenuItem_Click"/>
 					<!-- Added Open Config -->
-					<MenuItem Header="_Save" Click="SaveMenuItem_Click"/>
+					<MenuItem Header="_Save Config" Click="SaveMenuItem_Click"/>
 					<Separator/>
 					<MenuItem Header="_Exit" Click="ExitMenuItem_Click"/>
 				</MenuItem>

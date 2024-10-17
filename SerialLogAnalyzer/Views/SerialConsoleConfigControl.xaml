@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="SerialLogAnalyzer.SerialConsoleConfigControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="SerialConsoleConfigControl">
+	<StackPanel Margin="10">
+		<Label Content="Serial Console Config Name:"/>
+		<TextBox Name="ConfigNameTextBox" Margin="0,5,0,10" Width="300"/>
+
+		<Label Content="Title:"/>
+		<TextBox Name="TitleTextBox" Margin="0,5,0,10" Width="300"/>
+
+		<Label Content="Color Scheme:"/>
+		<TextBox Name="ColorSchemeTextBox" Margin="0,5,0,10" Width="300"/>
+
+		<Label Content="Font Size:"/>
+		<TextBox Name="FontSizeTextBox" Margin="0,5,0,10" Width="300"/>
+
+		<Button Content="Create Serial Console Config" 
+                Margin="0,5,0,10"
+                Click="CreateSerialConsoleConfigButton_Click"/>
+	</StackPanel>
+</UserControl>

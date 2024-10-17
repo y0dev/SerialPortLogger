@@ -68,6 +68,9 @@
     <Compile Include="Views\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NewConfigWindow.xaml.cs">
+      <DependentUpon>NewConfigWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -88,6 +91,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HelpPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NewConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

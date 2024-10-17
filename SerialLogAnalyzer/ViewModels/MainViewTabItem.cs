@@ -481,7 +481,8 @@ namespace SerialLogAnalyzer.ViewModels
 			dlg.Multiselect = true; // Allow multiple file selection
 
 			// Filter to only show CSV, TXT, and LOG files
-			dlg.Filter = "CSV files (*.csv)|*.csv|Text files (*.txt)|*.txt|Log files (*.log)|*.log|All files (*.*)|*.*";
+			dlg.Filter = "CSV, TXT, LOG files (*.csv;*.txt;*.log)|*.csv;*.txt;*.log|All files (*.*)|*.*";
+
 
 			if (dlg.ShowDialog() == true)
 			{

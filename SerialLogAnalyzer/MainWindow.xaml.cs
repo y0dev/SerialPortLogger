@@ -13,6 +13,9 @@ namespace SerialLogAnalyzer
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		// Current configuration object to hold all configuration data
+		private AppConfiguration currentConfig = new AppConfiguration();
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -28,20 +31,13 @@ namespace SerialLogAnalyzer
 
 		private void NewMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show("New File");
-			// Implement your new file logic here
+			NewConfigWindow newConfigWindow = new NewConfigWindow();
+			newConfigWindow.ShowDialog();
 		}
-
-		private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			MessageBox.Show("Open File");
-			// Implement your open file logic here
-		}
-
+	
 		private void SaveMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			MessageBox.Show("Save File");
-			// Implement your save file logic here
+			
 		}
 
 		private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
