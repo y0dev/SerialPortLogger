@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ComputerConfigs>
+    <ComputerConfig name="gdgfsdg">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM5">
+          <Title>Jumping</Title>
+          <ColorScheme>Desert</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+  </ComputerConfigs>
+</Configuration>

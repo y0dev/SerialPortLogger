@@ -17,16 +17,31 @@
 			<TextBox Name="PcNameTextBox" Margin="10,0,0,0" Width="400"/>
 		</StackPanel>
 
+		<DataGrid Name="SerialConsoleConfigDataGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Config Name" Binding="{Binding Name}" Width="*"/>
+				<DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
+				<DataGridTextColumn Header="Color Scheme" Binding="{Binding ColorScheme}" Width="*"/>
+				<DataGridTextColumn Header="Font Size" Binding="{Binding FontSize}" Width="*"/>
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<!--
 		<ListBox Name="SerialConsoleConfigList" 
                  Grid.Row="1" 
                  Margin="0,5,0,10" 
                  Height="150"/>
-
+		-->
 		<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,5,0,0">
 			<Button Content="Create New PC Configuration" 
                     Margin="0,0,10,0" 
                     Click="CreatePcConfigButton_Click"
                     ToolTip="Click to create a new PC configuration"/>
+
+			<!-- ContentControl to host Serial Console Config Control -->
+			<ContentControl Name="ConfigControlHost" 
+                        Grid.Row="1" 
+                        Margin="0,5,0,10"/>
 
 			<Button x:Name="CreateSerialConsoleConfigButton" Content="Create Serial Console Config" 
                     Margin="0,0,10,0" IsEnabled="False"

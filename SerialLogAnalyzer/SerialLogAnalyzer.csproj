@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\ColorScheme.cs" />
     <Compile Include="Helpers\ConsoleLogger.cs" />
     <Compile Include="Helpers\FileHandler.cs" />
     <Compile Include="Helpers\KeywordParser.cs" />
@@ -70,6 +71,9 @@
     </Compile>
     <Compile Include="Views\NewConfigWindow.xaml.cs">
       <DependentUpon>NewConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SerialConsoleConfigControl.xaml.cs">
+      <DependentUpon>SerialConsoleConfigControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
@@ -95,6 +99,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SerialConsoleConfigControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

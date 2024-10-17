@@ -1,4 +1,7 @@
-﻿using SerialLogAnalyzer.Models;
+﻿using Microsoft.Win32;
+using SerialLogAnalyzer.Models;
+using SerialLogAnalyzer.Services;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 
@@ -32,12 +35,11 @@ namespace SerialLogAnalyzer
 				Name = pcName,
 				SerialConsoleConfigs = new List<SerialConsoleConfig>()
 			};
-
+			
 			// After creating the PC config, enable the serial console config button
 			CreateSerialConsoleConfigButton.IsEnabled = true;
 
 			appConfiguration.ComputerConfigs.Add(computerConfig);
-			MessageBox.Show($"PC Configuration '{pcName}' created!");
 			PcNameTextBox.Clear();
 			UpdateSerialConsoleConfigList();
 		}
@@ -51,41 +53,69 @@ namespace SerialLogAnalyzer
 				return;
 			}
 
-			// For simplicity, you can ask for more details through inputs or a separate window.
-			var serialConsoleConfig = new SerialConsoleConfig
+			// Open the new window to create a Serial Console Config
+			SerialConsoleConfigWindow configWindow = new SerialConsoleConfigWindow();
+			bool? result = configWindow.ShowDialog();
+
+			if (result == true)
 			{
-				Name = "New Serial Console",
-				Title = "Default Title",
-				ColorScheme = "Default Color",
-				FontSize = 12 // Adjust as necessary
-			};
+				// Retrieve the new SerialConsoleConfig from the window
+				SerialConsoleConfig newConfig = configWindow.Tag as SerialConsoleConfig;
 
-			// Here, you can implement logic to specify which ComputerConfig to add this to
-			var selectedPcConfig = appConfiguration.ComputerConfigs[0]; // Default to the first one
+				// Add the new config to the selected PC Configuration
+				var selectedPcConfig = appConfiguration.ComputerConfigs[0]; // Default to the first one
+				selectedPcConfig.SerialConsoleConfigs.Add(newConfig);
 
-			selectedPcConfig.SerialConsoleConfigs.Add(serialConsoleConfig);
-			UpdateSerialConsoleConfigList();
-			MessageBox.Show($"Serial Console Config created for '{selectedPcConfig.Name}'!");
+				// Update the list to reflect the new config
+				UpdateSerialConsoleConfigList();
+			}
+			else
+			{
+				// The user canceled the creation
+				MessageBox.Show("Serial Console Config creation was canceled.");
+			}
 		}
 
 		// Handler for saving the configuration
 		private void SaveConfigurationButton_Click(object sender, RoutedEventArgs e)
 		{
-			// You may want to implement a file dialog here to specify where to save.
-			MessageBox.Show("Configuration saved! (Implement save logic)");
+			// Open SaveFileDialog for the user to specify the file location and name
+			SaveFileDialog saveFileDialog = new SaveFileDialog
+			{
+				Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*",
+				DefaultExt = ".xml",
+				FileName = "Configuration" // Default file name
+			};
+
+			// Show the dialog and get the result
+			bool? result = saveFileDialog.ShowDialog();
+
+			if (result == true)
+			{
+				string fileName = saveFileDialog.FileName;
+				ConfigurationService configurationService = new ConfigurationService(Properties.Resources.CONFIG_PATH);
+
+				// Call the SaveCustomConfiguration from ConfigurationService
+				configurationService.SaveCustomConfiguration(appConfiguration, fileName);
+			}
 		}
+		
 
 		// Helper method to update the ListBox showing Serial Console Configs
 		private void UpdateSerialConsoleConfigList()
 		{
-			SerialConsoleConfigList.Items.Clear();
+			var serialConfigs = new List<SerialConsoleConfig>();
+
 			foreach (var computerConfig in appConfiguration.ComputerConfigs)
 			{
 				foreach (var consoleConfig in computerConfig.SerialConsoleConfigs)
 				{
-					SerialConsoleConfigList.Items.Add(consoleConfig.Name);
+					serialConfigs.Add(consoleConfig);
 				}
 			}
+
+			SerialConsoleConfigDataGrid.ItemsSource = serialConfigs;
 		}
+
 	}
 }
