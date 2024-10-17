@@ -85,6 +85,25 @@
     "Theme": "light",
     "FontSize": "8"
   },
+  "ComputerConfigs": [
+    {
+      "@attributes": {
+        "name": "pc1"
+      },
+      "SerialConsoleConfigs": [
+        {
+          "ComPortName": "COM1",
+          "ColorScheme": "SolarizedDark",
+          "FontSize": "8"
+        },
+        {
+          "ComPortName": "COM2",
+          "ColorScheme": "LightMode",
+          "FontSize": "14"
+        }
+      ]
+    }
+  ],
   "LastFileParsed": {
     "LastFiles": {
       "File": "F:/Documents/sa.txt"
