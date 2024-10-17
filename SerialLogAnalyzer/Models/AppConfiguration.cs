@@ -23,7 +23,7 @@ namespace SerialLogAnalyzer.Models
 
 	public class Item
 	{
-		[XmlElement("Name")]
+		[XmlAttribute("name")]
 		public string Name { get; set; }
 
 		[XmlArray("Modes")]
@@ -33,8 +33,20 @@ namespace SerialLogAnalyzer.Models
 
 	public class Mode
 	{
-		[XmlElement("Keyword")]
-		public string Keyword { get; set; }
+		[XmlAttribute("name")]
+		public string Name { get; set; }
+		
+		[XmlArray("KeywordGroups")]
+		[XmlArrayItem("KeywordGroup")]
+		public List<KeywordGroup> KeywordGroups { get; set; }
+		
+	}
+
+	public class KeywordGroup
+	{
+		[XmlArray("Keywords")]
+		[XmlArrayItem("Keyword")]
+		public List<string> Keywords { get; set; }
 
 		[XmlElement("OutputFile")]
 		public string OutputFile { get; set; }

@@ -4,52 +4,60 @@
     <Item name="item1">
       <Modes>
         <Mode name="mode1">
-          <KeywordGroup>
-            <Keywords>
-              <Keyword>keyword1</Keyword>
-            </Keywords>
-            <OutputFile>output1.h</OutputFile>
-          </KeywordGroup>
-          <KeywordGroup>
-            <Keywords>
-              <Keyword>keyword2</Keyword>
-            </Keywords>
-            <OutputFile>output1.csv</OutputFile>
-          </KeywordGroup>
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword1</Keyword>
+              </Keywords>
+              <OutputFile>output1.h</OutputFile>
+            </KeywordGroup>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword2</Keyword>
+              </Keywords>
+              <OutputFile>output1.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
         </Mode>
         <Mode name="mode2">
-          <KeywordGroup>
-            <Keywords>
-              <Keyword>keyword3</Keyword>
-            </Keywords>
-            <OutputFile>output2.h</OutputFile>
-          </KeywordGroup>
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword3</Keyword>
+              </Keywords>
+              <OutputFile>output2.h</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
         </Mode>
       </Modes>
     </Item>
     <Item name="item2">
       <Modes>
         <Mode name="mode1">
-          <KeywordGroup>
-            <Keywords>
-              <Keyword>keyword1</Keyword>
-            </Keywords>
-            <OutputFile>output1.h</OutputFile>
-          </KeywordGroup>
-          <KeywordGroup>
-            <Keywords>
-              <Keyword>keyword2</Keyword>
-            </Keywords>
-            <OutputFile>output1.csv</OutputFile>
-          </KeywordGroup>
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword1</Keyword>
+              </Keywords>
+              <OutputFile>output1.h</OutputFile>
+            </KeywordGroup>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword2</Keyword>
+              </Keywords>
+              <OutputFile>output1.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
         </Mode>
         <Mode name="mode2">
-          <KeywordGroup>
-            <Keywords>
-              <Keyword>keyword3</Keyword>
-            </Keywords>
-            <OutputFile>output2.h</OutputFile>
-          </KeywordGroup>
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword3</Keyword>
+              </Keywords>
+              <OutputFile>output2.h</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
         </Mode>
       </Modes>
     </Item>

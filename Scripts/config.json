@@ -1,114 +1,132 @@
 {
-  "Items": {
-    "Item": [
-      {
-        "@attributes": {
-          "name": "item1"
-        },
-        "Modes": {
-          "Mode": [
-            {
-              "@attributes": {
-                "name": "mode1"
-              },
-              "KeywordGroup": [
+    "Configuration": {
+        "Items": {
+            "Item": [
                 {
-                  "Keywords": {
-                    "Keyword": "keyword1"
-                  },
-                  "OutputFile": "output1.h"
+                    "@attributes": {
+                        "name": "item1"
+                    },
+                    "Modes": {
+                        "Mode": [
+                            {
+                                "@attributes": {
+                                    "name": "mode1"
+                                },
+                                "KeywordGroups": {
+                                    "KeywordGroup": [
+                                        {
+                                            "Keywords": {
+                                                "Keyword": "keyword1"
+                                            },
+                                            "OutputFile": "output1.h"
+                                        },
+                                        {
+                                            "Keywords": {
+                                                "Keyword": "keyword2"
+                                            },
+                                            "OutputFile": "output1.csv"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "@attributes": {
+                                    "name": "mode2"
+                                },
+                                "KeywordGroups": {
+                                    "KeywordGroup": {
+                                        "Keywords": {
+                                            "Keyword": "keyword3"
+                                        },
+                                        "OutputFile": "output2.h"
+                                    }
+                                }
+                            }
+                        ]
+                    }
                 },
                 {
-                  "Keywords": {
-                    "Keyword": "keyword2"
-                  },
-                  "OutputFile": "output1.csv"
+                    "@attributes": {
+                        "name": "item2"
+                    },
+                    "Modes": {
+                        "Mode": [
+                            {
+                                "@attributes": {
+                                    "name": "mode1"
+                                },
+                                "KeywordGroups": {
+                                    "KeywordGroup": [
+                                        {
+                                            "Keywords": {
+                                                "Keyword": "keyword1"
+                                            },
+                                            "OutputFile": "output1.h"
+                                        },
+                                        {
+                                            "Keywords": {
+                                                "Keyword": "keyword2"
+                                            },
+                                            "OutputFile": "output1.csv"
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "@attributes": {
+                                    "name": "mode2"
+                                },
+                                "KeywordGroups": {
+                                    "KeywordGroup": {
+                                        "Keywords": {
+                                            "Keyword": "keyword3"
+                                        },
+                                        "OutputFile": "output2.h"
+                                    }
+                                }
+                            }
+                        ]
+                    }
                 }
-              ]
-            },
-            {
-              "@attributes": {
-                "name": "mode2"
-              },
-              "KeywordGroup": {
-                "Keywords": {
-                  "Keyword": "keyword3"
-                },
-                "OutputFile": "output2.h"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "@attributes": {
-          "name": "item2"
+            ]
         },
-        "Modes": {
-          "Mode": [
-            {
-              "@attributes": {
-                "name": "mode1"
-              },
-              "KeywordGroup": [
-                {
-                  "Keywords": {
-                    "Keyword": "keyword1"
-                  },
-                  "OutputFile": "output1.h"
+        "Settings": {
+            "Theme": "light",
+            "FontSize": "20"
+        },
+        "ComputerConfigs": {
+            "ComputerConfig": {
+                "@attributes": {
+                    "name": "cog"
                 },
-                {
-                  "Keywords": {
-                    "Keyword": "keyword2"
-                  },
-                  "OutputFile": "output1.csv"
+                "SerialConsoleConfigs": {
+                    "SerialConsoleConfig": [
+                        {
+                            "@attributes": {
+                                "name": "COM2"
+                            },
+                            "Title": "Darth Vader",
+                            "ColorScheme": "SolarizedDark",
+                            "FontSize": "8"
+                        },
+                        {
+                            "@attributes": {
+                                "name": "COM3"
+                            },
+                            "Title": "Luke Skywalker",
+                            "ColorScheme": "LightMode",
+                            "FontSize": "14"
+                        }
+                    ]
                 }
-              ]
-            },
-            {
-              "@attributes": {
-                "name": "mode2"
-              },
-              "KeywordGroup": {
-                "Keywords": {
-                  "Keyword": "keyword3"
-                },
-                "OutputFile": "output2.h"
-              }
             }
-          ]
-        }
-      }
-    ]
-  },
-  "Settings": {
-    "Theme": "light",
-    "FontSize": "8"
-  },
-  "ComputerConfigs": [
-    {
-      "@attributes": {
-        "name": "pc1"
-      },
-      "SerialConsoleConfigs": [
-        {
-          "ComPortName": "COM1",
-          "ColorScheme": "SolarizedDark",
-          "FontSize": "8"
         },
-        {
-          "ComPortName": "COM2",
-          "ColorScheme": "LightMode",
-          "FontSize": "14"
+        "LastFileParsed": {
+            "LastFiles": {
+                "File": "F:/Documents/sa.txt"
+            },
+            "Status": "failure",
+            "TotalFailureCount": "2"
         }
-      ]
     }
-  ],
-  "LastFileParsed": {
-    "LastFiles": {
-      "File": "F:/Documents/sa.txt"
-    },
-    "Status": "failure",
-    "TotalFailureCount": "2"
-  }
 }

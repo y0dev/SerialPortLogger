@@ -1,9 +1,11 @@
 ﻿using SerialLogAnalyzer.Helpers;
+using SerialLogAnalyzer.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,6 +39,8 @@ namespace SerialLogAnalyzer.ViewModels
 		// Fields for ComboBox
 		private ComboBox portComboBox = new ComboBox();
 		private ComboBox baudRateComboBox = new ComboBox();
+		private ComboBox productComboBox = new ComboBox();
+		private ComboBox modeComboBox = new ComboBox();
 
 		private TabControl serialTabControl;
 		private CheckBox consoleOutputCheckBox;
@@ -293,12 +297,68 @@ namespace SerialLogAnalyzer.ViewModels
 		private void ConfigureAnalyzerUI(Grid grid)
 		{
 			// Define rows for the grid
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for Product
+			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for Mode
 			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the TextBox and Browse Button
 			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the ListView
 			grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto }); // Row for the Buttons
 
+
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Column for Labels
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Column for ComboBoxes
+
 			// Access the MainViewModel instance which contains the config settings
 			var viewModel = (MainViewModel)this.FindResource("MainViewModel");
+
+			// Add Label for Serial Port
+			var productLabel = new Label
+			{
+				Content = "Product:",
+				Margin = new Thickness(0, 0, 10, 0)
+			};
+			Grid.SetRow(productLabel, 1);
+			Grid.SetColumn(productLabel, 0);
+			grid.Children.Add(productLabel);
+			Console.WriteLine($"Items found: {viewModel.Config.Items.Count}");
+			
+			// Add ComboBox for Product selection
+			productComboBox = new ComboBox
+			{
+				ItemsSource = viewModel.Config.Items,  // Bind the list of items
+				DisplayMemberPath = "Name",            // Set the property to display in the ComboBox
+				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
+			};
+			Grid.SetRow(productComboBox, 1);
+			Grid.SetColumn(productComboBox, 1);
+			grid.Children.Add(productComboBox);
+
+			// Handle product selection change to update modes in modeComboBox
+			productComboBox.SelectionChanged += (sender, e) =>
+			{
+				// Get the selected product (Item)
+				Item selectedProduct = productComboBox.SelectedItem as Item;
+
+				// Call the new function to populate modes
+				PopulateModesForSelectedProduct(selectedProduct);
+			};
+
+
+			// Add Label for Baud Rate
+			var modeLabel = new Label { Content = "Mode:" };
+			Grid.SetRow(modeLabel, 2);
+			Grid.SetColumn(modeLabel, 0);
+			grid.Children.Add(modeLabel);
+
+			// Add ComboBox for Mode selection
+			modeComboBox = new ComboBox
+			{
+				ItemsSource = new[] { 9600, 19200, 38400, 57600, 115200 },
+				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
+			};
+
+			Grid.SetRow(modeComboBox, 2);
+			Grid.SetColumn(modeComboBox, 1);
+			grid.Children.Add(modeComboBox);
 
 			// Create a StackPanel for the TextBox and Browse Button
 			StackPanel browsePanel = new StackPanel
@@ -329,7 +389,7 @@ namespace SerialLogAnalyzer.ViewModels
 			browsePanel.Children.Add(browseButton);
 
 			// Add the StackPanel to the grid
-			Grid.SetRow(browsePanel, 1);
+			Grid.SetRow(browsePanel, 3);
 			Grid.SetColumnSpan(browsePanel, 2); // Span across both columns
 			grid.Children.Add(browsePanel);
 
@@ -340,7 +400,7 @@ namespace SerialLogAnalyzer.ViewModels
 				Height = 250,
 				Margin = new Thickness(10, 0, 10, 5)
 			};
-			Grid.SetRow(listView, 2); // Place the ListView in the second row
+			Grid.SetRow(listView, 4); // Place the ListView in the second row
 			Grid.SetColumnSpan(listView, 2); // Span across both columns
 			grid.Children.Add(listView);
 
@@ -378,7 +438,7 @@ namespace SerialLogAnalyzer.ViewModels
 			buttonPanel.Children.Add(cancelButton);
 
 			// Add Button Panel to grid
-			Grid.SetRow(buttonPanel, 3); // Place the button panel in the third row
+			Grid.SetRow(buttonPanel, 5); // Place the button panel in the third row
 			Grid.SetColumnSpan(buttonPanel, 2); // Span across both columns
 			grid.Children.Add(buttonPanel);
 
@@ -387,6 +447,22 @@ namespace SerialLogAnalyzer.ViewModels
 			this.cancelButton = cancelButton;
 			this.directoryTextBox = directoryTextBox; // Store a reference to the directory TextBox
 		} // End of ConfigureAnalyzerUI()
+
+		private void PopulateModesForSelectedProduct(Item selectedProduct)
+		{
+			if (selectedProduct != null && selectedProduct.Modes != null)
+			{
+				// Populate the modeComboBox with the Mode names
+				modeComboBox.ItemsSource = selectedProduct.Modes.Select(m => m.Name).ToList();
+				modeComboBox.SelectedIndex = 0; // Optionally select the first mode by default
+			}
+			else
+			{
+				// Clear modeComboBox if no product or modes are available
+				modeComboBox.ItemsSource = null;
+			}
+		}
+
 
 		// Browse Button Click - To open file dialog and select files
 		private void BrowseButton_Click(object sender, RoutedEventArgs e)
