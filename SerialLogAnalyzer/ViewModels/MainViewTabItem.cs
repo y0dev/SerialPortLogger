@@ -479,12 +479,16 @@ namespace SerialLogAnalyzer.ViewModels
 			// Open a file dialog to select files
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 			dlg.Multiselect = true; // Allow multiple file selection
+
+			// Filter to only show CSV, TXT, and LOG files
+			dlg.Filter = "CSV files (*.csv)|*.csv|Text files (*.txt)|*.txt|Log files (*.log)|*.log|All files (*.*)|*.*";
+
 			if (dlg.ShowDialog() == true)
 			{
 				selectedFiles.AddRange(dlg.FileNames); // Add selected files to the list
 				UpdateUI(); // Refresh the UI to show selected files
 			}
-		}
+		} // End of BrowseButton_Click()
 
 		// Analyze Button Click - To start analysis
 		private void AnalyzeButton_Click(object sender, RoutedEventArgs e)
