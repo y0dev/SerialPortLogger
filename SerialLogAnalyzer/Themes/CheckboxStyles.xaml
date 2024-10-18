@@ -20,16 +20,21 @@
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
                                 CornerRadius="4">
-							<Grid>
-								<ContentPresenter 
-                                    HorizontalAlignment="Center" 
-                                    VerticalAlignment="Center"/>
-							</Grid>
+							<!-- 'X' will appear in the center when checked -->
+							<TextBlock x:Name="CheckMark" 
+                                       Text="X" 
+                                       FontSize="16" 
+                                       Foreground="White" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"
+                                       Visibility="Collapsed"/>
+							<!-- Hidden by default -->
 						</Border>
 					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsChecked" Value="True">
 							<Setter TargetName="Border" Property="Background" Value="{DynamicResource CheckboxCheckedColor}"/>
+							<Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>

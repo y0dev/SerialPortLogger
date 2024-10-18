@@ -72,8 +72,10 @@
 
 			<!-- Your TabControl below the menu -->
 			<TabControl x:Name="MainTabControl" DockPanel.Dock="Bottom">
-				<vm:MainViewTabItem Header="Serial Logger" TabHeader="Logger"/>
-				<vm:MainViewTabItem Header="Serial Analyzer" TabHeader="Analyzer"/>
+				<vm:MainViewTabItem Header="Serial Logger" TabHeader="Logger"
+									Style="{StaticResource TailwindTabItemStyle}"/>
+				<vm:MainViewTabItem Header="Serial Analyzer" TabHeader="Analyzer"
+									Style="{StaticResource TailwindTabItemStyle}"/>
 			</TabControl>
 		</DockPanel>
 	</Grid>

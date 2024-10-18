@@ -31,5 +31,22 @@
 	<SolidColorBrush x:Key="CheckboxHoverBorderColor">#60A5FA</SolidColorBrush>
 	<!-- Blue-400 -->
 
+	<SolidColorBrush x:Key="TabItemBackground" Color="#F9FAFB"/>
+	<!-- Light background -->
+	<SolidColorBrush x:Key="TabItemSelectedBackground" Color="#FFFFFF"/>
+	<!-- White for selected tab -->
+	<SolidColorBrush x:Key="TabItemHoverBackground" Color="#F3F4F6"/>
+	<!-- Light hover color -->
+	<SolidColorBrush x:Key="TabItemBorderColor" Color="#E5E7EB"/>
+	<!-- Light border -->
+	<SolidColorBrush x:Key="TabItemSelectedBorderColor" Color="#3B82F6"/>
+	<!-- Blue for selected border -->
+	<SolidColorBrush x:Key="TabItemForeground" Color="#1F2937"/>
+	<!-- Dark text -->
+	<SolidColorBrush x:Key="TabItemHoverForeground" Color="#111827"/>
+	<!-- Darker text on hover -->
+	<SolidColorBrush x:Key="TabItemDisabledForeground" Color="#9CA3AF"/>
+	<!-- Grey text when disabled -->
+
 	<!-- Add more styles and resources -->
 </ResourceDictionary>

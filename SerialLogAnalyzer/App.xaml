@@ -10,6 +10,7 @@
 				<ResourceDictionary Source="Themes/LightTheme.xaml"/>
 				<ResourceDictionary Source="Themes/ButtonStyles.xaml"/>
 				<ResourceDictionary Source="Themes/CheckboxStyles.xaml"/>
+				<ResourceDictionary Source="Themes/TabItemStyles.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 
