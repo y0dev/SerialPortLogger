@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Color x:Key="PrimaryColor">#FFFFFF</Color>
+	<!-- White for Light Theme -->
+	<Color x:Key="SecondaryColor">#000000</Color>
+	<!-- Black for Light Theme -->
+	<Color x:Key="AccentColor">#FF4081</Color>
+
+	<SolidColorBrush x:Key="ButtonBaseColor">#4080FF</SolidColorBrush>
+	<SolidColorBrush x:Key="ButtonMouseOverColor">#66A3FF</SolidColorBrush>
+	<SolidColorBrush x:Key="ButtonPressedColor">#005BB5</SolidColorBrush>
+
+	<SolidColorBrush x:Key="ButtonDisabledColor">#FFCCCC</SolidColorBrush>
+	<!-- Light grey for disabled button -->
+	<SolidColorBrush x:Key="DisabledTextColor">#FF9999</SolidColorBrush>
+	<!-- Darker grey for disabled text -->
+
+	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}"/>
+	<SolidColorBrush x:Key="ForegroundBrush" Color="Black"/>
+	<SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+
+	<!-- Add more styles and resources -->
+</ResourceDictionary>

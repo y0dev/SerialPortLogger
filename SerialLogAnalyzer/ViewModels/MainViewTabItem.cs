@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace SerialLogAnalyzer.ViewModels
 {
@@ -147,7 +148,8 @@ namespace SerialLogAnalyzer.ViewModels
 			var portLabel = new Label
 			{
 				Content = "Serial Port:",
-				Margin = new Thickness(0, 0, 10, 0)
+				Margin = new Thickness(0, 0, 10, 0),
+				Background = (Brush)Application.Current.Resources["BackgroundBrush"] // Use a dynamic resource here
 			};
 			Grid.SetRow(portLabel, 1);
 			Grid.SetColumn(portLabel, 0);
@@ -280,8 +282,9 @@ namespace SerialLogAnalyzer.ViewModels
 				Content = "Create Logger",
 				Width = buttonWidth,
 				Height = buttonHeight,
-				Margin = new Thickness(0, 0, 5, 0) // Right margin for spacing between buttons
-			};
+				Margin = new Thickness(0, 0, 5, 0), // Right margin for spacing between buttons
+				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
+		};
 			logButton.Click += CreateLoggerButton_Click; // Assuming you have a method to handle logging
 			buttonPanel.Children.Add(logButton);
 
@@ -292,7 +295,8 @@ namespace SerialLogAnalyzer.ViewModels
 				Width = buttonWidth,
 				Height = buttonHeight,
 				IsEnabled = false, // Initially disabled
-				Margin = new Thickness(0, 0, 0, 0) // No margin
+				Margin = new Thickness(0, 0, 0, 0), // No margin
+				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
 			};
 			stopLoggingButton.Click += StopLoggingButton_Click; // Assuming you have a method to handle logging
 			buttonPanel.Children.Add(stopLoggingButton);
@@ -401,7 +405,8 @@ namespace SerialLogAnalyzer.ViewModels
 				Content = "Browse",
 				Width = buttonWidth,
 				Height = buttonHeight,
-				Margin = new Thickness(0, 0, 10, 0) // Margin for right spacing
+				Margin = new Thickness(0, 0, 10, 0), // Margin for right spacing
+				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
 			};
 			browseButton.Click += BrowseButton_Click; // Add click event handler
 			browsePanel.Children.Add(browseButton);
@@ -438,7 +443,8 @@ namespace SerialLogAnalyzer.ViewModels
 				IsEnabled = !isAnalyzing,
 				Width = buttonWidth,
 				Height = buttonHeight,
-				Margin = new Thickness(0, 0, 10, 0) // Margin for right spacing
+				Margin = new Thickness(0, 0, 10, 0), // Margin for right spacing
+				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
 			};
 			analyzeButton.Click += AnalyzeButton_Click;
 			buttonPanel.Children.Add(analyzeButton);
@@ -450,7 +456,8 @@ namespace SerialLogAnalyzer.ViewModels
 				IsEnabled = isAnalyzing,
 				Width = buttonWidth,
 				Height = buttonHeight,
-				Margin = new Thickness(0, 0, 10, 0) // Margin for right spacing
+				Margin = new Thickness(0, 0, 10, 0), // Margin for right spacing
+				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
 			};
 			cancelButton.Click += CancelButton_Click;
 			buttonPanel.Children.Add(cancelButton);

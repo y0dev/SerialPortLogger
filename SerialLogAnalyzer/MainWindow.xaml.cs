@@ -7,6 +7,7 @@ using System.Windows;
 using System.Xml.Linq;
 using System.Windows.Controls;
 using SerialLogAnalyzer.ViewModels;
+using SerialLogAnalyzer.Helpers;
 
 namespace SerialLogAnalyzer
 {
@@ -176,6 +177,7 @@ namespace SerialLogAnalyzer
 		// Logic to apply the theme (replace with your theme switching logic)
 		private void ChangeTheme(string themeName)
 		{
+			ResourceDictionary theme = null;
 			// Set the theme in the MainViewModel
 			var mainViewModel = (MainViewModel)DataContext;
 			mainViewModel.Config.Settings.Theme = themeName; // Update the configuration
@@ -186,9 +188,11 @@ namespace SerialLogAnalyzer
 			{
 				case "Light":
 					// Apply light theme resources or styles
+					theme = new LightTheme();
 					break;
 				case "Dark":
 					// Apply dark theme resources or styles
+					theme = new DarkTheme();
 					break;
 				default:
 					// Handle other themes
