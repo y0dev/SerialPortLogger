@@ -1,0 +1,343 @@
+Defensive Coverages Test
+
+Game #1
+Down: 4, Distance: 14 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 18 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 9 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 4 yd, Coverage: Cover 6, Blitz: No,
+Down: 4, Distance: 8 yd, Coverage: Cover 0, Blitz: No,
+Down: 4, Distance: 6 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 19 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 3, Distance: 10 yd, Coverage: Cover 2, Blitz: No,
+Down: 1, Distance: 5 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 2 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 2 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 4, Distance: 7 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 6 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 6 yd, Coverage: Cover 2, Blitz: No,
+Down: 1, Distance: 4 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 18 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 1 yd, Coverage: Cover 6, Blitz: No,
+Down: 3, Distance: 16 yd, Coverage: Cover 1, Blitz: No,
+Down: 4, Distance: 3 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 6 yd, Coverage: Cover 4, Blitz: No,
+Down: 2, Distance: 7 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 3, Distance: 5 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 12 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 10 yd, Coverage: Cover 3, Blitz: No,
+Down: 2, Distance: 17 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 20 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 3 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 19 yd, Coverage: Cover 4, Blitz: No,
+Down: 2, Distance: 11 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 4, Distance: 13 yd, Coverage: Cover 4, Blitz: No,
+Down: 4, Distance: 8 yd, Coverage: Cover 4, Blitz: No,
+Down: 4, Distance: 16 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 3 yd, Coverage: Cover 2, Blitz: No,
+Down: 2, Distance: 2 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 4, Distance: 13 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 3, Distance: 18 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 1, Distance: 14 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 1, Distance: 16 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 2, Distance: 14 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 2, Distance: 11 yd, Coverage: Cover 1, Blitz: No,
+Down: 4, Distance: 17 yd, Coverage: Cover 3, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 3, Distance: 13 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 15 yd, Coverage: Cover 3, Blitz: No,
+Down: 2, Distance: 16 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 2, Distance: 9 yd, Coverage: Cover 0, Blitz: No,
+Down: 3, Distance: 8 yd, Coverage: Cover 0, Blitz: No,
+Down: 3, Distance: 13 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 1 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 16 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 3 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 2 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 18 yd, Coverage: Cover 0, Blitz: No,
+Down: 3, Distance: 14 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 14 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 3 yd, Coverage: Cover 3, Blitz: No,
+Down: 3, Distance: 6 yd, Coverage: Cover 6, Blitz: No,
+Down: 2, Distance: 4 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 15 yd, Coverage: Cover 2, Blitz: Yes
+
+Game 1 Stats:
+Total Defensive Plays: 61
+Average Yards to Go: 9.95 yd
+Total Blitzes: 22
+Total Cover 0 Plays: 9
+Total Cover 1 Plays: 8
+Total Cover 2 Plays: 14
+Total Cover 3 Plays: 8
+Total Cover 4 Plays: 14
+Total Cover 6 Plays: 8
+
+Game #2
+Down: 2, Distance: 17 yd, Coverage: Cover 3, Blitz: No,
+Down: 1, Distance: 18 yd, Coverage: Cover 4, Blitz: No,
+Down: 4, Distance: 3 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 14 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 9 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 6, Blitz: No,
+Down: 4, Distance: 15 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 9 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 14 yd, Coverage: Cover 3, Blitz: No,
+Down: 3, Distance: 17 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 1, Distance: 7 yd, Coverage: Cover 0, Blitz: No,
+Down: 2, Distance: 14 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 10 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 17 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 6 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 9 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 1 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 4, Distance: 15 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 5 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 4, Distance: 18 yd, Coverage: Cover 3, Blitz: No,
+Down: 1, Distance: 10 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 2 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 1, Distance: 18 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 19 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 13 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 5 yd, Coverage: Cover 3, Blitz: No,
+Down: 2, Distance: 4 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 17 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 13 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 4 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 4, Distance: 2 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 7 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 3, Distance: 13 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 3, Distance: 10 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 8 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 3, Distance: 3 yd, Coverage: Cover 4, Blitz: No,
+Down: 2, Distance: 12 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 20 yd, Coverage: Cover 2, Blitz: No,
+Down: 2, Distance: 19 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 1, Distance: 1 yd, Coverage: Cover 2, Blitz: No,
+Down: 2, Distance: 18 yd, Coverage: Cover 0, Blitz: No,
+Down: 4, Distance: 5 yd, Coverage: Cover 3, Blitz: No,
+Down: 3, Distance: 4 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 4, Distance: 7 yd, Coverage: Cover 6, Blitz: No
+
+Game 2 Stats:
+Total Defensive Plays: 45
+Average Yards to Go: 10.4 yd
+Total Blitzes: 11
+Total Cover 0 Plays: 7
+Total Cover 1 Plays: 7
+Total Cover 2 Plays: 3
+Total Cover 3 Plays: 8
+Total Cover 4 Plays: 12
+Total Cover 6 Plays: 8
+
+Game #3
+Down: 1, Distance: 6 yd, Coverage: Cover 2, Blitz: No,
+Down: 3, Distance: 11 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 15 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 15 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 9 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 9 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 5 yd, Coverage: Cover 6, Blitz: No,
+Down: 3, Distance: 6 yd, Coverage: Cover 2, Blitz: No,
+Down: 2, Distance: 9 yd, Coverage: Cover 2, Blitz: No,
+Down: 3, Distance: 14 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 4, Distance: 11 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 3, Distance: 15 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 7 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 20 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 1, Distance: 2 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 12 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 10 yd, Coverage: Cover 2, Blitz: No,
+Down: 2, Distance: 5 yd, Coverage: Cover 6, Blitz: No,
+Down: 2, Distance: 12 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 2 yd, Coverage: Cover 0, Blitz: No,
+Down: 2, Distance: 8 yd, Coverage: Cover 6, Blitz: No,
+Down: 4, Distance: 9 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 4 yd, Coverage: Cover 1, Blitz: No,
+Down: 4, Distance: 16 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 3, Distance: 20 yd, Coverage: Cover 3, Blitz: No,
+Down: 2, Distance: 13 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 3, Distance: 8 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 5 yd, Coverage: Cover 4, Blitz: No,
+Down: 2, Distance: 11 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 1, Distance: 14 yd, Coverage: Cover 4, Blitz: No,
+Down: 2, Distance: 16 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 10 yd, Coverage: Cover 3, Blitz: No,
+Down: 1, Distance: 9 yd, Coverage: Cover 2, Blitz: No,
+Down: 1, Distance: 13 yd, Coverage: Cover 1, Blitz: No,
+Down: 4, Distance: 8 yd, Coverage: Cover 1, Blitz: No,
+Down: 4, Distance: 10 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 3, Distance: 7 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 13 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 15 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 3, Distance: 5 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 1, Distance: 16 yd, Coverage: Cover 0, Blitz: No,
+Down: 2, Distance: 12 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 4, Distance: 19 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 2, Distance: 10 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 8 yd, Coverage: Cover 1, Blitz: No,
+Down: 4, Distance: 7 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 2, Distance: 3 yd, Coverage: Cover 3, Blitz: No,
+Down: 1, Distance: 16 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 18 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 14 yd, Coverage: Cover 0, Blitz: No,
+Down: 4, Distance: 16 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 18 yd, Coverage: Cover 6, Blitz: No,
+Down: 3, Distance: 20 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 2, Distance: 15 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 6 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 2, Distance: 2 yd, Coverage: Cover 2, Blitz: No,
+Down: 3, Distance: 17 yd, Coverage: Cover 3, Blitz: No,
+Down: 1, Distance: 6 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 5 yd, Coverage: Cover 6, Blitz: No,
+Down: 4, Distance: 13 yd, Coverage: Cover 0, Blitz: No,
+Down: 2, Distance: 16 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 4, Distance: 17 yd, Coverage: Cover 1, Blitz: No,
+Down: 4, Distance: 3 yd, Coverage: Cover 2, Blitz: No,
+Down: 1, Distance: 6 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 3, Distance: 10 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 4 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 4, Distance: 16 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 20 yd, Coverage: Cover 2, Blitz: No
+
+Game 3 Stats:
+Total Defensive Plays: 69
+Average Yards to Go: 10.87 yd
+Total Blitzes: 23
+Total Cover 0 Plays: 10
+Total Cover 1 Plays: 20
+Total Cover 2 Plays: 12
+Total Cover 3 Plays: 6
+Total Cover 4 Plays: 13
+Total Cover 6 Plays: 8
+
+Game #4
+Down: 3, Distance: 14 yd, Coverage: Cover 2, Blitz: No,
+Down: 2, Distance: 3 yd, Coverage: Cover 3, Blitz: No,
+Down: 2, Distance: 6 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 10 yd, Coverage: Cover 2, Blitz: No,
+Down: 3, Distance: 16 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 1 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 5 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 1, Distance: 5 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 18 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 5 yd, Coverage: Cover 4, Blitz: No,
+Down: 4, Distance: 4 yd, Coverage: Cover 4, Blitz: No,
+Down: 2, Distance: 17 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 2, Distance: 14 yd, Coverage: Cover 6, Blitz: No,
+Down: 4, Distance: 19 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 3, Distance: 5 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 2, Distance: 15 yd, Coverage: Cover 6, Blitz: No,
+Down: 2, Distance: 20 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 6 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 2 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 11 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 19 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 19 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 3, Blitz: No,
+Down: 3, Distance: 15 yd, Coverage: Cover 3, Blitz: No,
+Down: 3, Distance: 14 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 4 yd, Coverage: Cover 6, Blitz: No,
+Down: 4, Distance: 20 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 3, Distance: 5 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 12 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 4, Distance: 16 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 5 yd, Coverage: Cover 3, Blitz: No,
+Down: 1, Distance: 19 yd, Coverage: Cover 0, Blitz: No,
+Down: 3, Distance: 11 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 2, Distance: 9 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 4, Distance: 17 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 6 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 11 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 19 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 14 yd, Coverage: Cover 6, Blitz: No,
+Down: 3, Distance: 6 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 12 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 4 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 8 yd, Coverage: Cover 6, Blitz: No,
+Down: 4, Distance: 12 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 6 yd, Coverage: Cover 3, Blitz: Yes
+
+Game 4 Stats:
+Total Defensive Plays: 45
+Average Yards to Go: 10.82 yd
+Total Blitzes: 14
+Total Cover 0 Plays: 6
+Total Cover 1 Plays: 6
+Total Cover 2 Plays: 6
+Total Cover 3 Plays: 10
+Total Cover 4 Plays: 11
+Total Cover 6 Plays: 6
+
+Game #5
+Down: 4, Distance: 14 yd, Coverage: Cover 6, Blitz: No,
+Down: 2, Distance: 7 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 7 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 15 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 4, Distance: 7 yd, Coverage: Cover 6, Blitz: No,
+Down: 2, Distance: 20 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 2, Distance: 4 yd, Coverage: Cover 2, Blitz: No,
+Down: 3, Distance: 17 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 4, Distance: 11 yd, Coverage: Cover 1, Blitz: No,
+Down: 1, Distance: 10 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 5 yd, Coverage: Cover 6, Blitz: No,
+Down: 3, Distance: 13 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 1, Distance: 15 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 4, Distance: 20 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 10 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 4, Distance: 15 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 4, Distance: 20 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 1 yd, Coverage: Cover 0, Blitz: No,
+Down: 1, Distance: 7 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 3 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 3 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 4 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 4, Distance: 8 yd, Coverage: Cover 0, Blitz: No,
+Down: 4, Distance: 7 yd, Coverage: Cover 2, Blitz: No,
+Down: 2, Distance: 8 yd, Coverage: Cover 2, Blitz: No,
+Down: 4, Distance: 10 yd, Coverage: Cover 4, Blitz: No,
+Down: 3, Distance: 17 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 6 yd, Coverage: Cover 3, Blitz: No,
+Down: 3, Distance: 11 yd, Coverage: Cover 6, Blitz: No,
+Down: 3, Distance: 11 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 11 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 9 yd, Coverage: Cover 3, Blitz: No,
+Down: 3, Distance: 2 yd, Coverage: Cover 0, Blitz: Yes,
+Down: 4, Distance: 18 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 19 yd, Coverage: Cover 0, Blitz: No,
+Down: 3, Distance: 20 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 1 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 10 yd, Coverage: Cover 2, Blitz: Yes,
+Down: 3, Distance: 13 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 18 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 4, Distance: 9 yd, Coverage: Cover 1, Blitz: No,
+Down: 3, Distance: 18 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 11 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 3, Distance: 19 yd, Coverage: Cover 4, Blitz: No,
+Down: 2, Distance: 8 yd, Coverage: Cover 3, Blitz: No,
+Down: 2, Distance: 14 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 4, Distance: 6 yd, Coverage: Cover 1, Blitz: No,
+Down: 2, Distance: 13 yd, Coverage: Cover 4, Blitz: No,
+Down: 1, Distance: 7 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 1, Distance: 15 yd, Coverage: Cover 3, Blitz: Yes,
+Down: 4, Distance: 10 yd, Coverage: Cover 3, Blitz: No,
+Down: 4, Distance: 5 yd, Coverage: Cover 4, Blitz: Yes,
+Down: 2, Distance: 5 yd, Coverage: Cover 6, Blitz: Yes,
+Down: 4, Distance: 10 yd, Coverage: Cover 6, Blitz: No,
+Down: 1, Distance: 8 yd, Coverage: Cover 1, Blitz: Yes,
+Down: 3, Distance: 20 yd, Coverage: Cover 3, Blitz: No
+
+Game 5 Stats:
+Total Defensive Plays: 56
+Average Yards to Go: 10.8 yd
+Total Blitzes: 22
+Total Cover 0 Plays: 5
+Total Cover 1 Plays: 7
+Total Cover 2 Plays: 9
+Total Cover 3 Plays: 14
+Total Cover 4 Plays: 11
+Total Cover 6 Plays: 10
+
