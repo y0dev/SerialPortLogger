@@ -9,7 +9,7 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Themes/LightTheme.xaml"/>
 				<ResourceDictionary Source="Themes/ButtonStyles.xaml"/>
-				<!-- or DarkTheme.xaml -->
+				<ResourceDictionary Source="Themes/CheckboxStyles.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 

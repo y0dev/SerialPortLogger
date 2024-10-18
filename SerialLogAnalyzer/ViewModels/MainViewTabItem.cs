@@ -34,7 +34,6 @@ namespace SerialLogAnalyzer.ViewModels
 		// Fields for buttons
 		private Button analyzeButton;
 		private Button cancelButton;
-		private TextBox directoryTextBox;
 		private ListView filesListView;
 		private Button logButton;
 		private Button stopLoggingButton;
@@ -204,11 +203,13 @@ namespace SerialLogAnalyzer.ViewModels
 			};
 			checkBoxStackPanel.Children.Add(checkBoxLabel);
 
+			var style = Application.Current.Resources;
 			// The CheckBox itself
 			CheckBox consoleOutputCheckBox = new CheckBox
 			{
 				IsChecked = true, // Default to checked
-				VerticalAlignment = VerticalAlignment.Center
+				VerticalAlignment = VerticalAlignment.Center,
+				Style = (Style)Application.Current.FindResource("TailwindCheckboxStyle")
 			};
 			checkBoxStackPanel.Children.Add(consoleOutputCheckBox);
 
@@ -266,14 +267,14 @@ namespace SerialLogAnalyzer.ViewModels
 			// Listen to checkbox state change to update the UI
 			consoleOutputCheckBox.Checked += (s, e) => UpdateDynamicContent();
 			consoleOutputCheckBox.Unchecked += (s, e) => UpdateDynamicContent();
-
+			
 			// Create a StackPanel for buttons and align to the right
 			StackPanel buttonPanel = new StackPanel
 			{
 				Orientation = Orientation.Horizontal,
 				HorizontalAlignment = HorizontalAlignment.Right,
-				VerticalAlignment = VerticalAlignment.Bottom,
-				Margin = new Thickness(0, 5, 0, 0) // Margin for top spacing
+				VerticalAlignment = VerticalAlignment.Top,
+				Margin = new Thickness(0, 0, 5, 0) // Margin for top spacing
 			};
 
 			// Add Start Logging Button
@@ -282,7 +283,7 @@ namespace SerialLogAnalyzer.ViewModels
 				Content = "Create Logger",
 				Width = buttonWidth,
 				Height = buttonHeight,
-				Margin = new Thickness(0, 0, 5, 0), // Right margin for spacing between buttons
+				Margin = new Thickness(0, 0, 10, 0), // Margin for right spacing
 				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
 		};
 			logButton.Click += CreateLoggerButton_Click; // Assuming you have a method to handle logging
@@ -295,14 +296,13 @@ namespace SerialLogAnalyzer.ViewModels
 				Width = buttonWidth,
 				Height = buttonHeight,
 				IsEnabled = false, // Initially disabled
-				Margin = new Thickness(0, 0, 0, 0), // No margin
 				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
 			};
 			stopLoggingButton.Click += StopLoggingButton_Click; // Assuming you have a method to handle logging
 			buttonPanel.Children.Add(stopLoggingButton);
 
 			// Add the button panel to the grid
-			Grid.SetRow(buttonPanel, 4); // Place in the third row
+			Grid.SetRow(buttonPanel, 4); // Place in the fifth row
 			Grid.SetColumnSpan(buttonPanel, 3); // Span across both columns
 			grid.Children.Add(buttonPanel);
 
@@ -324,6 +324,7 @@ namespace SerialLogAnalyzer.ViewModels
 
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Column for Labels
 			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }); // Column for ComboBoxes
+			grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // Column for Browse Button
 
 			// Access the MainViewModel instance which contains the config settings
 			var viewModel = (MainViewModel)this.FindResource("MainViewModel");
@@ -345,6 +346,7 @@ namespace SerialLogAnalyzer.ViewModels
 				ItemsSource = viewModel.Config.Items,  // Bind the list of items
 				DisplayMemberPath = "FormattedName",   // Display the formatted name (Title Case and no underscores)
 				Width = comboBoxWidth,
+				Height = 25,
 				HorizontalAlignment = HorizontalAlignment.Left,
 				//SelectedIndex = 0,
 				Margin = new Thickness(10, 0, 10, 10) // Margin for left and bottom spacing
@@ -382,45 +384,28 @@ namespace SerialLogAnalyzer.ViewModels
 			Grid.SetColumn(modeComboBox, 1);
 			grid.Children.Add(modeComboBox);
 
-			// Create a StackPanel for the TextBox and Browse Button
-			StackPanel browsePanel = new StackPanel
-			{
-				Orientation = Orientation.Horizontal,
-				HorizontalAlignment = HorizontalAlignment.Left,
-				VerticalAlignment = VerticalAlignment.Top,
-				Margin = new Thickness(10, 0, 10, 10) // Margin for bottom spacing
-			};
-
-			// Add TextBox for displaying the current directory
-			TextBox directoryTextBox = new TextBox
-			{
-				Width = 300, // Set width as needed
-				Margin = new Thickness(0, 0, 10, 0) // Margin for right spacing
-			};
-			browsePanel.Children.Add(directoryTextBox);
-
 			// Browse Button next to the TextBox
 			Button browseButton = new Button
 			{
 				Content = "Browse",
 				Width = buttonWidth,
 				Height = buttonHeight,
-				Margin = new Thickness(0, 0, 10, 0), // Margin for right spacing
+				HorizontalAlignment = HorizontalAlignment.Right,
+				Margin = new Thickness(0, 0, 10, 10), // Margin for right spacing
 				Style = (Style)Application.Current.FindResource("RoundedButtonStyle")
 			};
 			browseButton.Click += BrowseButton_Click; // Add click event handler
-			browsePanel.Children.Add(browseButton);
 
 			// Add the StackPanel to the grid
-			Grid.SetRow(browsePanel, 3);
-			Grid.SetColumnSpan(browsePanel, 2); // Span across both columns
-			grid.Children.Add(browsePanel);
+			Grid.SetRow(browseButton, 1);
+			Grid.SetColumn(browseButton, 1); // Span across both columns
+			grid.Children.Add(browseButton);
 
 			// Add ListView for displaying selected files
 			ListView filesListView = new ListView
 			{
 				ItemsSource = selectedFiles,
-				Height = 250,
+				Height = viewHeight,
 				Margin = new Thickness(10, 0, 10, 5)
 			};
 			Grid.SetRow(filesListView, 4); // Place the ListView in the second row
@@ -433,7 +418,7 @@ namespace SerialLogAnalyzer.ViewModels
 				Orientation = Orientation.Horizontal,
 				HorizontalAlignment = HorizontalAlignment.Right,
 				VerticalAlignment = VerticalAlignment.Bottom,
-				Margin = new Thickness(0, 10, 0, 0) // Margin for top spacing
+				Margin = new Thickness(0, 5, 0, 0) // Margin for top spacing
 			};
 
 			// Analyze Button
@@ -470,7 +455,6 @@ namespace SerialLogAnalyzer.ViewModels
 			// Store the button references for later use
 			this.analyzeButton = analyzeButton;
 			this.cancelButton = cancelButton;
-			this.directoryTextBox = directoryTextBox; // Store a reference to the directory TextBox
 			this.filesListView = filesListView;
 		} // End of ConfigureAnalyzerUI()
 

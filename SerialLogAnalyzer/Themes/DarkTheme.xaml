@@ -1,5 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<SolidColorBrush x:Key="WindowBackgroundColor">#D3D3D3</SolidColorBrush>
+	
 	<Color x:Key="PrimaryColor">#000000</Color>
 	<!-- Black for Dark Theme -->
 	<Color x:Key="SecondaryColor">#FFFFFF</Color>
@@ -20,6 +23,16 @@
 	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}"/>
 	<SolidColorBrush x:Key="ForegroundBrush" Color="White"/>
 	<SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+
+	<!-- Define colors for the checkbox -->
+	<SolidColorBrush x:Key="CheckboxBorderColor">#D1D5DB</SolidColorBrush>
+	<!-- Gray-400 -->
+	<SolidColorBrush x:Key="CheckboxCheckedColor">#2563EB</SolidColorBrush>
+	<!-- Blue-600 -->
+	<SolidColorBrush x:Key="CheckboxBackgroundColor">#FFFFFF</SolidColorBrush>
+	<!-- White -->
+	<SolidColorBrush x:Key="CheckboxHoverBorderColor">#60A5FA</SolidColorBrush>
+	<!-- Blue-400 -->
 
 	<!-- Add more styles and resources -->
 </ResourceDictionary>

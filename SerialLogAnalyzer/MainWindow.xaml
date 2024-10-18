@@ -7,7 +7,9 @@
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
         xmlns:helpers="clr-namespace:SerialLogAnalyzer.Helpers"
         mc:Ignorable="d"
-        Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="550" Width="800">
+        Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="520" Width="800"
+		Background="{StaticResource WindowBackgroundColor}">
+		<!--="pack://application:,,,/Images/slate_icon.ico">-->
 
 	<Window.Resources>
 		<vm:MainViewModel x:Key="MainViewModel"/>

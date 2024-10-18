@@ -199,6 +199,11 @@ namespace SerialLogAnalyzer
 					break;
 			}
 
+
+			// Clear existing resources and add the new theme
+			Application.Current.Resources.MergedDictionaries.Clear();
+			Application.Current.Resources.MergedDictionaries.Add(theme);
+
 			// Force re-evaluation of the data bindings to update the check state
 			DataContext = null;
 			DataContext = mainViewModel; // Reassign the DataContext to refresh bindings
