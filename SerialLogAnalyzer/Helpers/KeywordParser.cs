@@ -163,7 +163,7 @@ namespace SerialLogAnalyzer.Helpers
 		}
 		// End of ParseFile()
 
-		public void WriteOutput(string outputFilePath, Dictionary<string, List<string>> keywordData)
+		public void WriteOutput(string outputFilePath, Dictionary<string, List<object>> keywordData)
 		{
 			string extension = Path.GetExtension(outputFilePath).ToLowerInvariant();
 
@@ -180,39 +180,58 @@ namespace SerialLogAnalyzer.Helpers
 			}
 		} // End of WriteOutput()
 
-		private void WriteCsv(string outputFilePath, Dictionary<string, List<string>> keywordData)
+		private void WriteCsv(string outputFilePath, Dictionary<string, List<object>> keywordData)
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
 				// Write header
-				writer.WriteLine("Keyword,Line");
+				writer.WriteLine("Keyword,Value");
 
 				foreach (var entry in keywordData)
 				{
-					foreach (var line in entry.Value)
+					foreach (var item in entry.Value)
 					{
-						// Format: Keyword,Line
-						writer.WriteLine($"{entry.Key},{line}");
+						if (item is List<int> intList)
+						{
+							// Join the list of integers as a comma-separated string
+							writer.WriteLine($"{entry.Key},{string.Join(",", intList)}");
+						}
+						else
+						{
+							// Handle other types as needed (e.g., doubles, tuples, etc.)
+							writer.WriteLine($"{entry.Key},{item}");
+						}
 					}
 				}
 			}
 		} // End of WriteCsv()
 
-		private void WriteTxt(string outputFilePath, Dictionary<string, List<string>> keywordData)
+		private void WriteTxt(string outputFilePath, Dictionary<string, List<object>> keywordData)
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
 				foreach (var entry in keywordData)
 				{
 					writer.WriteLine($"Keyword: {entry.Key}");
-					foreach (var line in entry.Value)
+					foreach (var item in entry.Value)
 					{
-						writer.WriteLine($" - {line}");
+						if (item is List<int> intList)
+						{
+							// Join the list of integers and format it
+							writer.WriteLine($" - Values: {string.Join(", ", intList)}");
+						}
+						else
+						{
+							// Handle other types as needed (e.g., doubles, tuples, etc.)
+							writer.WriteLine($" - Value: {item}");
+						}
 					}
 					writer.WriteLine(); // Add a blank line between keywords
 				}
 			}
 		} // End of WriteTxt()
+
+
 	} // End of class KeywordParser
 
 	public class KeywordRegex
