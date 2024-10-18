@@ -34,6 +34,7 @@ namespace SerialLogAnalyzer.ViewModels
 		private Button analyzeButton;
 		private Button cancelButton;
 		private TextBox directoryTextBox;
+		private ListView filesListView;
 		private Button logButton;
 		private Button stopLoggingButton;
 
@@ -82,6 +83,13 @@ namespace SerialLogAnalyzer.ViewModels
 			AvailablePorts = new ObservableCollection<string>(SerialPort.GetPortNames());
 			UpdateUI(); // Call the method to setup the content
 		}
+
+		// Method to update the ListView items
+		private void UpdateFileListView()
+		{
+			filesListView.ItemsSource = null; // Clear current binding
+			filesListView.ItemsSource = selectedFiles; // Rebind the updated list
+		} // End of UpdateFileListView()
 
 		// Dynamically update UI components based on TabHeader
 		private void UpdateUI()
@@ -404,15 +412,15 @@ namespace SerialLogAnalyzer.ViewModels
 			grid.Children.Add(browsePanel);
 
 			// Add ListView for displaying selected files
-			var listView = new ListView
+			ListView filesListView = new ListView
 			{
 				ItemsSource = selectedFiles,
 				Height = 250,
 				Margin = new Thickness(10, 0, 10, 5)
 			};
-			Grid.SetRow(listView, 4); // Place the ListView in the second row
-			Grid.SetColumnSpan(listView, 2); // Span across both columns
-			grid.Children.Add(listView);
+			Grid.SetRow(filesListView, 4); // Place the ListView in the second row
+			Grid.SetColumnSpan(filesListView, 2); // Span across both columns
+			grid.Children.Add(filesListView);
 
 			// Create a StackPanel for buttons and align to the right
 			StackPanel buttonPanel = new StackPanel
@@ -456,15 +464,24 @@ namespace SerialLogAnalyzer.ViewModels
 			this.analyzeButton = analyzeButton;
 			this.cancelButton = cancelButton;
 			this.directoryTextBox = directoryTextBox; // Store a reference to the directory TextBox
+			this.filesListView = filesListView;
 		} // End of ConfigureAnalyzerUI()
 
 		private void PopulateModesForSelectedProduct(Item selectedProduct)
 		{
 			if (selectedProduct != null && selectedProduct.Modes != null)
 			{
-				// Populate the modeComboBox with the Mode names
-				modeComboBox.ItemsSource = selectedProduct.Modes.Select(m => ConvertToTitleCase(m.Name.Replace("_", " "))).ToList();
-				modeComboBox.SelectedIndex = 0; // Optionally select the first mode by default
+				// Set the ItemsSource to the actual Mode objects
+				modeComboBox.ItemsSource = selectedProduct.Modes;
+
+				// Use a combination of the DisplayMemberPath to show the formatted name
+				modeComboBox.DisplayMemberPath = "FormattedName";
+
+				// Optionally select the first mode by default if any modes are available
+				if (modeComboBox.Items.Count > 0)
+				{
+					modeComboBox.SelectedIndex = 0;
+				}
 			}
 			else
 			{
@@ -488,14 +505,17 @@ namespace SerialLogAnalyzer.ViewModels
 			if (dlg.ShowDialog() == true)
 			{
 				selectedFiles.AddRange(dlg.FileNames); // Add selected files to the list
-				UpdateUI(); // Refresh the UI to show selected files
+				UpdateFileListView(); // Refresh the UI to show selected files
 			}
 		} // End of BrowseButton_Click()
 
 		// Analyze Button Click - To start analysis
 		private void AnalyzeButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (selectedFiles.Count > 0 && productComboBox.SelectedItem is Item selectedProduct && modeComboBox.SelectedItem is Mode selectedMode)
+			Item selectedProduct = productComboBox.SelectedItem as Item;
+			Mode selectedMode = modeComboBox.SelectedItem as Mode;
+
+			if (selectedFiles.Count > 0 && selectedProduct != null && selectedMode != null)
 			{
 				isAnalyzing = true;
 				analyzeButton.IsEnabled = false; // Disable analyze button

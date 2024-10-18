@@ -7,13 +7,13 @@
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>
-                <Keyword>keyword1</Keyword>
+                <Keyword>Dribble Number Test</Keyword>
               </Keywords>
-              <OutputFile>output1.h</OutputFile>
+              <OutputFile>dribble_num_data.csv</OutputFile>
             </KeywordGroup>
             <KeywordGroup>
               <Keywords>
-                <Keyword>keyword2</Keyword>
+                <Keyword>Game 1 Stats:</Keyword>
               </Keywords>
               <OutputFile>output1.csv</OutputFile>
             </KeywordGroup>

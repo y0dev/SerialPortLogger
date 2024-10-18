@@ -20,7 +20,7 @@ def create_dribble_number_file(filename, repetitions, index=1):
 
     dribbles_per_pos = []
     with open(filename, 'a') as file:
-        file.write(f"Game #{index}\n")
+        file.write(f"Dribble Numbers Game #{index}\n")
         for idx in range(repetitions):
             dribble_number = random.randint(1, 15)
             dribbles_per_pos.append(dribble_number)

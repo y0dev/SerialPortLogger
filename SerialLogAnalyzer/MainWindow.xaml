@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SerialLogAnalyzer"
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
         mc:Ignorable="d"
-        Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="500" Width="800">
+        Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="550" Width="800">
 
 	<Window.Resources>
 		<vm:MainViewModel x:Key="MainViewModel"/>

@@ -49,7 +49,16 @@ namespace SerialLogAnalyzer.Models
 		[XmlArray("KeywordGroups")]
 		[XmlArrayItem("KeywordGroup")]
 		public List<KeywordGroup> KeywordGroups { get; set; }
-		
+
+		// Add a property to return the formatted name
+		public string FormattedName
+		{
+			get
+			{
+				return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Name.Replace("_", " ").ToLower());
+			}
+		}
+
 	}
 
 	public class KeywordGroup
