@@ -5,6 +5,8 @@ using SerialLogAnalyzer.Services;
 using System;
 using System.Windows;
 using System.Xml.Linq;
+using System.Windows.Controls;
+using SerialLogAnalyzer.ViewModels;
 
 namespace SerialLogAnalyzer
 {
@@ -13,12 +15,22 @@ namespace SerialLogAnalyzer
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		// Current configuration object to hold all configuration data
-		private AppConfiguration currentConfig = new AppConfiguration();
+		public string SelectedTheme { get; set; } = "Light"; // Default theme
 
 		public MainWindow()
 		{
 			InitializeComponent();
+			DataContext = this; // Set the data context for binding
+
+			// Get the MainViewModel from resources
+			var mainViewModel = (MainViewModel)FindResource("MainViewModel");
+
+			// Set the DataContext to MainViewModel for data binding
+			DataContext = mainViewModel;
+
+			// Set the theme based on the configuration
+			SelectedTheme = mainViewModel.Config?.Settings.Theme ?? "Light"; // Use the theme from config
+			ChangeTheme(Char.ToUpper(SelectedTheme[0]) + SelectedTheme.Substring(1));
 		}
 
 		private void ApplySettings(string theme, string commandLineTheme, bool defaultCheckboxConfig)
@@ -105,9 +117,14 @@ namespace SerialLogAnalyzer
 		// Event handler for Change Theme menu item
 		private void ChangeThemeMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			// Logic to change the theme (e.g., dark/light)
-			MessageBox.Show("Changing Theme...", "Change Theme", MessageBoxButton.OK, MessageBoxImage.Information);
-			// Implement actual theme-changing logic here
+
+			var menuItem = sender as MenuItem;
+			if (menuItem != null && menuItem.Tag != null)
+			{
+				// Change the theme based on the Tag property of the clicked menu item
+				string selectedTheme = menuItem.Tag.ToString();
+				ChangeTheme(selectedTheme);
+			}
 		}
 
 		// Event handler for Check for Updates menu item
@@ -155,6 +172,33 @@ namespace SerialLogAnalyzer
 			MessageBox.Show("Importing Data...", "Import Data", MessageBoxButton.OK, MessageBoxImage.Information);
 			// Add actual import logic here (e.g., load data from a file for analysis or logging)
 		} // End of ImportDataMenuItem_Click()
+		
+		// Logic to apply the theme (replace with your theme switching logic)
+		private void ChangeTheme(string themeName)
+		{
+			// Set the theme in the MainViewModel
+			var mainViewModel = (MainViewModel)DataContext;
+			mainViewModel.Config.Settings.Theme = themeName; // Update the configuration
+			mainViewModel.SaveConfig(); // Save the updated configuration
+
+			// Theme switching logic
+			switch (themeName)
+			{
+				case "Light":
+					// Apply light theme resources or styles
+					break;
+				case "Dark":
+					// Apply dark theme resources or styles
+					break;
+				default:
+					// Handle other themes
+					break;
+			}
+
+			// Force re-evaluation of the data bindings to update the check state
+			DataContext = null;
+			DataContext = mainViewModel; // Reassign the DataContext to refresh bindings
+		}
 
 	}
 }

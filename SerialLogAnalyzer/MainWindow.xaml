@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SerialLogAnalyzer"
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
+        xmlns:helpers="clr-namespace:SerialLogAnalyzer.Helpers"
         mc:Ignorable="d"
         Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="550" Width="800">
 
 	<Window.Resources>
 		<vm:MainViewModel x:Key="MainViewModel"/>
+		<helpers:ThemeConverter x:Key="ThemeConverter"/>
 		<!-- Add MainViewModel as a resource -->
 	</Window.Resources>
 
@@ -34,7 +36,17 @@
 
 				<!-- View Menu -->
 				<MenuItem Header="_View">
-					<MenuItem Header="_Themes" Click="ChangeThemeMenuItem_Click"/>
+					<MenuItem x:Name="themeMenu" Header="_Themes" Click="ChangeThemeMenuItem_Click">
+						<!-- Theme 1 -->
+						<MenuItem Header="Light Theme" IsCheckable="True" 
+							  IsChecked="{Binding SelectedTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Light}" 
+							  Click="ChangeThemeMenuItem_Click" Tag="Light"/>
+									<!-- Theme 2 -->
+						<MenuItem Header="Dark Theme" IsCheckable="True" 
+							  IsChecked="{Binding SelectedTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Dark}" 
+							  Click="ChangeThemeMenuItem_Click" Tag="Dark"/>
+					</MenuItem>
+						
 				</MenuItem>
 
 				<MenuItem Header="_Analysis">

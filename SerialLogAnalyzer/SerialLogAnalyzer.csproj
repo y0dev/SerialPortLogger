@@ -58,6 +58,7 @@
     <Compile Include="Helpers\FileHandler.cs" />
     <Compile Include="Helpers\KeywordParser.cs" />
     <Compile Include="Helpers\SerialPortReader.cs" />
+    <Compile Include="Helpers\ThemeConverter.cs" />
     <Compile Include="Models\AppConfiguration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

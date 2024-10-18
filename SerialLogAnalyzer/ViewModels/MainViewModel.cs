@@ -9,6 +9,7 @@ namespace SerialLogAnalyzer.ViewModels
 	{
 		private readonly ConfigurationService configService;
 		private AppConfiguration config;
+		private string selectedTheme; // Field to store the selected theme
 
 		public AppConfiguration Config
 		{
@@ -17,6 +18,19 @@ namespace SerialLogAnalyzer.ViewModels
 			{
 				config = value;
 				OnPropertyChanged("Config"); // Pass the property name as a string
+			}
+		}
+
+		public string SelectedTheme
+		{
+			get => selectedTheme;
+			set
+			{
+				if (selectedTheme != value)
+				{
+					selectedTheme = value;
+					OnPropertyChanged("SelectedTheme");
+				}
 			}
 		}
 
@@ -29,6 +43,8 @@ namespace SerialLogAnalyzer.ViewModels
 		private void LoadConfig()
 		{
 			Config = configService.LoadConfiguration();
+
+			SelectedTheme = Config?.Settings.Theme ?? "Light"; // Load theme from config
 		}
 
 		public void SaveConfig()
