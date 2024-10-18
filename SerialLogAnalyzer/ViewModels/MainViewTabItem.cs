@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
@@ -330,7 +331,7 @@ namespace SerialLogAnalyzer.ViewModels
 			productComboBox = new ComboBox
 			{
 				ItemsSource = viewModel.Config.Items,  // Bind the list of items
-				DisplayMemberPath = "Name",            // Set the property to display in the ComboBox
+				DisplayMemberPath = "FormattedName",   // Display the formatted name (Title Case and no underscores)
 				Width = comboBoxWidth,
 				HorizontalAlignment = HorizontalAlignment.Left,
 				//SelectedIndex = 0,
@@ -462,7 +463,7 @@ namespace SerialLogAnalyzer.ViewModels
 			if (selectedProduct != null && selectedProduct.Modes != null)
 			{
 				// Populate the modeComboBox with the Mode names
-				modeComboBox.ItemsSource = selectedProduct.Modes.Select(m => m.Name).ToList();
+				modeComboBox.ItemsSource = selectedProduct.Modes.Select(m => ConvertToTitleCase(m.Name.Replace("_", " "))).ToList();
 				modeComboBox.SelectedIndex = 0; // Optionally select the first mode by default
 			}
 			else
@@ -764,5 +765,11 @@ namespace SerialLogAnalyzer.ViewModels
 				}
 			}
 		} // End of AppendLogToTab()
+
+		// Helper function to convert a string to Title Case
+		private string ConvertToTitleCase(string input)
+		{
+			return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input.ToLower());
+		} // End of ConvertToTitleCase()
 	}
 }

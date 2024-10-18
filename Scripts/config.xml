@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Configuration>
   <Items>
-    <Item name="item1">
+    <Item name="basketball">
       <Modes>
-        <Mode name="mode1">
+        <Mode name="dribble">
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>
@@ -19,7 +19,7 @@
             </KeywordGroup>
           </KeywordGroups>
         </Mode>
-        <Mode name="mode2">
+        <Mode name="shoot">
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>
@@ -31,9 +31,9 @@
         </Mode>
       </Modes>
     </Item>
-    <Item name="item2">
+    <Item name="football">
       <Modes>
-        <Mode name="mode1">
+        <Mode name="blitz">
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>
@@ -49,7 +49,7 @@
             </KeywordGroup>
           </KeywordGroups>
         </Mode>
-        <Mode name="mode2">
+        <Mode name="deep_pass">
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>

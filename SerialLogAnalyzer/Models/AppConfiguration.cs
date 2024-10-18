@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Serialization;
 
 namespace SerialLogAnalyzer.Models
@@ -29,6 +30,15 @@ namespace SerialLogAnalyzer.Models
 		[XmlArray("Modes")]
 		[XmlArrayItem("Mode")]
 		public List<Mode> Modes { get; set; }
+
+		// Add a property to return the formatted name
+		public string FormattedName
+		{
+			get
+			{
+				return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Name.Replace("_", " ").ToLower());
+			}
+		}
 	}
 
 	public class Mode
