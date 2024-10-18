@@ -82,13 +82,19 @@ namespace SerialLogAnalyzer.Helpers
 							{
 								if (subKeyword.DataType == "Integer")
 								{
-									// Extract individual integers from the line
-									var numbers = new List<int>();
-									foreach (var n in line.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries))
+									// Extract the entire string of numbers (across multiple lines if needed)
+									var match = subKeyword.Regex.Match(line);
+									if (match.Success)
 									{
-										numbers.Add(int.Parse(n.Trim()));
+										// Split the string by commas and convert to a list of integers
+										var numbers = match.Value.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+																 .Select(n => int.Parse(n.Trim()))
+																 .ToList();
+										if (numbers.Count > 1)
+										{
+											dataList.Add(numbers); // Store the list of integers
+										}
 									}
-									dataList.Add(numbers); // Store the list of integers
 								}
 								else if (subKeyword.DataType == "Coordinate")
 								{
@@ -221,7 +227,7 @@ namespace SerialLogAnalyzer.Helpers
 						new KeywordRegex
 						{
 							Keyword = "Dribble Numbers Game",
-							Regex = new Regex(@"^(\d+(?:,\s*\d+)*)$", RegexOptions.Multiline),
+							Regex = new Regex(@"(\d+(?:,\s*\d+)*)", RegexOptions.Multiline),
 							DataType = "Integer",
 							IsArray = true
 						},
