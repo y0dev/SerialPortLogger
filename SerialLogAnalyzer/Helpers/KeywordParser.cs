@@ -34,6 +34,7 @@ namespace SerialLogAnalyzer.Helpers
 			var currentHeaderKeyword = string.Empty;
 
 			int arrayNum = 0;
+			List<int> intergerArr = new List<int>();
 
 			// Read the file line by line
 			foreach (var line in File.ReadLines(FilePath))
@@ -87,10 +88,16 @@ namespace SerialLogAnalyzer.Helpers
 									// Check if the line contains a game header like "Game #1"
 									if (line.Contains("Game #"))
 									{
+										if (intergerArr.Count != 0)
+										{
+											keywordData[$"{subKeyword.DataType} Array {arrayNum - 1}"].Add(intergerArr); // Store the list of integers
+										}
+
 										// Start a new dataList for this new game
 										dataList = new List<object>();
 										keywordData[$"{subKeyword.DataType} Array {arrayNum}"] = dataList;
 										arrayNum += 1;
+										intergerArr = new List<int>();										
 									}
 
 									// Extract the entire string of numbers (across multiple lines if needed)
@@ -103,7 +110,10 @@ namespace SerialLogAnalyzer.Helpers
 																 .ToList();
 										if (numbers.Count > 1)
 										{
-											keywordData[$"{subKeyword.DataType} Array {arrayNum-1}"].Add(numbers); // Store the list of integers
+											foreach (int value in numbers)
+											{
+												intergerArr.Add(value);
+											}
 										}
 									}
 								}
