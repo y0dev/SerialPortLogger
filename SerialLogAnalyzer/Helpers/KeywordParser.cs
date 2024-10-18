@@ -33,6 +33,8 @@ namespace SerialLogAnalyzer.Helpers
 			// A dictionary to track the current keyword context based on the detected header
 			var currentHeaderKeyword = string.Empty;
 
+			int arrayNum = 0;
+
 			// Read the file line by line
 			foreach (var line in File.ReadLines(FilePath))
 			{
@@ -82,6 +84,15 @@ namespace SerialLogAnalyzer.Helpers
 							{
 								if (subKeyword.DataType == "Integer")
 								{
+									// Check if the line contains a game header like "Game #1"
+									if (line.Contains("Game #"))
+									{
+										// Start a new dataList for this new game
+										dataList = new List<object>();
+										keywordData[$"{subKeyword.DataType} Array {arrayNum}"] = dataList;
+										arrayNum += 1;
+									}
+
 									// Extract the entire string of numbers (across multiple lines if needed)
 									var match = subKeyword.Regex.Match(line);
 									if (match.Success)
@@ -92,7 +103,7 @@ namespace SerialLogAnalyzer.Helpers
 																 .ToList();
 										if (numbers.Count > 1)
 										{
-											dataList.Add(numbers); // Store the list of integers
+											keywordData[$"{subKeyword.DataType} Array {arrayNum-1}"].Add(numbers); // Store the list of integers
 										}
 									}
 								}
@@ -131,7 +142,6 @@ namespace SerialLogAnalyzer.Helpers
 									{
 										int value = int.Parse(match.Value); // Parse the numeric portion
 										dataList.Add(value); // Add the parsed integer value to the data list
-										Console.WriteLine($"Value: {value}");
 									}
 								}
 							}
