@@ -34,6 +34,10 @@
 	<SolidColorBrush x:Key="CheckboxHoverBorderColor">#60A5FA</SolidColorBrush>
 	<!-- Blue-400 -->
 
+
+	<SolidColorBrush x:Key="TabControlBackground" Color="#4B5563"/>
+	<SolidColorBrush x:Key="TabControlBorderColor" Color="#60A5FA"/>
+
 	<!--Tab Item Colors-->
 	<SolidColorBrush x:Key="TabItemBackground" Color="#1E293B"/>
 	<!-- Dark background -->

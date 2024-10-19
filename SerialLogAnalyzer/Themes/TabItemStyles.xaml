@@ -2,6 +2,52 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:SerialLogAnalyzer.Themes">
 
+	<!-- TabControl Style -->
+	<Style TargetType="TabControl" x:Key="TailwindTabControlStyle">
+		<!-- Set the background of the TabControl -->
+		<Setter Property="Background" Value="{DynamicResource TabControlBackground}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource TabControlBorderColor}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Padding" Value="10"/>
+		<Setter Property="Margin" Value="0"/>
+
+		<!-- TabPanel (where tabs are displayed) -->
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="TabControl">
+					<Grid KeyboardNavigation.TabNavigation="Local">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="*"/>
+						</Grid.RowDefinitions>
+
+						<!-- TabPanel: Hosts the tabs -->
+						<TabPanel 
+                        Grid.Row="0"
+                        IsItemsHost="True"
+                        Background="{TemplateBinding Background}"
+                        Margin="0,0,0,0"/>
+
+						<!-- Border around content -->
+						<Border 
+                        Grid.Row="1"
+                        Background="{DynamicResource TabControlContentBackground}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+
+							<!-- ContentPresenter: Hosts the content of the selected tab -->
+							<ContentPresenter
+                            ContentSource="SelectedContent"
+                            Margin="0"
+                            Focusable="False"/>
+						</Border>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
 	<!-- TabItem Style for Both Light and Dark Themes -->
 	<Style TargetType="TabItem" x:Key="TailwindTabItemStyle">
 		<Setter Property="Background" Value="{DynamicResource TabItemBackground}"/>
