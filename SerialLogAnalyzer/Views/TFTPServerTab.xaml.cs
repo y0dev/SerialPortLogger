@@ -33,5 +33,25 @@ namespace SerialLogAnalyzer.Views
 		{
 
 		} // End of StartServerButton_Click()
+
+		private void ClearLogsButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void ExportLogsButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void UploadFileButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void DownloadFileButton_Click(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }

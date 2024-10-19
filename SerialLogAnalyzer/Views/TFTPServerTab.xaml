@@ -7,29 +7,50 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<Grid Margin="10">
+		<!-- Row Definitions -->
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
-			<!-- ProgressBar -->
-			<RowDefinition Height="Auto"/>
-			<!-- Start/Stop Buttons -->
+			<!-- Status and configuration -->
 			<RowDefinition Height="*"/>
-			<!-- ListView -->
+			<!-- ListView for logs -->
+			<RowDefinition Height="Auto"/>
+			<!-- Progress bar for file transfer -->
+			<RowDefinition Height="Auto"/>
+			<!-- Buttons for control -->
 		</Grid.RowDefinitions>
 
-		<!-- ProgressBar in the first row -->
-		<ProgressBar x:Name="fileProgressBar" Grid.Row="0" Height="20" Minimum="0" Maximum="100" Value="0" Margin="0,10"/>
-
-		<!-- Buttons Panel in the second row -->
-		<StackPanel x:Name="buttonsPanel" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
-			<Button x:Name="startServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Start" Width="100" Height="30" Click="StartServerButton_Click"/>
-			<Button x:Name="stopServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Stop" Width="100" Height="30" Click="StopServerButton_Click" Margin="10,0"/>
+		<!-- Status and Configuration Panel -->
+		<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
+			<TextBlock x:Name="TftpServerStatusTextBlock" Text="Status: Stopped" Foreground="Red" Margin="0,0,20,0" />
+			<Label Content="Port:" VerticalAlignment="Center"/>
+			<TextBox x:Name="TftpServerPortTextBox" Text="69"  Width="100" Margin="5,0,10,0"/>
+			<Label Content="Root Directory:" VerticalAlignment="Center"/>
+			<TextBox x:Name="TftpRootDirectoryTextBox" Width="250" Margin="5,0,10,0"/>
 		</StackPanel>
 
-		<!-- ListView in the third row -->
-		<ListView x:Name="fileListView" Grid.Row="2" Margin="0,10">
-			<ListViewItem Content="File 1"/>
-			<ListViewItem Content="File 2"/>
-			<ListViewItem Content="File 3"/>
-		</ListView>
+		<!-- ListView to display TFTP server logs or activity -->
+		<ListView x:Name="TftpServerListView" Grid.Row="1" Margin="10" />
+
+		<!-- Progress bar for file transfer -->
+		<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
+			<Label Content="File Transfer Progress:" Margin="0,0,10,0" VerticalAlignment="Center"/>
+			<ProgressBar x:Name="FileTransferProgressBar" Width="300" Height="20" Minimum="0" Maximum="100" Value="0"/>
+		</StackPanel>
+
+		<!-- StackPanel for Start/Stop, Export, Clear Logs, and File Operations -->
+		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+			<Button x:Name="StartTftpServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Start" 
+					Width="100" Height="30" Margin="0,0,10,0" Click="StartServerButton_Click"/>
+			<Button x:Name="StopTftpServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Stop" 
+					Width="100" Height="30" IsEnabled="False" Margin="0,0,10,0" Click="StopServerButton_Click"/>
+			<Button x:Name="ClearLogsButton" Style="{StaticResource RoundedButtonStyle}" Content="Clear Logs" 
+					Width="120" Height="30" Margin="0,0,10,0" Click="ClearLogsButton_Click"/>
+			<Button x:Name="ExportLogsButton" Style="{StaticResource RoundedButtonStyle}" Content="Export Logs" 
+					Width="120" Height="30" Margin="0,0,10,0" Click="ExportLogsButton_Click"/>
+			<Button x:Name="UploadFileButton" Style="{StaticResource RoundedButtonStyle}" Content="Upload File" 
+					Width="120" Height="30" IsEnabled="False" Margin="0,0,10,0" Click="UploadFileButton_Click"/>
+			<Button x:Name="DownloadFileButton" Style="{StaticResource RoundedButtonStyle}" Content="Download File" 
+					Width="120" Height="30" Click="DownloadFileButton_Click"/>
+		</StackPanel>
 	</Grid>
 </UserControl>

@@ -54,7 +54,7 @@
 		<StackPanel x:Name="consoleOutputStackPanel" Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="10,0,10,0">
 			<Label x:Name="consoleOutputLabel" Content="Console Output:" Margin="0,0,5,0"/>
 			<CheckBox x:Name="consoleOutputCheckBox" Style="{StaticResource TailwindCheckboxStyle}" 
-					  IsChecked="True" VerticalAlignment="Center" 
+					  IsChecked="True" IsEnabled="False" VerticalAlignment="Center" 
 					  Checked="ConsoleOutputCheckBox_Checked" Unchecked="ConsoleOutputCheckBox_Unchecked"/>
 		</StackPanel>
 
