@@ -17,26 +17,30 @@
 			<RowDefinition Height="Auto"/>
 			<!-- Row for Enable Auto-Save CheckBox -->
 			<RowDefinition Height="Auto"/>
+			<!-- Row for Font Size ComboBox -->
+			<RowDefinition Height="Auto"/>
 			<!-- Row for Save Button -->
 		</Grid.RowDefinitions>
 
+		<!-- Title -->
 		<TextBlock FontSize="16" FontWeight="Bold" Margin="0,0,0,10" Grid.Row="0">Application Settings</TextBlock>
 
+		<!-- Available Font Size ComboBox -->
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,5">
-			<TextBlock Text="Select Theme:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-			<ComboBox x:Name="themeComboBox" Width="200" SelectionChanged="ThemeComboBox_SelectionChanged" SelectedIndex="0">
-				<!-- Items will be added programmatically -->
-			</ComboBox>
+			<TextBlock Text="Select Font:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+			<ComboBox x:Name="fontsComboBox" Width="200" ItemsSource="{Binding AvailableFonts}"
+					   SelectionChanged="FontsComboBox_SelectionChanged"/>
+
+		</StackPanel>
+		<!-- Font Size ComboBox -->
+		<StackPanel Orientation="Horizontal" Grid.Row="4" Margin="0,5">
+			<TextBlock Text="Select Font Size:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+			<ComboBox x:Name="fontSizeComboBox" Width="200" ItemsSource="{Binding FontSizes}"
+					  SelectionChanged="FontSizeComboBox_SelectionChanged"/>
+
 		</StackPanel>
 
-		<StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,5">
-			<CheckBox Content="Show Line Numbers" x:Name="lineNumbersCheckBox" VerticalAlignment="Center" Margin="0,0,10,0"/>
-		</StackPanel>
-
-		<StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,5">
-			<CheckBox Content="Enable Auto-Save" x:Name="autoSaveCheckBox" VerticalAlignment="Center" Margin="0,0,10,0"/>
-		</StackPanel>
-
-		<Button x:Name="saveButton" Content="Save" Width="100" Height="30" HorizontalAlignment="Right" Grid.Row="4" Margin="0,10,0,0" Click="SaveButton_Click"/>
+		<!-- Save Button -->
+		<Button x:Name="saveButton" Content="Save" Width="100" Height="30" HorizontalAlignment="Right" Grid.Row="5" Margin="0,10,0,0" Click="SaveButton_Click"/>
 	</Grid>
 </Window>

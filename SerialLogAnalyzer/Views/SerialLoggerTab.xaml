@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="SerialLogAnalyzer.Views.SerialLoggerTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SerialLogAnalyzer.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<Grid>
+		<!-- Row Definitions -->
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<!-- Header row -->
+			<RowDefinition Height="Auto"/>
+			<!-- Serial Port row -->
+			<RowDefinition Height="Auto"/>
+			<!-- Baud Rate row -->
+			<RowDefinition Height="Auto"/>
+			<!-- CheckBox row -->
+			<RowDefinition Height="*"/>
+			<!-- Console output/TabControl row -->
+			<RowDefinition Height="Auto"/>
+			<!-- Buttons row -->
+		</Grid.RowDefinitions>
+
+		<!-- Column Definitions -->
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<!-- Label column -->
+			<ColumnDefinition Width="*"/>
+			<!-- Input/ComboBox column -->
+			<ColumnDefinition Width="Auto"/>
+			<!-- Checkbox column -->
+		</Grid.ColumnDefinitions>
+
+		<!-- Header Label -->
+		<Label x:Name="headerLabel" Grid.Row="0" Grid.ColumnSpan="2" Content="Serial Logger" FontSize="16" Margin="10,0,0,10"/>
+
+		<!-- Serial Port Label -->
+		<Label x:Name="serialPortLabel" Grid.Row="1" Grid.Column="0" Content="Serial Port:" Margin="0,0,10,0"/>
+		<!-- Serial Port ComboBox -->
+		<ComboBox x:Name="serialPortComboBox" Grid.Row="1" Grid.Column="1" Width="270" 
+				  ItemsSource="{Binding AvailablePorts}" Margin="10,0,10,10"
+				  HorizontalAlignment="Left"/>
+
+		<!-- Baud Rate Label -->
+		<Label x:Name="baudRateLabel" Grid.Row="2" Grid.Column="0" Content="Baud Rate:"/>
+		<!-- Baud Rate ComboBox -->
+		<ComboBox x:Name="baudRateComboBox" Grid.Row="2" Grid.Column="1" Width="270" 
+				  SelectedItem="{Binding SelectedBaudRate}" ItemsSource="{Binding BaudRates}" 
+				  Margin="10,0,10,10" HorizontalAlignment="Left"/>
+
+		<!-- Console Output CheckBox -->
+		<StackPanel x:Name="consoleOutputStackPanel" Grid.Row="1" Grid.Column="2" Orientation="Horizontal" Margin="10,0,10,0">
+			<Label x:Name="consoleOutputLabel" Content="Console Output:" Margin="0,0,5,0"/>
+			<CheckBox x:Name="consoleOutputCheckBox" Style="{StaticResource TailwindCheckboxStyle}" 
+					  IsChecked="True" VerticalAlignment="Center" 
+					  Checked="ConsoleOutputCheckBox_Checked" Unchecked="ConsoleOutputCheckBox_Unchecked"/>
+		</StackPanel>
+
+		<!-- ListView -->
+		<ListView x:Name="consoleOutputListView" Grid.Row="3" Grid.ColumnSpan="3" Height="270" Visibility="Visible" Margin="10"/>
+
+		<!-- TabControl (hidden by default) -->
+		<TabControl x:Name="consoleOutputTabControl" Grid.Row="3" Grid.ColumnSpan="3" Height="270" Visibility="Collapsed" Margin="10"/>
+
+
+		<!-- Buttons Panel -->
+		<StackPanel x:Name="buttonsStackPanel" Grid.Row="4" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
+			<Button x:Name="createLoggerButton" Style="{StaticResource RoundedButtonStyle}" Content="Create Logger" 
+					Width="120" Height="30" Margin="0,0,10,0" Click="CreateLoggerButton_Click"/>
+			<Button x:Name="stopAllLoggersButton" Style="{StaticResource RoundedButtonStyle}" Content="Stop All Loggers" 
+					Width="120" Height="30" IsEnabled="False" Click="StopAllLoggersButton_Click"/>
+		</StackPanel>
+	</Grid>
+</UserControl>

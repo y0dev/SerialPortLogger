@@ -64,7 +64,6 @@
     <Compile Include="Models\AppConfiguration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\MainViewTabItem.cs" />
     <Compile Include="ViewModels\SerialLoggerTabItem.cs" />
     <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
@@ -75,11 +74,20 @@
     <Compile Include="Views\NewConfigWindow.xaml.cs">
       <DependentUpon>NewConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SerialAnalyzerTab.xaml.cs">
+      <DependentUpon>SerialAnalyzerTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SerialConsoleConfigControl.xaml.cs">
       <DependentUpon>SerialConsoleConfigControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SerialLoggerTab.xaml.cs">
+      <DependentUpon>SerialLoggerTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TFTPServerTab.xaml.cs">
+      <DependentUpon>TFTPServerTab.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,11 +133,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SerialAnalyzerTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SerialConsoleConfigControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SerialLoggerTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TFTPServerTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

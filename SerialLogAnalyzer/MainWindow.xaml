@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SerialLogAnalyzer"
+        xmlns:views="clr-namespace:SerialLogAnalyzer.Views"
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
         xmlns:helpers="clr-namespace:SerialLogAnalyzer.Helpers"
         mc:Ignorable="d"
@@ -71,11 +72,18 @@
 			</Menu>
 
 			<!-- Your TabControl below the menu -->
-			<TabControl x:Name="MainTabControl" DockPanel.Dock="Bottom" Style="{StaticResource TailwindTabControlStyle}">
-				<vm:MainViewTabItem Header="Serial Logger" TabHeader="Logger"
-									Style="{StaticResource TailwindTabItemStyle}"/>
-				<vm:MainViewTabItem Header="Serial Analyzer" TabHeader="Analyzer"
-									Style="{StaticResource TailwindTabItemStyle}"/>
+			<TabControl x:Name="mainTabControl" DockPanel.Dock="Bottom" Style="{StaticResource TailwindTabControlStyle}">
+				<TabItem x:Name="serialLoggerTab" Header="Serial Logger" Style="{StaticResource TailwindTabItemStyle}">
+					<views:SerialLoggerTab/>
+				</TabItem>
+
+				<TabItem x:Name="serialAnalyzerTab" Header="Serial Analyzer" Style="{StaticResource TailwindTabItemStyle}">
+					<views:SerialAnalyzer/>
+				</TabItem>
+
+				<TabItem x:Name="TftpServerTab" Header="TFTP Server" Style="{StaticResource TailwindTabItemStyle}">
+					<views:TFTPServerTab/>
+				</TabItem>
 			</TabControl>
 		</DockPanel>
 	</Grid>

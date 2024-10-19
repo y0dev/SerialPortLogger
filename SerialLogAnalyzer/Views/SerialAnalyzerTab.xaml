@@ -1,0 +1,74 @@
+﻿<UserControl x:Class="SerialLogAnalyzer.Views.SerialAnalyzer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SerialLogAnalyzer.Views"
+			 xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+		<vm:MainViewModel x:Key="MainViewModel"/>
+	</UserControl.Resources>
+	<Grid>
+		<!-- Row Definitions -->
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			
+			<RowDefinition Height="Auto"/>
+			<!-- Product row -->
+			<RowDefinition Height="Auto"/>
+			<!-- Mode row -->
+			<RowDefinition Height="Auto"/>
+			<!-- File List row -->
+			<RowDefinition Height="Auto"/>
+			<!-- ListView row -->
+			<RowDefinition Height="Auto"/>
+			<!-- Buttons row -->
+		</Grid.RowDefinitions>
+
+		<!-- Column Definitions -->
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<!-- Label column -->
+			<ColumnDefinition Width="*"/>
+			<!-- Input/ComboBox column -->
+			<ColumnDefinition Width="Auto"/>
+			<!-- Button column -->
+		</Grid.ColumnDefinitions>
+
+		<!-- Header Label -->
+		<Label x:Name="headerLabel" Grid.Row="0" Grid.ColumnSpan="2" Content="Serial Analyzer" FontSize="16" Margin="10,0,0,10"/>
+
+		<!-- Product Label -->
+		<Label x:Name="productLabel" Grid.Row="1" Grid.Column="0" Content="Product:"/>
+		<!-- Product ComboBox -->
+		<ComboBox x:Name="productComboBox" Grid.Row="1" Grid.Column="1" Width="270" Height="22"
+                  ItemsSource="{Binding AvailableProducts}" DisplayMemberPath="FormattedName" 
+                  Margin="10,0,10,10" SelectionChanged="ProductComboBox_SelectionChanged"
+				  HorizontalAlignment="Left"/>
+
+		<!-- Mode Label -->
+		<Label x:Name="modeLabel" Grid.Row="2" Grid.Column="0" Content="Mode:"/>
+		<!-- Mode ComboBox -->
+		<ComboBox x:Name="modeComboBox" Grid.Row="2" Grid.Column="1" Width="270" Height="22"
+                  ItemsSource="{Binding AvailableModes}" Margin="10,0,10,10"
+				  HorizontalAlignment="Left"/>
+
+		<Button x:Name="browseButton" Style="{StaticResource RoundedButtonStyle}" Content="Browse" Width="120" Height="30" 
+                    Grid.Row="1" Grid.Column="3" Margin="0,0,10,10" Click="BrowseButton_Click"/>
+
+		<!-- Files ListView -->
+		<ListView x:Name="filesListView" Grid.Row="4" Grid.ColumnSpan="3" Height="270" 
+                  Margin="10,0,10,5"/>
+
+		<!-- Buttons Panel -->
+		<StackPanel Grid.Row="5" Grid.ColumnSpan="3" Orientation="Horizontal" 
+                    HorizontalAlignment="Right" Margin="0,0,5,0">
+			<Button x:Name="analyzeButton" Style="{StaticResource RoundedButtonStyle}" Content="Analyze" Width="120" Height="30" 
+                    Margin="0,0,10,0" Click="AnalyzeButton_Click"/>
+			<Button x:Name="cancelButton" Style="{StaticResource RoundedButtonStyle}" Content="Cancel" Width="120" Height="30" 
+                    IsEnabled="False" Click="CancelButton_Click"/>
+		</StackPanel>
+	</Grid>
+</UserControl>
