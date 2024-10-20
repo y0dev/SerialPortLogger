@@ -17,11 +17,13 @@ namespace SerialLogAnalyzer
 	public partial class MainWindow : Window
 	{
 		public string SelectedTheme { get; set; } = "Light"; // Default theme
+		private Logger logger;
 
 		public MainWindow()
 		{
 			InitializeComponent();
 			DataContext = this; // Set the data context for binding
+			logger = Logger.GetInstance("slate_app.log", false);
 
 			// Get the MainViewModel from resources
 			var mainViewModel = (MainViewModel)FindResource("MainViewModel");
@@ -180,8 +182,10 @@ namespace SerialLogAnalyzer
 			ResourceDictionary theme = null;
 			// Set the theme in the MainViewModel
 			var mainViewModel = (MainViewModel)DataContext;
+			logger.Log($"Changing theme from {mainViewModel.Config.Settings.Theme} to {themeName}.", LogLevel.Info);
 			mainViewModel.Config.Settings.Theme = themeName; // Update the configuration
 			mainViewModel.SaveConfig(); // Save the updated configuration
+
 
 			// Theme switching logic
 			switch (themeName)
@@ -207,6 +211,7 @@ namespace SerialLogAnalyzer
 			// Force re-evaluation of the data bindings to update the check state
 			DataContext = null;
 			DataContext = mainViewModel; // Reassign the DataContext to refresh bindings
+			logger.Log($"Changed theme", LogLevel.Info);
 		}
 
 	}

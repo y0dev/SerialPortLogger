@@ -19,6 +19,7 @@ namespace SerialLogAnalyzer.Views
 		public ObservableCollection<int> BaudRates { get; set; }
 		public int SelectedBaudRate { get; set; }
 
+		private Logger logger;
 		private bool isLogging;
 
 		// Dictionary to keep track of the logger threads for each port
@@ -38,6 +39,8 @@ namespace SerialLogAnalyzer.Views
 			// Initialize with common baud rates
 			BaudRates = new ObservableCollection<int> { 9600, 14400, 19200, 38400, 57600, 115200, 230400 };
 			SelectedBaudRate = 115200; // Default baud rate
+
+			logger = Logger.GetInstance("slate_app.log", false);
 
 			// Set the DataContext to itself for binding
 			this.DataContext = this;
@@ -59,6 +62,7 @@ namespace SerialLogAnalyzer.Views
 
 				// Hide the TabControl
 				consoleOutputTabControl.Visibility = Visibility.Collapsed;
+				logger.Log("Console Output Checkbox was checked.", LogLevel.Info);
 			}
 		}
 
@@ -71,6 +75,7 @@ namespace SerialLogAnalyzer.Views
 
 				// Show the TabControl
 				consoleOutputTabControl.Visibility = Visibility.Visible;
+				logger.Log("Console Output Checkbox was unchecked.", LogLevel.Info);
 			}
 		}
 
@@ -85,6 +90,7 @@ namespace SerialLogAnalyzer.Views
 			if (!string.IsNullOrEmpty(selectedPort))
 			{
 				string logData = $"Data from {selectedPort} at {DateTime.Now}";
+				logger.Log($"Creating a logger instance for port: '{selectedPort}'.", LogLevel.Info);
 				if (consoleOutputCheckBox.IsChecked == true)
 				{
 					string consoleTitle = $"Console {selectedPort}";
@@ -109,6 +115,7 @@ namespace SerialLogAnalyzer.Views
 									colorScheme = serialConfig.ColorScheme;
 									fontSize = serialConfig.FontSize;
 									configFound = true; // Set flag to true
+									logger.Log($"Found a configuration for the port: '{selectedPort}' on PC '{currentPcName}'.", LogLevel.Info);
 
 									// Optionally break the loop if you only want the first match
 									break;
@@ -124,6 +131,7 @@ namespace SerialLogAnalyzer.Views
 					string baseDirectory = AppDomain.CurrentDomain.BaseDirectory; // Set base directory to the current application directory
 					string logFileName = $"log_{selectedPort}.txt"; // Create a unique log file name based on the selected port
 
+					logger.Log($"Starting a ConsoleLogger thread for port: '{selectedPort}'.", LogLevel.Debug);
 					// Create a console for this port in a separate thread
 					Thread consoleThread = new Thread(() =>
 					{
@@ -157,9 +165,11 @@ namespace SerialLogAnalyzer.Views
 				isLogging = true;
 				stopAllLoggersButton.IsEnabled = true;
 				createLoggerButton.IsEnabled = AvailablePorts.Count > 0;
+				logger.Log($"Created a console thread for port '{selectedPort}' at baud rate '{selectedBaudRate}'", LogLevel.Info);
 			}
 			else
 			{
+				logger.Log("COM port was selected.", LogLevel.Warning);
 				MessageBox.Show("Please select a COM port.");
 			}
 		}

@@ -27,6 +27,7 @@ namespace SerialLogAnalyzer.Views
 
 		public ObservableCollection<Item> AvailableProducts { get; private set; }
 		public ObservableCollection<string> AvailableModes { get; set; }
+		private Logger logger;
 
 		private List<string> selectedFiles = new List<string>();
 		private bool isAnalyzing = false;
@@ -40,9 +41,7 @@ namespace SerialLogAnalyzer.Views
 
 			AvailableProducts = new ObservableCollection<Item>(viewModel.Config.Items);
 
-			// Initialize with common baud rates
-			// BaudRates = new ObservableCollection<Mode> { 9600, 14400, 19200, 38400, 57600, 115200, 230400 };
-			// SelectedBaudRate = 115200; // Default baud rate
+			logger = Logger.GetInstance("slate_app.log", false);
 
 			// Set the DataContext to itself for binding
 			this.DataContext = this;
@@ -52,7 +51,7 @@ namespace SerialLogAnalyzer.Views
 		{
 			if (isAnalyzing)
 			{
-				Console.WriteLine("Cancelling analysis...");
+				logger.Log("Cancelling analysis...", LogLevel.Info);
 				isAnalyzing = false;
 				analyzeButton.IsEnabled = true; // Re-enable analyze button
 				cancelButton.IsEnabled = false; // Disable cancel button
@@ -85,7 +84,7 @@ namespace SerialLogAnalyzer.Views
 				{
 					foreach (var file in selectedFiles)
 					{
-						Console.WriteLine($"Analyzing {file}...");
+						logger.Log($"Analyzing {file}...", LogLevel.Info);
 
 						// Create the KeywordParser with the file and keywords
 						KeywordParser keywordParser = new KeywordParser(file, keywords);
@@ -105,7 +104,7 @@ namespace SerialLogAnalyzer.Views
 					{
 						analyzeButton.IsEnabled = true; // Enable analyze button
 						cancelButton.IsEnabled = false; // Disable cancel button
-						Console.WriteLine("Analysis complete.");
+						logger.Log("Analysis complete.", LogLevel.Info);
 					}));
 				});
 
@@ -115,6 +114,7 @@ namespace SerialLogAnalyzer.Views
 			else
 			{
 				MessageBox.Show("Please select a product and mode before analyzing.");
+				logger.Log("Product and Mode weren't selected", LogLevel.Warning);
 			}
 		} // End of AnalyzeButton_Click()
 
@@ -126,6 +126,7 @@ namespace SerialLogAnalyzer.Views
 
 			// Call the new function to populate modes
 			PopulateModesForSelectedProduct(selectedProduct);
+			logger.Log("Populated Modes ComboBox", LogLevel.Debug);
 		}
 
 		private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -142,6 +143,11 @@ namespace SerialLogAnalyzer.Views
 			{
 				selectedFiles.AddRange(dlg.FileNames); // Add selected files to the list
 				UpdateFileListView(); // Refresh the UI to show selected files
+				logger.Log("Selected the following filenames:", LogLevel.Info);
+				foreach(var filename in dlg.FileNames)
+				{
+					logger.Log($"\t{filename}", LogLevel.Info);
+				}
 			}
 		} // End of BrowseButton_Click()
 
