@@ -2,49 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:SerialLogAnalyzer.Themes">
 
-	<!-- TabControl Style -->
-	<Style TargetType="TabControl" x:Key="TailwindTabControlStyle">
-		<!-- Set the background of the TabControl -->
+	<!-- Style for the TabControl -->
+	<Style TargetType="TabControl" x:Key="TailwindCSSTabControlStyle">
 		<Setter Property="Background" Value="{DynamicResource TabControlBackground}"/>
-		<Setter Property="BorderBrush" Value="{DynamicResource TabControlBorderColor}"/>
-		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="Foreground" Value="{DynamicResource TabControlForeground}"/>
 		<Setter Property="Padding" Value="10"/>
-		<Setter Property="Margin" Value="0"/>
-
-		<!-- TabPanel (where tabs are displayed) -->
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="TabControl">
-					<Grid KeyboardNavigation.TabNavigation="Local">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="Auto"/>
-							<RowDefinition Height="*"/>
-						</Grid.RowDefinitions>
-
-						<!-- TabPanel: Hosts the tabs -->
-						<TabPanel 
-                        Grid.Row="0"
-                        IsItemsHost="True"
-                        Background="{TemplateBinding Background}"
-                        Margin="0,0,0,0"/>
-
-						<!-- Border around content -->
-						<Border 
-                        Grid.Row="1"
-                        Background="{DynamicResource TabControlContentBackground}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-
-							<!-- ContentPresenter: Hosts the content of the selected tab -->
-							<ContentPresenter
-                            ContentSource="SelectedContent"
-                            Margin="0"
-                            Focusable="False"/>
-						</Border>
-					</Grid>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
 	</Style>
 
 
@@ -54,7 +17,7 @@
 		<Setter Property="Foreground" Value="{DynamicResource TabItemForeground}"/>
 		<Setter Property="Padding" Value="10,5"/>
 		<Setter Property="MinWidth" Value="100"/>
-		<Setter Property="Margin" Value="0,0,0,0"/>
+		<Setter Property="Margin" Value="0,0,5,0"/>
 		<!-- Ensure no unwanted margins between tabs -->
 		<Setter Property="BorderBrush" Value="{DynamicResource TabItemBorderColor}"/>
 		<Setter Property="BorderThickness" Value="1,1,0,1"/>
@@ -65,15 +28,15 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="TabItem">
 					<Grid>
-						<Border Name="TabBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6,6,0,0">
-							<!-- Rounded both top corners -->
-							<ContentPresenter HorizontalAlignment="Center" 
-                                              VerticalAlignment="Center" 
-                                              ContentSource="Header"/>
+						<Border x:Name="TabBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="Transparent"
+                            CornerRadius="5"
+                            Padding="{TemplateBinding Padding}">
+							<ContentPresenter x:Name="ContentSite"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"
+                                          ContentSource="Header"/>
 						</Border>
 					</Grid>
 
@@ -81,7 +44,7 @@
 						<!-- Selected State -->
 						<Trigger Property="IsSelected" Value="True">
 							<Setter TargetName="TabBorder" Property="Background" Value="{DynamicResource TabItemSelectedBackground}"/>
-							<Setter TargetName="TabBorder" Property="BorderBrush" Value="{DynamicResource TabItemSelectedBorderColor}"/>
+							<Setter Property="Foreground" Value="#3B82F6"/>
 						</Trigger>
 
 						<!-- Hover State -->

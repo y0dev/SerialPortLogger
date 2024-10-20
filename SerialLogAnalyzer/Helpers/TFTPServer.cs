@@ -15,15 +15,21 @@ namespace SerialLogAnalyzer.Helpers
 		private IPEndPoint localEP;
 		private IPEndPoint remoteEP;
 		private bool isRunning;
+		private string baseDirectory;
 		private Thread serverThread;
 
-		public TftpServer(string ipAddress)
+		private Logger _logger;
+
+		public TftpServer(string ipAddress, string baseDirectory, Logger logger)
 		{
 			// Bind to the specific IP address
 			localEP = new IPEndPoint(IPAddress.Parse(ipAddress), TftpPort);
 			udpServer = new UdpClient(localEP);
 			remoteEP = new IPEndPoint(IPAddress.Any, TftpPort);
 			isRunning = false;
+			this.baseDirectory = baseDirectory;
+			this._logger = logger;
+
 		}
 
 		// Method to start the TFTP server
@@ -34,7 +40,7 @@ namespace SerialLogAnalyzer.Helpers
 				isRunning = true;
 				serverThread = new Thread(ServerLoop);
 				serverThread.Start();
-				Console.WriteLine($"Starting TFTP Server on {localEP.Address}:{localEP.Port}...");
+				_logger.Log($"Starting TFTP Server on {localEP.Address}:{localEP.Port}...", LogLevel.Debug);
 			}
 		}
 
@@ -45,7 +51,8 @@ namespace SerialLogAnalyzer.Helpers
 			{
 				try
 				{
-					Console.WriteLine("Waiting for incoming TFTP requests...");
+
+					_logger.Log("Waiting for incoming TFTP requests...", LogLevel.Debug);
 					byte[] request = udpServer.Receive(ref remoteEP);
 
 					if (!isRunning) break; // Exit if stop has been called
@@ -63,11 +70,11 @@ namespace SerialLogAnalyzer.Helpers
 				catch (SocketException ex)
 				{
 					if (isRunning) // Only log if the server is still running
-						Console.WriteLine($"Socket exception: {ex.Message}");
+						_logger.Log($"Socket exception: {ex.Message}", LogLevel.Error);
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine($"Error: {ex.Message}");
+					_logger.Log($"Error: {ex.Message}", LogLevel.Error);
 				}
 			}
 		}
@@ -79,27 +86,27 @@ namespace SerialLogAnalyzer.Helpers
 			{
 				isRunning = false;
 				udpServer.Close(); // Safely close the UDP listener
-				Console.WriteLine("Stopping TFTP Server...");
+				_logger.Log("Stopping TFTP Server...", LogLevel.Info);
 				serverThread.Join(); // Wait for the server loop to finish
-				Console.WriteLine("TFTP Server stopped.");
+				_logger.Log("TFTP Server stopped.", LogLevel.Info);
 			}
 		}
 
 		private void HandleReadRequest(byte[] request)
 		{
 			string fileName = ParseFileNameFromRequest(request);
-			Console.WriteLine($"RRQ received for file: {fileName}");
+			_logger.Log($"RRQ received for file: {fileName}", LogLevel.Info);
 
-			string filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+			string filePath = Path.Combine(baseDirectory, fileName);
 
 			if (File.Exists(filePath))
 			{
-				Console.WriteLine($"Sending file: {filePath}");
+				_logger.Log($"Sending file: {filePath}", LogLevel.Info);
 				SendFile(filePath);
 			}
 			else
 			{
-				Console.WriteLine($"File not found: {filePath}");
+				_logger.Log($"File not found: {filePath}", LogLevel.Info);
 				SendError("File not found.");
 			}
 		}
@@ -107,16 +114,16 @@ namespace SerialLogAnalyzer.Helpers
 		private void HandleWriteRequest(byte[] request)
 		{
 			string fileName = ParseFileNameFromRequest(request);
-			Console.WriteLine($"WRQ received for file: {fileName}");
+			_logger.Log($"WRQ received for file: {fileName}", LogLevel.Info);
 
-			string filePath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+			string filePath = Path.Combine(baseDirectory, fileName);
 			string directoryPath = Path.GetDirectoryName(filePath);
 
 			// Create directory if it doesn't exist
 			if (!Directory.Exists(directoryPath))
 			{
 				Directory.CreateDirectory(directoryPath);
-				Console.WriteLine($"Directory created: {directoryPath}");
+				_logger.Log($"Directory created: {directoryPath}", LogLevel.Info);
 			}
 
 			ReceiveFile(filePath);
@@ -142,7 +149,7 @@ namespace SerialLogAnalyzer.Helpers
 				block++;
 			}
 
-			Console.WriteLine($"File transfer complete: {filePath}");
+			_logger.Log($"File transfer complete: {filePath}", LogLevel.Info);
 		}
 
 		private void ReceiveFile(string filePath)
@@ -165,7 +172,7 @@ namespace SerialLogAnalyzer.Helpers
 				}
 			}
 
-			Console.WriteLine($"File successfully received: {filePath}");
+			_logger.Log($"File successfully received: {filePath}", LogLevel.Info);
 		}
 
 		private byte[] CreateDataPacket(int block, byte[] fileData, int offset, int length)

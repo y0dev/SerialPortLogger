@@ -58,9 +58,11 @@
     <Compile Include="Helpers\Converters\EffectConverter .cs" />
     <Compile Include="Helpers\FileHandler.cs" />
     <Compile Include="Helpers\KeywordParser.cs" />
+    <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Helpers\ResourceThemes.cs" />
     <Compile Include="Helpers\SerialPortReader.cs" />
     <Compile Include="Helpers\Converters\ThemeConverter.cs" />
+    <Compile Include="Helpers\TFTPServer.cs" />
     <Compile Include="Models\AppConfiguration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -113,11 +115,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ComboBoxStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\LabelStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\LightTheme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\ListViewStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\TabItemStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\TextboxStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

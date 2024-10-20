@@ -20,9 +20,9 @@
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
                                 CornerRadius="4">
-							<!-- 'X' will appear in the center when checked -->
+							<!-- "✓" will appear in the center when checked -->
 							<TextBlock x:Name="CheckMark" 
-                                       Text="X" 
+                                       Text="✓" 
                                        FontSize="16" 
                                        Foreground="White" 
                                        HorizontalAlignment="Center" 

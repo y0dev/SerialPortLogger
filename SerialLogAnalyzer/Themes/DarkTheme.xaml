@@ -3,11 +3,30 @@
 
 	<SolidColorBrush x:Key="WindowBackgroundColor">#D3D3D3</SolidColorBrush>
 	
-	<Color x:Key="PrimaryColor">#000000</Color>
+	<Color x:Key="PrimaryColor">#374151</Color>
 	<!-- Black for Dark Theme -->
 	<Color x:Key="SecondaryColor">#FFFFFF</Color>
 	<!-- White for Dark Theme -->
 	<Color x:Key="AccentColor">#FF4081</Color>
+
+	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}"/>
+	<SolidColorBrush x:Key="ForegroundBrush" Color="White"/>
+	<SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+
+	<Style TargetType="TextBlock">
+		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+	</Style>
+
+	<Style TargetType="MenuItem">
+		<Setter Property="Foreground" Value="Black"/>
+	</Style>
+
+	<SolidColorBrush x:Key="TextBoxBaseColor" Color="#374151"/>
+	<SolidColorBrush x:Key="TextBoxTextColor" Color="#FFFFFF"/>
+	<SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#66A3FF"/>
+	<SolidColorBrush x:Key="TextBoxFocusedColor" Color="#3F83F8"/>
+	<SolidColorBrush x:Key="TextBoxDisabledColor" Color="#2E2E2E"/>
+	<SolidColorBrush x:Key="TextBoxDisabledTextColor" Color="#8A9BA8"/>
 
 	<SolidColorBrush x:Key="ButtonBaseColor">#1E88E5</SolidColorBrush>
 	<!-- Darker Blue -->
@@ -20,9 +39,22 @@
 	<SolidColorBrush x:Key="DisabledTextColor">#FF8888</SolidColorBrush>
 	<!-- Darker grey for disabled text -->
 
-	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}"/>
-	<SolidColorBrush x:Key="ForegroundBrush" Color="White"/>
-	<SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+	
+	<SolidColorBrush x:Key="ListViewBaseColor" Color="#374151"/>
+	<SolidColorBrush x:Key="ListViewTextColor" Color="#FFFFFF"/>
+	<SolidColorBrush x:Key="ListViewItemMouseOverColor" Color="#66A3FF"/>
+	<SolidColorBrush x:Key="ListViewItemBaseColor" Color="#3F83F8"/>
+	<SolidColorBrush x:Key="ListViewItemSelectedColor" Color="#2E2E2E"/>
+	<SolidColorBrush x:Key="ListViewItemSelectedTextColor" Color="#8A9BA8"/>
+
+	
+	<SolidColorBrush x:Key="ComboBoxBaseColor" Color="#374151"/>
+	<SolidColorBrush x:Key="ComboBoxTextColor" Color="#FFFFFF"/>
+	<SolidColorBrush x:Key="ComboBoxItemMouseOverColor" Color="#66A3FF"/>
+	<SolidColorBrush x:Key="ComboBoxItemBaseColor" Color="#3F83F8"/>
+	<SolidColorBrush x:Key="ComboBoxItemSelectedColor" Color="#2E2E2E"/>
+	<SolidColorBrush x:Key="ComboBoxItemSelectedTextColor" Color="#8A9BA8"/>
+
 
 	<!-- Define colors for the checkbox -->
 	<SolidColorBrush x:Key="CheckboxBorderColor">#D1D5DB</SolidColorBrush>
@@ -35,11 +67,12 @@
 	<!-- Blue-400 -->
 
 
-	<SolidColorBrush x:Key="TabControlBackground" Color="#4B5563"/>
+	<SolidColorBrush x:Key="TabControlBackground" Color="#1E1E2E"/>
+	<SolidColorBrush x:Key="TabControlForeground" Color="#FFFFFF"/>
 	<SolidColorBrush x:Key="TabControlBorderColor" Color="#60A5FA"/>
 
 	<!--Tab Item Colors-->
-	<SolidColorBrush x:Key="TabItemBackground" Color="#1E293B"/>
+	<SolidColorBrush x:Key="TabItemBackground" Color="#1F2937"/>
 	<!-- Dark background -->
 	<SolidColorBrush x:Key="TabItemSelectedBackground" Color="#334155"/>
 	<!-- Darker background for selected tab -->
@@ -51,7 +84,7 @@
 	<!-- Light blue for selected border -->
 	<SolidColorBrush x:Key="TabItemForeground" Color="#F3F4F6"/>
 	<!-- Light text -->
-	<SolidColorBrush x:Key="TabItemHoverForeground" Color="#E2E8F0"/>
+	<SolidColorBrush x:Key="TabItemHoverForeground" Color="#D1D5DB"/>
 	<!-- Lighter text on hover -->
 	<SolidColorBrush x:Key="TabItemDisabledForeground" Color="#6B7280"/>
 	<!-- Grey text when disabled -->

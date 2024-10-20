@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace SerialLogAnalyzer.Helpers
 {
@@ -88,6 +86,24 @@ namespace SerialLogAnalyzer.Helpers
 		public void ClearLog()
 		{
 			File.WriteAllText(_logFilePath, string.Empty); // Clear log file content
+		}
+
+		/// <summary>
+		/// Exports the contents of the log file to the specified file path.
+		/// </summary>
+		/// <param name="exportFilePath">The path to which the log file will be exported.</param>
+		public void Export(string exportFilePath)
+		{
+			// Check if the log file exists before trying to export
+			if (File.Exists(_logFilePath))
+			{
+				// Copy the contents of the log file to the export path
+				File.Copy(_logFilePath, exportFilePath, true); // Overwrite if the file already exists
+			}
+			else
+			{
+				throw new FileNotFoundException("Log file not found.", _logFilePath);
+			}
 		}
 
 		/// <summary>

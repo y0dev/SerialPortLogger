@@ -1,0 +1,59 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:SerialLogAnalyzer.Helpers.Converters">
+
+	<converters:BooleanToDropShadowEffectConverter x:Key="BooleanToDropShadowEffectConverter" />
+
+	<!-- Define a style for rounded TextBoxes -->
+	<Style TargetType="TextBox" x:Key="RoundedTextBoxStyle">
+		<Setter Property="Background" Value="{DynamicResource TextBoxBaseColor}"/>
+		<!-- Base background color -->
+		<Setter Property="Foreground" Value="{DynamicResource TextBoxTextColor}"/>
+		<!-- Text color -->
+		<Setter Property="Padding" Value="10,5"/>
+		<!-- Inner spacing -->
+		<Setter Property="Margin" Value="5"/>
+		<!-- Outer spacing -->
+		<Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+		<!-- Border color -->
+		<Setter Property="BorderThickness" Value="1"/>
+		<!-- Border thickness -->
+		<Setter Property="Cursor" Value="IBeam"/>
+		<!-- IBeam cursor for text input -->
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="TextBox">
+					<Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5"
+                            Effect="{Binding RelativeSource={RelativeSource AncestorType=TextBox}, Path=IsMouseOver, Converter={StaticResource BooleanToDropShadowEffectConverter}}">
+						<!-- Shadow effect on hover -->
+						<ScrollViewer x:Name="PART_ContentHost" />
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+
+		<Style.Triggers>
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="BorderBrush" Value="{DynamicResource TextBoxMouseOverColor}"/>
+				<!-- Border color on hover -->
+			</Trigger>
+			<Trigger Property="IsFocused" Value="True">
+				<Setter Property="BorderThickness" Value="2"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource TextBoxFocusedColor}"/>
+				<!-- Border color on focus -->
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="False">
+				<Setter Property="Background" Value="{DynamicResource TextBoxDisabledColor}"/>
+				<!-- Disabled background color -->
+				<Setter Property="Foreground" Value="{DynamicResource TextBoxDisabledTextColor}"/>
+				<!-- Text color when disabled -->
+				<Setter Property="Cursor" Value="Arrow"/>
+				<!-- Change cursor to default when disabled -->
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+
+</ResourceDictionary>

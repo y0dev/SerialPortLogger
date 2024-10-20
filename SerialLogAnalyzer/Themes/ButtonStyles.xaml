@@ -51,7 +51,7 @@
 			<Trigger Property="IsEnabled" Value="False">
 				<Setter Property="Background" Value="{DynamicResource ButtonDisabledColor}"/>
 				<!-- Disabled color -->
-				<Setter Property="Foreground" Value="{DynamicResource DisabledTextColor}"/>
+				<Setter Property="Foreground" Value="{DynamicResource ButtonDisabledTextColor}"/>
 				<!-- Text color when disabled -->
 				<Setter Property="Cursor" Value="Arrow"/>
 				<!-- Change cursor to default when disabled -->

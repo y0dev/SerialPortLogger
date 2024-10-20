@@ -21,15 +21,40 @@
 
 		<!-- Status and Configuration Panel -->
 		<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
-			<TextBlock x:Name="TftpServerStatusTextBlock" Text="Status: Stopped" Foreground="Red" Margin="0,0,20,0" />
-			<Label Content="Port:" VerticalAlignment="Center"/>
-			<TextBox x:Name="TftpServerPortTextBox" Text="69"  Width="100" Margin="5,0,10,0"/>
-			<Label Content="Root Directory:" VerticalAlignment="Center"/>
-			<TextBox x:Name="TftpRootDirectoryTextBox" Width="250" Margin="5,0,10,0"/>
+			<TextBlock x:Name="tftpServerStatusTextBlock" 
+               Text="Status: Stopped" 
+               VerticalAlignment="Center" 
+               Foreground="Red" 
+               Margin="0,0,20,0" />
+
+			<!-- IP Address -->
+			<StackPanel Style="{StaticResource LabelOnTopStyle}">
+				<Label Content="IP Address:" Style="{StaticResource LabelStyle}" />
+				<TextBox x:Name="tftpServerIPAddresTextBox" 
+                 Style="{StaticResource RoundedTextBoxStyle}" 
+                 Text="0.0.0.0" Width="150"/>
+			</StackPanel>
+
+			<!-- Port -->
+			<StackPanel Style="{StaticResource LabelOnTopStyle}">
+				<Label Content="Port:" Style="{StaticResource LabelStyle}" />
+				<TextBox x:Name="tftpServerPortTextBox" 
+                 Style="{StaticResource RoundedTextBoxStyle}" 
+                 Text="69" Width="150" 
+                 IsEnabled="False"/>
+			</StackPanel>
+
+			<!-- Root Directory -->
+			<StackPanel Style="{StaticResource LabelOnTopStyle}">
+				<Label Content="Root Directory:" Style="{StaticResource LabelStyle}" />
+				<TextBox x:Name="tftpRootDirectoryTextBox" Text="."
+                 Style="{StaticResource RoundedTextBoxStyle}" Width="250"/>
+			</StackPanel>
 		</StackPanel>
 
+
 		<!-- ListView to display TFTP server logs or activity -->
-		<ListView x:Name="TftpServerListView" Grid.Row="1" Margin="10" />
+		<ListView x:Name="tftpServerListView" Style="{StaticResource RoundedListViewStyle}" Grid.Row="1" Margin="10" />
 
 		<!-- Progress bar for file transfer -->
 		<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
@@ -47,10 +72,6 @@
 					Width="120" Height="30" Margin="0,0,10,0" Click="ClearLogsButton_Click"/>
 			<Button x:Name="ExportLogsButton" Style="{StaticResource RoundedButtonStyle}" Content="Export Logs" 
 					Width="120" Height="30" Margin="0,0,10,0" Click="ExportLogsButton_Click"/>
-			<Button x:Name="UploadFileButton" Style="{StaticResource RoundedButtonStyle}" Content="Upload File" 
-					Width="120" Height="30" IsEnabled="False" Margin="0,0,10,0" Click="UploadFileButton_Click"/>
-			<Button x:Name="DownloadFileButton" Style="{StaticResource RoundedButtonStyle}" Content="Download File" 
-					Width="120" Height="30" Click="DownloadFileButton_Click"/>
 		</StackPanel>
 	</Grid>
 </UserControl>

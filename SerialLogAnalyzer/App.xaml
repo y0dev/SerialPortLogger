@@ -9,8 +9,12 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Themes/LightTheme.xaml"/>
 				<ResourceDictionary Source="Themes/ButtonStyles.xaml"/>
+				<ResourceDictionary Source="Themes/ComboBoxStyles.xaml"/>
 				<ResourceDictionary Source="Themes/CheckboxStyles.xaml"/>
+				<ResourceDictionary Source="Themes/LabelStyles.xaml"/>
+				<ResourceDictionary Source="Themes/ListviewStyles.xaml"/>
 				<ResourceDictionary Source="Themes/TabItemStyles.xaml"/>
+				<ResourceDictionary Source="Themes/TextboxStyles.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 
