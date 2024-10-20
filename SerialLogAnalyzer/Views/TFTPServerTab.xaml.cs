@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SerialLogAnalyzer.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,12 @@ namespace SerialLogAnalyzer.Views
 	/// </summary>
 	public partial class TFTPServerTab : UserControl
 	{
+		private TftpServer tftpServer;
 		public TFTPServerTab()
 		{
 			InitializeComponent();
+			tftpServer = new TftpServer("");
+
 		}
 
 		private void StartServerButton_Click(object sender, RoutedEventArgs e)
