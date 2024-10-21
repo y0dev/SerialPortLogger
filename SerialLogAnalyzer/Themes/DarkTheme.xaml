@@ -13,13 +13,10 @@
 	<SolidColorBrush x:Key="ForegroundBrush" Color="White"/>
 	<SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
 
-	<Style TargetType="TextBlock">
-		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+	<Style TargetType="Window">
+		<Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
 	</Style>
-
-	<Style TargetType="MenuItem">
-		<Setter Property="Foreground" Value="Black"/>
-	</Style>
+	
 
 	<SolidColorBrush x:Key="TextBoxBaseColor" Color="#374151"/>
 	<SolidColorBrush x:Key="TextBoxTextColor" Color="#FFFFFF"/>

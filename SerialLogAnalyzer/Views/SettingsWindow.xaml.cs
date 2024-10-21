@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SerialLogAnalyzer.Helpers;
+using SerialLogAnalyzer.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,7 +24,9 @@ namespace SerialLogAnalyzer.Views
 
 		public ObservableCollection<string> AvailableFonts { get; private set; }
 		public ObservableCollection<int> FontSizes { get; set; }
-		public int SelectedBaudRate { get; set; }
+		public string SelectedFont { get; set; }
+		public int SelectedFontSize { get; set; }
+		private Logger logger;
 
 		public SettingsWindow()
 		{
@@ -30,11 +34,12 @@ namespace SerialLogAnalyzer.Views
 
 			AvailableFonts = new ObservableCollection<string>
 			{
-				"Arial",
-				"Calibri",
-				"Courier New",
-				"Times New Roman",
-				"Verdana"
+				"Segoe UI",       // Default font for Windows applications
+				"Arial",          // Very common sans-serif font, widely used
+				"Tahoma",         // Sans-serif font with good readability
+				"Times New Roman",// Common serif font, often used for documents
+				"Verdana",        // Another sans-serif font known for readability
+				"Calibri"         // Default font for Microsoft Office applications
 			};
 
 			// Initialize with common baud rates
@@ -43,24 +48,50 @@ namespace SerialLogAnalyzer.Views
 
 			// Set the DataContext to itself for binding
 			this.DataContext = this;
+			
+			// Get the MainViewModel from resources
+			var mainViewModel = (MainViewModel)FindResource("MainViewModel");
+
+			SelectedFont = mainViewModel.Config.Settings.Font;
+			SelectedFontSize = mainViewModel.Config.Settings.FontSize;
+
+			logger = Logger.GetInstance("slate_app.log", false);
 		}
 
 		// Logic to save the settings
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
-			
+
+			// Get the MainViewModel from resources
+			var mainViewModel = (MainViewModel)FindResource("MainViewModel");
+
+			// Check if fontsComboBox has a selected value and if it has changed
+			if (fontsComboBox.SelectedItem != null && !string.IsNullOrEmpty(fontsComboBox.SelectedItem.ToString())
+				&& mainViewModel.Config.Settings.Font != fontsComboBox.SelectedItem.ToString())
+			{
+				string selectedFont = fontsComboBox.SelectedItem.ToString();
+				logger.Log($"Changing font from {mainViewModel.Config.Settings.Font} to {selectedFont}.", LogLevel.Info);
+
+				// Update the font setting
+				mainViewModel.Config.Settings.Font = selectedFont;
+			}
+
+			// Check if fontSizeComboBox has a selected value, convert it to an integer, and check if it has changed
+			if (fontSizeComboBox.SelectedItem != null && int.TryParse(fontSizeComboBox.SelectedItem.ToString(), out int selectedFontSize)
+				&& mainViewModel.Config.Settings.FontSize != selectedFontSize)
+			{
+				logger.Log($"Changing font size from {mainViewModel.Config.Settings.FontSize} to {selectedFontSize}.", LogLevel.Info);
+
+				// Update the font size setting
+				mainViewModel.Config.Settings.FontSize = selectedFontSize;
+			}
+
+			// Save the updated configuration if changes were made
+			mainViewModel.SaveConfig();
+
+
 			this.Close(); // Close the settings window
 		} // End of SaveButton_Click()
-		
-		private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-
-		}
-
-		private void FontsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-
-		}
 	}
 
 }

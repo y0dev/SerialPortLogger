@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using System.Windows.Controls;
 using SerialLogAnalyzer.ViewModels;
 using SerialLogAnalyzer.Helpers;
+using System.Windows.Media;
 
 namespace SerialLogAnalyzer
 {
@@ -18,6 +19,8 @@ namespace SerialLogAnalyzer
 	{
 		public string SelectedTheme { get; set; } = "Light"; // Default theme
 		private Logger logger;
+		private const int MinFontSize = 8;
+		private const int MaxFontSize = 28;
 
 		public MainWindow()
 		{
@@ -34,6 +37,11 @@ namespace SerialLogAnalyzer
 			// Set the theme based on the configuration
 			SelectedTheme = mainViewModel.Config?.Settings.Theme ?? "Light"; // Use the theme from config
 			ChangeTheme(Char.ToUpper(SelectedTheme[0]) + SelectedTheme.Substring(1));
+
+			string currentFont = mainViewModel.Config?.Settings.Font ?? "Segoe UI";
+			int currentFontSize = mainViewModel.Config?.Settings.FontSize ?? 12;
+
+			ChangeFontAndSize(currentFont, currentFontSize);
 		}
 
 		private void ApplySettings(string theme, string commandLineTheme, bool defaultCheckboxConfig)
@@ -212,6 +220,36 @@ namespace SerialLogAnalyzer
 			DataContext = null;
 			DataContext = mainViewModel; // Reassign the DataContext to refresh bindings
 			logger.Log($"Changed theme", LogLevel.Info);
+		}
+
+		private void ChangeFontAndSize(string selectedFont, int selectedFontSize)
+		{
+			// Validate font size
+			if (selectedFontSize < MinFontSize || selectedFontSize > MaxFontSize)
+			{
+				logger.Log($"Attempted to set font size {selectedFontSize}, which is out of range ({MinFontSize}-{MaxFontSize}).", LogLevel.Warning);
+				return; // Exit the method if the font size is invalid
+			}
+			// Set the font in the MainViewModel
+			var mainViewModel = (MainViewModel)DataContext;
+
+			// Log the font and font size change
+			logger.Log($"Changing font from {mainViewModel.Config.Settings.Font} (size {mainViewModel.Config.Settings.FontSize}) " +
+					   $"to {selectedFont} (size {selectedFontSize}).", LogLevel.Info);
+
+			// Update the configuration
+			mainViewModel.Config.Settings.Font = selectedFont; // Update font
+			mainViewModel.Config.Settings.FontSize = selectedFontSize; // Update font size
+			mainViewModel.SaveConfig(); // Save the updated configuration
+
+			// Apply the new font and font size to the application resources
+			Application.Current.Resources["ApplicationFontFamily"] = new FontFamily(selectedFont);
+			Application.Current.Resources["ApplicationFontSize"] = selectedFontSize;
+
+			// Force re-evaluation of the data bindings to update the font
+			DataContext = null;
+			DataContext = mainViewModel; // Reassign the DataContext to refresh bindings
+			logger.Log($"Changed font to {selectedFont} and size to {selectedFontSize}.", LogLevel.Info);
 		}
 
 	}

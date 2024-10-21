@@ -76,6 +76,9 @@ namespace SerialLogAnalyzer.Models
 		[XmlElement("Theme")]
 		public string Theme { get; set; }
 
+		[XmlElement("Font")]
+		public string Font { get; set; }
+
 		[XmlElement("FontSize")]
 		public int FontSize { get; set; }
 	}

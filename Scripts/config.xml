@@ -64,7 +64,8 @@
   </Items>
   <Settings>
     <Theme>Dark</Theme>
-    <FontSize>20</FontSize>
+    <Font>Tahoma</Font>
+    <FontSize>18</FontSize>
   </Settings>
   <ComputerConfigs>
     <ComputerConfig name="cog">
