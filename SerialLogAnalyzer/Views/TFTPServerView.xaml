@@ -6,9 +6,25 @@
              xmlns:local="clr-namespace:SerialLogAnalyzer.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Themes/LightTheme.xaml"/>
+				<ResourceDictionary Source="../Themes/ButtonStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/ComboBoxStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/CheckboxStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/LabelStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/ListviewStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/TabItemStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/TextboxStyles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
 	<Grid Margin="10">
 		<!-- Row Definitions -->
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
 			<!-- Status and configuration -->
 			<RowDefinition Height="*"/>
@@ -18,9 +34,12 @@
 			<RowDefinition Height="Auto"/>
 			<!-- Buttons for control -->
 		</Grid.RowDefinitions>
+		
+		<!-- Header Label -->
+		<TextBlock x:Name="headerLabel" Grid.Row="0" Grid.ColumnSpan="2" Text="TFTP Server" FontSize="28" Margin="10,0,0,10"/>
 
 		<!-- Status and Configuration Panel -->
-		<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
 			<TextBlock x:Name="tftpServerStatusTextBlock" 
                Text="Status: Stopped" 
                VerticalAlignment="Center" 
@@ -54,16 +73,16 @@
 
 
 		<!-- ListView to display TFTP server logs or activity -->
-		<ListView x:Name="tftpServerListView" Style="{StaticResource RoundedListViewStyle}" Grid.Row="1" Margin="10" />
+		<ListView x:Name="tftpServerListView" Style="{StaticResource RoundedListViewStyle}" Grid.Row="2" Margin="10" />
 
 		<!-- Progress bar for file transfer -->
-		<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
+		<StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
 			<Label Content="File Transfer Progress:" Margin="0,0,10,0" VerticalAlignment="Center"/>
 			<ProgressBar x:Name="FileTransferProgressBar" Width="300" Height="20" Minimum="0" Maximum="100" Value="0"/>
 		</StackPanel>
 
 		<!-- StackPanel for Start/Stop, Export, Clear Logs, and File Operations -->
-		<StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+		<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
 			<Button x:Name="StartTftpServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Start" 
 					Width="100" Height="30" Margin="0,0,10,0" Click="StartServerButton_Click"/>
 			<Button x:Name="StopTftpServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Stop" 

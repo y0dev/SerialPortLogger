@@ -22,7 +22,7 @@ namespace SerialLogAnalyzer.ViewModels
 			set
 			{
 				_currentView = value;
-				OnPropertyChanged("View");
+				OnPropertyChanged("SelectedView");
 			}
 		}
 
@@ -73,7 +73,6 @@ namespace SerialLogAnalyzer.ViewModels
 
 		private void ChangeView(object viewName)
 		{
-			Console.WriteLine($"View Selected: {viewName}");
 			switch (viewName)
 			{
 				case "Home":
@@ -83,13 +82,13 @@ namespace SerialLogAnalyzer.ViewModels
 					SelectedView = new SerialLoggerView();
 					break;
 				case "Serial Analyzer":
-					SelectedView = new SerialAnalyzerView();
+					SelectedView = new SerialAnalyzerView(this);
 					break;
 				case "TFTP Server":
 					SelectedView = new TFTPServerView();
 					break;
 				case "Settings":
-					SelectedView = new SettingsWindow();
+					SelectedView = new SettingsView(this);
 					break;
 					// Add other cases as needed
 			}

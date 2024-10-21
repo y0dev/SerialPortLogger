@@ -8,9 +8,20 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<UserControl.Resources>
-		<vm:MainViewModel x:Key="MainViewModel"/>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Themes/LightTheme.xaml"/>
+				<ResourceDictionary Source="../Themes/ButtonStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/ComboBoxStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/CheckboxStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/LabelStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/ListviewStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/TabItemStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/TextboxStyles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
 	</UserControl.Resources>
-	<Grid>
+	<Grid Margin="10">
 		<!-- Row Definitions -->
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
@@ -38,7 +49,7 @@
 		</Grid.ColumnDefinitions>
 
 		<!-- Header Label -->
-		<Label x:Name="headerLabel" Grid.Row="0" Grid.ColumnSpan="2" Content="Serial Analyzer" FontSize="16" Margin="10,0,0,10"/>
+		<TextBlock x:Name="headerLabel" Grid.Row="0" Grid.ColumnSpan="2" Text="Serial Analyzer" FontSize="28" Margin="10,0,0,10"/>
 
 		<!-- Product Label -->
 		<Label x:Name="productLabel" Grid.Row="1" Grid.Column="0" Content="Product:"/>

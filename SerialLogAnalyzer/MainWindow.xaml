@@ -16,7 +16,7 @@
 		<converters:ThemeConverter x:Key="ThemeConverter"/>
 	</Window.Resources>
 
-	<Grid>
+	<Grid Background="{DynamicResource BackgroundBrush}">
 		<Grid.DataContext>
 			<StaticResource ResourceKey="MainViewModel"/>
 			<!-- Set the DataContext to MainViewModel -->
@@ -27,7 +27,7 @@
 			<ColumnDefinition/>
 		</Grid.ColumnDefinitions>
 
-		<Grid Grid.Column="0" Background="{StaticResource SidebarBackgroundColor}">
+		<Grid Grid.Column="0" Background="{DynamicResource SidebarBrush}">
 			<StackPanel>
 				<TextBlock x:Name="titleBlock" Text="Slate" FontWeight="Bold"
                    VerticalAlignment="Center" HorizontalAlignment="Left"

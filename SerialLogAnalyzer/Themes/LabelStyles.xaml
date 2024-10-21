@@ -2,6 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:SerialLogAnalyzer.Themes">
 
+	<Style TargetType="Label">
+		<Setter Property="Foreground" Value="{StaticResource FontBrush}"/>
+	</Style>
+
 	<!-- Style for Label and TextBox layout -->
 	<Style x:Key="LabelOnTopStyle" TargetType="StackPanel">
 		<Setter Property="Orientation" Value="Vertical"/>

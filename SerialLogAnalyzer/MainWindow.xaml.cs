@@ -35,7 +35,7 @@ namespace SerialLogAnalyzer
 			DataContext = mainViewModel;
 
 			// Set the theme based on the configuration
-			SelectedTheme = mainViewModel.Config?.Settings.Theme ?? "Light"; // Use the theme from config
+			SelectedTheme = mainViewModel.Config?.Settings.Theme ?? "Light"; 
 			ChangeTheme(Char.ToUpper(SelectedTheme[0]) + SelectedTheme.Substring(1));
 
 			string currentFont = mainViewModel.Config?.Settings.Font ?? "Segoe UI";
@@ -43,12 +43,7 @@ namespace SerialLogAnalyzer
 
 			ChangeFontAndSize(currentFont, currentFontSize);
 		}
-
-		private void ApplySettings(string theme, string commandLineTheme, bool defaultCheckboxConfig)
-		{
-			// Apply settings like themes or defaults to the UI
-			this.Background = (theme == "Dark") ? System.Windows.Media.Brushes.DarkGray : System.Windows.Media.Brushes.White;
-		}
+		
 
 		// File menu event handlers (existing ones)
 
@@ -101,15 +96,7 @@ namespace SerialLogAnalyzer
 				}
 			}
 		} // End of OpenConfigMenuItem_Click()
-
-		// Event handler for Settings menu item
-		private void SettingsMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			// Show a simple settings window/dialog
-			SettingsWindow settingsWindow = new SettingsWindow();
-			settingsWindow.ShowDialog();
-		} // End of OpenConfigMenuItem_Click()
-		
+				
 		// Event handler for Analysis Options menu item
 		private void AnalysisOptionsMenuItem_Click(object sender, RoutedEventArgs e)
 		{
@@ -123,19 +110,6 @@ namespace SerialLogAnalyzer
 			// Logic to generate a report of the analysis or logs
 			MessageBox.Show("Generating Report...", "Generate Report", MessageBoxButton.OK, MessageBoxImage.Information);
 			// Add actual report generation logic here
-		}
-
-		// Event handler for Change Theme menu item
-		private void ChangeThemeMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-
-			var menuItem = sender as MenuItem;
-			if (menuItem != null && menuItem.Tag != null)
-			{
-				// Change the theme based on the Tag property of the clicked menu item
-				string selectedTheme = menuItem.Tag.ToString();
-				ChangeTheme(selectedTheme);
-			}
 		}
 
 		// Event handler for Check for Updates menu item

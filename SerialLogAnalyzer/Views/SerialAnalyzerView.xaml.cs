@@ -32,12 +32,9 @@ namespace SerialLogAnalyzer.Views
 		private List<string> selectedFiles = new List<string>();
 		private bool isAnalyzing = false;
 
-		public SerialAnalyzerView()
+		public SerialAnalyzerView(MainViewModel viewModel)
 		{
 			InitializeComponent();
-
-			// Access the MainViewModel instance which contains the config settings
-			var viewModel = (MainViewModel)this.FindResource("MainViewModel");
 
 			AvailableProducts = new ObservableCollection<Item>(viewModel.Config.Items);
 

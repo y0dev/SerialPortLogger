@@ -3,32 +3,23 @@
 					xmlns:converters="clr-namespace:SerialLogAnalyzer.Helpers.Converters">
 
 	<converters:BooleanToDropShadowEffectConverter x:Key="BooleanToDropShadowEffectConverter" />
-	
+		
 	<!-- Define a style for rounded buttons -->
 	<Style TargetType="Button" x:Key="RoundedButtonStyle">
-		<Setter Property="Background" Value="{DynamicResource ButtonBaseColor}"/>
-		<!-- Primary color -->
+		<Setter Property="Background" Value="{StaticResource ButtonBaseColor}"/>
 		<Setter Property="Foreground" Value="White"/>
-		<!-- Text color -->
 		<Setter Property="Padding" Value="10,5"/>
-		<!-- Inner spacing -->
 		<Setter Property="Margin" Value="5"/>
-		<!-- Outer spacing -->
 		<Setter Property="BorderBrush" Value="Transparent"/>
-		<!-- Border color -->
 		<Setter Property="BorderThickness" Value="1"/>
-		<!-- Border thickness -->
 		<Setter Property="Cursor" Value="Hand"/>
-		<!-- Hand cursor -->
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="Button">
 					<Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="5"
-                            Effect="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=IsMouseOver, Converter={StaticResource BooleanToDropShadowEffectConverter}}">
-						<!-- Shadow effect on hover -->
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
 						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</Border>
 				</ControlTemplate>
@@ -37,27 +28,21 @@
 
 		<Style.Triggers>
 			<Trigger Property="IsMouseOver" Value="True">
-				<Setter Property="Background" Value="{DynamicResource ButtonMouseOverColor}"/>
-				<!-- Lighter color on hover -->
-				<Setter Property="BorderBrush" Value="{DynamicResource ButtonMouseOverColor}"/>
-				<!-- Border color on hover -->
+				<Setter Property="Background" Value="{StaticResource ButtonMouseOverColor}"/>
+				<Setter Property="BorderBrush" Value="{StaticResource ButtonMouseOverColor}"/>
 			</Trigger>
 			<Trigger Property="IsPressed" Value="True">
-				<Setter Property="Background" Value="{DynamicResource ButtonPressedColor}"/>
-				<!-- Darker color on click -->
-				<Setter Property="BorderBrush" Value="{DynamicResource ButtonPressedColor}"/>
-				<!-- Border color on click -->
+				<Setter Property="Background" Value="{StaticResource ButtonPressedColor}"/>
+				<Setter Property="BorderBrush" Value="{StaticResource ButtonPressedColor}"/>
 			</Trigger>
 			<Trigger Property="IsEnabled" Value="False">
-				<Setter Property="Background" Value="{DynamicResource ButtonDisabledColor}"/>
-				<!-- Disabled color -->
-				<Setter Property="Foreground" Value="{DynamicResource ButtonDisabledTextColor}"/>
-				<!-- Text color when disabled -->
+				<Setter Property="Background" Value="{StaticResource ButtonDisabledColor}"/>
+				<Setter Property="Foreground" Value="{StaticResource ButtonDisabledTextColor}"/>
 				<Setter Property="Cursor" Value="Arrow"/>
-				<!-- Change cursor to default when disabled -->
 			</Trigger>
 		</Style.Triggers>
 	</Style>
+
 
 	<Style TargetType="RadioButton" x:Key="MenuButtonStyle">
 		<Style.Setters>
