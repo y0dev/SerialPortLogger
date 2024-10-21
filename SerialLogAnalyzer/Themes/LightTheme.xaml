@@ -1,6 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+
+	<SolidColorBrush x:Key="SidebarBackgroundColor" Color="#D1D5DB"/>
 	<SolidColorBrush x:Key="WindowBackgroundColor">#F5F5F5</SolidColorBrush>
 	<Color x:Key="PrimaryColor">#F3F4F6</Color>
 	<!-- White for Light Theme -->
@@ -15,6 +17,14 @@
 	<Style TargetType="Window">
 		<Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
 	</Style>
+
+	<!-- Light Theme -->
+	<SolidColorBrush x:Key="ToggleSwitchBackground" Color="#D1D5DB"/>
+	<SolidColorBrush x:Key="ToggleSwitchCheckedBackground" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="ToggleSwitchBorderColor" Color="#9CA3AF"/>
+	<SolidColorBrush x:Key="ToggleSwitchThumbColor" Color="White"/>
+	<SolidColorBrush x:Key="ToggleSwitchDisabledBackground" Color="#9CA3AF"/>
+	<SolidColorBrush x:Key="ToggleSwitchDisabledThumbColor" Color="#6B7280"/>
 
 	<SolidColorBrush x:Key="TextBoxBaseColor" Color="#F9FAFB"/>
 	<SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#66A3FF"/>

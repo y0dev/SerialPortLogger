@@ -59,4 +59,71 @@
 		</Style.Triggers>
 	</Style>
 
+	<Style TargetType="RadioButton" x:Key="MenuButtonStyle">
+		<Style.Setters>
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="Cursor" Value="Hand"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Grid Background="{TemplateBinding Background}" 
+							   VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+							<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" VerticalAlignment="Center"
+									   Margin="50,0,0,0" FontSize="18"/>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style.Setters>
+
+		<Style.Triggers>
+			<Trigger Property="IsChecked" Value="True">
+				<Setter Property="Background" Value="#22202F"/>
+			</Trigger>			
+		</Style.Triggers>
+	</Style>
+
+	<!-- Toggle Switch Style -->
+	<Style x:Key="ToggleSwitchStyle" TargetType="ToggleButton">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ToggleButton">
+					<Grid Width="50" Height="25">
+						<!-- Background Border -->
+						<Border x:Name="SwitchBackground" 
+                            Background="{DynamicResource ToggleSwitchBackground}"
+                            CornerRadius="12.5"
+                            BorderBrush="{DynamicResource ToggleSwitchBorderColor}"
+                            BorderThickness="1" />
+
+						<!-- Thumb -->
+						<Ellipse x:Name="Thumb" 
+                             Fill="{DynamicResource ToggleSwitchThumbColor}"
+                             Width="22" Height="22"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             Margin="2,0,0,0" />
+
+					</Grid>
+
+					<ControlTemplate.Triggers>
+						<!-- Checked State -->
+						<Trigger Property="IsChecked" Value="True">
+							<Setter TargetName="SwitchBackground" Property="Background" Value="{DynamicResource ToggleSwitchCheckedBackground}" />
+							<Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right" />
+						</Trigger>
+
+						<!-- Disabled State -->
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="SwitchBackground" Property="Background" Value="{DynamicResource ToggleSwitchDisabledBackground}" />
+							<Setter TargetName="Thumb" Property="Fill" Value="{DynamicResource ToggleSwitchDisabledThumbColor}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
 </ResourceDictionary>

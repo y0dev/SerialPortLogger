@@ -36,6 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -53,9 +55,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Helpers\ColorScheme.cs" />
     <Compile Include="Helpers\ConsoleLogger.cs" />
     <Compile Include="Helpers\Converters\EffectConverter .cs" />
+    <Compile Include="Helpers\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converters\ViewToBoolConverter.cs" />
     <Compile Include="Helpers\FileHandler.cs" />
     <Compile Include="Helpers\KeywordParser.cs" />
     <Compile Include="Helpers\Logger.cs" />
@@ -65,6 +70,7 @@
     <Compile Include="Helpers\TFTPServer.cs" />
     <Compile Include="Models\AppConfiguration.cs" />
     <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SerialLoggerTabItem.cs" />
     <Compile Include="Views\AboutPage.xaml.cs">
@@ -73,23 +79,26 @@
     <Compile Include="Views\HelpPage.xaml.cs">
       <DependentUpon>HelpPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewConfigWindow.xaml.cs">
       <DependentUpon>NewConfigWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SerialAnalyzerTab.xaml.cs">
-      <DependentUpon>SerialAnalyzerTab.xaml</DependentUpon>
+    <Compile Include="Views\SerialAnalyzerView.xaml.cs">
+      <DependentUpon>SerialAnalyzerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SerialConsoleConfigControl.xaml.cs">
       <DependentUpon>SerialConsoleConfigControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SerialLoggerTab.xaml.cs">
-      <DependentUpon>SerialLoggerTab.xaml</DependentUpon>
+    <Compile Include="Views\SerialLoggerView.xaml.cs">
+      <DependentUpon>SerialLoggerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TFTPServerTab.xaml.cs">
-      <DependentUpon>TFTPServerTab.xaml</DependentUpon>
+    <Compile Include="Views\TFTPServerView.xaml.cs">
+      <DependentUpon>TFTPServerView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -147,11 +156,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NewConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SerialAnalyzerTab.xaml">
+    <Page Include="Views\SerialAnalyzerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -159,7 +172,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SerialLoggerTab.xaml">
+    <Page Include="Views\SerialLoggerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -167,7 +180,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TFTPServerTab.xaml">
+    <Page Include="Views\TFTPServerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

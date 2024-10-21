@@ -22,7 +22,7 @@ namespace SerialLogAnalyzer.Views
 	/// <summary>
 	/// Interaction logic for SerialAnalyzer.xaml
 	/// </summary>
-	public partial class SerialAnalyzer : UserControl
+	public partial class SerialAnalyzerView : UserControl
 	{
 
 		public ObservableCollection<Item> AvailableProducts { get; private set; }
@@ -32,7 +32,7 @@ namespace SerialLogAnalyzer.Views
 		private List<string> selectedFiles = new List<string>();
 		private bool isAnalyzing = false;
 
-		public SerialAnalyzer()
+		public SerialAnalyzerView()
 		{
 			InitializeComponent();
 

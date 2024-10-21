@@ -6,16 +6,14 @@
         xmlns:local="clr-namespace:SerialLogAnalyzer"
         xmlns:views="clr-namespace:SerialLogAnalyzer.Views"
         xmlns:vm="clr-namespace:SerialLogAnalyzer.ViewModels"
-        xmlns:helpers="clr-namespace:SerialLogAnalyzer.Helpers"
+        xmlns:converters="clr-namespace:SerialLogAnalyzer.Helpers.Converters"
         mc:Ignorable="d"
-        Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="550" Width="800"
-		Background="{StaticResource WindowBackgroundColor}">
+        Title="SLATE: Serial Logging and Analysis Tool for Engineers" Height="750" Width="1000">
 		<!--="pack://application:,,,/Images/slate_icon.ico">-->
 
 	<Window.Resources>
 		<vm:MainViewModel x:Key="MainViewModel"/>
-		<helpers:ThemeConverter x:Key="ThemeConverter"/>
-		<!-- Add MainViewModel as a resource -->
+		<converters:ThemeConverter x:Key="ThemeConverter"/>
 	</Window.Resources>
 
 	<Grid>
@@ -24,67 +22,32 @@
 			<!-- Set the DataContext to MainViewModel -->
 		</Grid.DataContext>
 
-		<!-- Add Menu at the top -->
-		<DockPanel>
-			<Menu DockPanel.Dock="Top">
-				<!-- File Menu -->
-				<MenuItem Header="_File">
-					<MenuItem Header="_New Config" Click="NewMenuItem_Click"/>
-					<MenuItem Header="Open _Config" Click="OpenConfigMenuItem_Click"/>
-					<!-- Added Open Config -->
-					<MenuItem Header="_Save Config" Click="SaveMenuItem_Click"/>
-					<Separator/>
-					<MenuItem Header="_Exit" Click="ExitMenuItem_Click"/>
-				</MenuItem>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
 
-				<!-- View Menu -->
-				<MenuItem Header="_View">
-					<MenuItem x:Name="themeMenu" Header="_Themes" Click="ChangeThemeMenuItem_Click">
-						<!-- Theme 1 -->
-						<MenuItem Header="Light Theme" IsCheckable="True" 
-							  IsChecked="{Binding SelectedTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Light}" 
-							  Click="ChangeThemeMenuItem_Click" Tag="Light"/>
-									<!-- Theme 2 -->
-						<MenuItem Header="Dark Theme" IsCheckable="True" 
-							  IsChecked="{Binding SelectedTheme, Converter={StaticResource ThemeConverter}, ConverterParameter=Dark}" 
-							  Click="ChangeThemeMenuItem_Click" Tag="Dark"/>
-					</MenuItem>
-						
-				</MenuItem>
+		<Grid Grid.Column="0" Background="{StaticResource SidebarBackgroundColor}">
+			<StackPanel>
+				<TextBlock x:Name="titleBlock" Text="Slate" FontWeight="Bold"
+                   VerticalAlignment="Center" HorizontalAlignment="Left"
+                   FontSize="32" Margin="20,0,0,0"/>
 
-				<MenuItem Header="_Analysis">
-					<MenuItem Header="Analysis _Options" Click="AnalysisOptionsMenuItem_Click"/>
-					<MenuItem Header="_Generate Report" Click="GenerateReportMenuItem_Click"/>
-				</MenuItem>
-
-				<MenuItem Header="_Tools">
-					<MenuItem Header="_Settings" Click="SettingsMenuItem_Click"/>
-					<MenuItem Header="_Export Data" Click="ExportDataMenuItem_Click"/>
-					<MenuItem Header="_Import Data" Click="ImportDataMenuItem_Click"/>
-				</MenuItem>
-
-				<MenuItem Header="_Help">
-					<MenuItem Header="_View Help" Click="ViewHelpMenuItem_Click"/>
-					<MenuItem Header="_About" Click="AboutMenuItem_Click"/>
-					<MenuItem Header="Check for _Updates" Click="CheckUpdatesMenuItem_Click"/>
-					<MenuItem Header="_Contact Support" Click="ContactSupportMenuItem_Click"/>
-				</MenuItem>
-			</Menu>
-
-			<!-- Your TabControl below the menu -->
-			<TabControl x:Name="mainTabControl" DockPanel.Dock="Bottom" Style="{StaticResource TailwindCSSTabControlStyle}">
-				<TabItem x:Name="serialLoggerTab" Header="Serial Logger" Style="{StaticResource TailwindTabItemStyle}">
-					<views:SerialLoggerTab/>
-				</TabItem>
-
-				<TabItem x:Name="serialAnalyzerTab" Header="Serial Analyzer" Style="{StaticResource TailwindTabItemStyle}">
-					<views:SerialAnalyzer/>
-				</TabItem>
-
-				<TabItem x:Name="TftpServerTab" Header="TFTP Server" Style="{StaticResource TailwindTabItemStyle}">
-					<views:TFTPServerTab/>
-				</TabItem>
-			</TabControl>
-		</DockPanel>
+				<StackPanel>
+					<RadioButton Content="Home" Height="50"	Style="{StaticResource MenuButtonStyle}" 
+								 Command="{Binding ChangeViewCommand}" CommandParameter="Home"/>
+					<RadioButton Content="Serial Logger" Height="50" Style="{StaticResource MenuButtonStyle}"
+								 Command="{Binding ChangeViewCommand}" CommandParameter="Serial Logger"/>
+					<RadioButton Content="Serial Analyzer" Height="50" Style="{StaticResource MenuButtonStyle}"
+								 Command="{Binding ChangeViewCommand}" CommandParameter="Serial Analyzer"/>
+					<RadioButton Content="TFTP Server" Height="50" Style="{StaticResource MenuButtonStyle}"
+								 Command="{Binding ChangeViewCommand}" CommandParameter="TFTP Server"/>
+					<RadioButton Content="Settings" Height="50" Style="{StaticResource MenuButtonStyle}"
+								 Command="{Binding ChangeViewCommand}" CommandParameter="Settings"/>
+				</StackPanel>
+			</StackPanel>
+		</Grid>
+		<!-- Main Content Area -->
+		<ContentControl Grid.Column="1" Grid.Row="1" x:Name="contentArea" Content="{Binding SelectedView}"/>
 	</Grid>
 </Window>

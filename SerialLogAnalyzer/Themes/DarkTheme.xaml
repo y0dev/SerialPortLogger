@@ -16,7 +16,15 @@
 	<Style TargetType="Window">
 		<Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
 	</Style>
-	
+
+	<SolidColorBrush x:Key="SidebarBackgroundColor" Color="#D1D5DB"/>
+	<!-- Dark Theme -->
+	<SolidColorBrush x:Key="DarkToggleSwitchBackground" Color="#4B5563"/>
+	<SolidColorBrush x:Key="DarkToggleSwitchCheckedBackground" Color="#2563EB"/>
+	<SolidColorBrush x:Key="DarkToggleSwitchBorderColor" Color="#374151"/>
+	<SolidColorBrush x:Key="DarkToggleSwitchThumbColor" Color="White"/>
+	<SolidColorBrush x:Key="DarkToggleSwitchDisabledBackground" Color="#1F2937"/>
+	<SolidColorBrush x:Key="DarkToggleSwitchDisabledThumbColor" Color="#4B5563"/>
 
 	<SolidColorBrush x:Key="TextBoxBaseColor" Color="#374151"/>
 	<SolidColorBrush x:Key="TextBoxTextColor" Color="#FFFFFF"/>

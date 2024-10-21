@@ -252,5 +252,11 @@ namespace SerialLogAnalyzer
 			logger.Log($"Changed font to {selectedFont} and size to {selectedFontSize}.", LogLevel.Info);
 		}
 
+		private void RadioButton_Checked(object sender, RoutedEventArgs e)
+		{
+			RadioButton radioButton = (RadioButton)sender;
+			Console.WriteLine($"Radio Button Selected: {radioButton.Content}");
+
+		}
 	}
 }

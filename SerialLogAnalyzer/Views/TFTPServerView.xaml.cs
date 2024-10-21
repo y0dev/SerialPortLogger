@@ -19,7 +19,7 @@ namespace SerialLogAnalyzer.Views
 	/// <summary>
 	/// Interaction logic for TFTPServerTab.xaml
 	/// </summary>
-	public partial class TFTPServerTab : UserControl
+	public partial class TFTPServerView : UserControl
 	{
 
 		public string SelectedRootDir { get; set; }
@@ -29,7 +29,7 @@ namespace SerialLogAnalyzer.Views
 		private Logger tftpLogger;
 
 
-		public TFTPServerTab()
+		public TFTPServerView()
 		{
 			InitializeComponent();
 

@@ -13,7 +13,7 @@ namespace SerialLogAnalyzer.Views
 	/// <summary>
 	/// Interaction logic for SerialLoggerTab.xaml
 	/// </summary>
-	public partial class SerialLoggerTab : UserControl
+	public partial class SerialLoggerView : UserControl
 	{
 		public ObservableCollection<string> AvailablePorts { get; private set; }
 		public ObservableCollection<int> BaudRates { get; set; }
@@ -30,7 +30,7 @@ namespace SerialLogAnalyzer.Views
 		private Thread watchdogThread;
 		private bool watchdogRunning = true;
 
-		public SerialLoggerTab()
+		public SerialLoggerView()
 		{
 			InitializeComponent();
 

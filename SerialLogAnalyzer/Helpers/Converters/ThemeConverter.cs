@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace SerialLogAnalyzer.Helpers
+namespace SerialLogAnalyzer.Helpers.Converters
 {
 	public class ThemeConverter : IValueConverter
 	{
