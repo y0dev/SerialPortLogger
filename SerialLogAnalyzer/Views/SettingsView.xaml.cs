@@ -18,6 +18,9 @@ namespace SerialLogAnalyzer.Views
 		private Logger logger;
 		MainViewModel mainViewModel;
 
+		// Private field to store the current theme state
+		private bool? currentThemeState;
+
 		public SettingsView(MainViewModel mainViewModel)
 		{
 			InitializeComponent();
@@ -45,6 +48,10 @@ namespace SerialLogAnalyzer.Views
 
 			// Set the DataContext to itself for binding
 			this.DataContext = this;
+
+			// Initialize the toggle button state
+			currentThemeState = IsDarkTheme;
+			themeToggleButton.IsChecked = currentThemeState; // Set the toggle button based on current theme
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -119,6 +126,12 @@ namespace SerialLogAnalyzer.Views
 			Application.Current.Resources.MergedDictionaries.Add(theme);
 			
 			logger.Log($"Changed theme", LogLevel.Info);
+		}
+
+		private void NewConfigButton_Click(object sender, RoutedEventArgs e)
+		{
+			NewConfigWindow newConfigWindow = new NewConfigWindow();
+			newConfigWindow.ShowDialog();
 		}
 	}
 }

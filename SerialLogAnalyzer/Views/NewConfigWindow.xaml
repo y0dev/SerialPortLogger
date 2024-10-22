@@ -5,19 +5,35 @@
 	<Grid Margin="10">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
+			<!-- Import button and ComboBox row -->
+			<RowDefinition Height="Auto"/>
 			<!-- For the label and TextBox -->
 			<RowDefinition Height="*"/>
-			<!-- For the ListBox -->
+			<!-- For the DataGrid -->
 			<RowDefinition Height="Auto"/>
 			<!-- For the buttons -->
 		</Grid.RowDefinitions>
 
+		<!-- StackPanel for Import button and ComboBox -->
 		<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,10">
-			<Label Content="PC Configuration Name:"/>
-			<TextBox Name="PcNameTextBox" Margin="10,0,0,0" Width="400"/>
+			<Button x:Name="importXmlButton" Content="Import XML" 
+                    Click="ImportXmlButton_Click" 
+                    Width="100" Margin="0,0,10,0"
+                    ToolTip="Click to import a custom XML file"/>
+
+			<ComboBox x:Name="xmlConfigComboBox" Width="200" IsEnabled="False" 
+                      ToolTip="Select a configuration from the imported XML"
+					  SelectionChanged="XmlConfigComboBox_SelectionChanged"/>
 		</StackPanel>
 
-		<DataGrid Name="SerialConsoleConfigDataGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
+		<!-- PC Configuration Name Label and TextBox -->
+		<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,10">
+			<Label Content="PC Configuration Name:"/>
+			<TextBox Name="pcNameTextBox" Margin="10,0,0,0" Width="400"/>
+		</StackPanel>
+
+		<!-- DataGrid to display configurations -->
+		<DataGrid Name="serialConsoleConfigDataGrid" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" Margin="10">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Config Name" Binding="{Binding Name}" Width="*"/>
 				<DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
@@ -26,30 +42,22 @@
 			</DataGrid.Columns>
 		</DataGrid>
 
-		<!--
-		<ListBox Name="SerialConsoleConfigList" 
-                 Grid.Row="1" 
-                 Margin="0,5,0,10" 
-                 Height="150"/>
-		-->
-		<StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,5,0,0">
-			<Button Content="Create New PC Configuration" 
-                    Margin="0,0,10,0" 
+		<!-- Bottom StackPanel for buttons -->
+		<StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,5,0,0">
+			<Button Content="Create New PC Configuration" Style="{StaticResource RoundedButtonStyle}"
+                    Margin="0,0,10,0" Height="30" Width="180"
                     Click="CreatePcConfigButton_Click"
                     ToolTip="Click to create a new PC configuration"/>
 
-			<!-- ContentControl to host Serial Console Config Control -->
-			<ContentControl Name="ConfigControlHost" 
-                        Grid.Row="1" 
-                        Margin="0,5,0,10"/>
+			<ContentControl Name="ConfigControlHost" Margin="0,5,0,10"/>
 
-			<Button x:Name="CreateSerialConsoleConfigButton" Content="Create Serial Console Config" 
-                    Margin="0,0,10,0" IsEnabled="False"
-                    Click="CreateSerialConsoleConfigButton_Click"
+			<Button x:Name="createSerialConsoleConfigButton" Content="Create Serial Console Config" 
+                    Style="{StaticResource RoundedButtonStyle}" Margin="0,0,10,0" IsEnabled="False" 
+                    Height="30" Width="180" Click="CreateSerialConsoleConfigButton_Click"
                     ToolTip="Click to create a new serial console configuration"/>
 
-			<Button Content="Save Configuration" 
-                    Click="SaveConfigurationButton_Click"
+			<Button Content="Save Configuration" Style="{StaticResource RoundedButtonStyle}"
+                    Height="30" Width="180" Click="SaveConfigurationButton_Click"
                     ToolTip="Click to save the current configuration to a file"/>
 		</StackPanel>
 	</Grid>

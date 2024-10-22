@@ -1,76 +1,58 @@
-﻿using System.Collections.ObjectModel;
+﻿using SerialLogAnalyzer.Models;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 
 namespace SerialLogAnalyzer.ViewModels
 {
 	public class HomeViewModel : INotifyPropertyChanged
 	{
 		public ObservableCollection<RecentItem> RecentItems { get; set; }
-		private string title = "Home";
+		private MainViewModel viewModel;
 
-		public string Title
+		public HomeViewModel(MainViewModel viewModel)
 		{
-			get => title;
-			set
-			{
-				title = value;
-				OnPropertyChanged("Title");
-			}
-		}
-
-		public HomeViewModel()
-		{
-			// Sample initialization logic
+			this.viewModel = viewModel;
 			InitializeRecentItems(); // Call a method to load recent items if applicable
-			Title = "Home"; // Set the default title for the view
 		}
 
 		private void InitializeRecentItems()
 		{
 			RecentItems = new ObservableCollection<RecentItem>();
-			for (int i = 0; i < 10; i++)
+			List<Activity> activities = viewModel.Config.RecentActivity.Activities;
+			var sortedActivities = activities.OrderByDescending(a => a.ActivityDateTime).ToList();
+
+			for (int i = 0; i < sortedActivities.Count; i++)
 			{
-				// Only add if there are less than 5 items
-				if (RecentItems.Count < 5)
+				RecentItem item = new RecentItem
 				{
-					RecentItem item;
+					Title = sortedActivities[i].Type,
+					Date = sortedActivities[i].ActivityDateTime.ToString("MMM dd, yyyy"),
+					BackgroundColor = (i % 2 == 0) ? "#844EFF" : "#4E99FF",
+				};
 
-					if (i == 0) // First item: Serial Logger
-					{
-						item = new RecentItem
-						{
-							Title = "Serial Logger",
-							SerialPort = "COM3", // Example serial port
-							BackgroundColor = "#844EFF"
-						};
-					}
-					else if (i == 1) // Second item: Serial Analyzer
-					{
-						item = new RecentItem
-						{
-							Title = "Serial Analysis",
-							BackgroundColor = "#4E99FF"
-						};
-					}
-					else if (i == 2) // Third item: TFTP Server
-					{
-						item = new RecentItem
-						{
-							Title = "TFTP Server",
-							BackgroundColor = "#844EFF"
-						};
-					}
-					else
-					{
-						// Just generic items for demonstration
-						item = new RecentItem
-						{
-							Title = $"Item {i + 1}",
-							BackgroundColor = (i % 2 == 0) ? "#4E99FF" : "#844EFF"
-						};
-					}
-
+				if (!string.IsNullOrEmpty(sortedActivities[i].SerialPort))
+				{
+					item.Details = sortedActivities[i].SerialPort;
 					RecentItems.Add(item);
+					continue;
+				}
+
+				if (sortedActivities[i].FilesAnalyzed != null)
+				{
+					string details = sortedActivities[i].FilesAnalyzed > 1 ? "Files Analyzed" : "File Analyzed";
+					item.Details = $"{sortedActivities[i].FilesAnalyzed} {details}";
+					RecentItems.Add(item);
+					continue;
+				}
+
+				if (sortedActivities[i].FilesTransferred != null)
+				{
+					string details = sortedActivities[i].FilesTransferred > 1 ? "Files Transferred" : "File Transferred";
+					item.Details = $"{sortedActivities[i].FilesTransferred} {details} from {sortedActivities[i].IPAddress}";
+					RecentItems.Add(item);
+					continue;
 				}
 			}
 		}
@@ -87,7 +69,8 @@ namespace SerialLogAnalyzer.ViewModels
 	public class RecentItem
 	{
 		public string Title { get; set; }
-		public string SerialPort { get; set; } // Additional property for Serial Logger
+		public string Date { get; set; }
+		public string Details { get; set; } 
 		public string BackgroundColor { get; set; }
 	}
 }

@@ -5,10 +5,10 @@ namespace SerialLogAnalyzer.Views
 {
 	public partial class HomeView : UserControl
 	{
-		public HomeView()
+		public HomeView(MainViewModel viewModel)
 		{
 			InitializeComponent();
-			this.DataContext = new HomeViewModel();
+			this.DataContext = new HomeViewModel(viewModel);
 		}
 	}
 }

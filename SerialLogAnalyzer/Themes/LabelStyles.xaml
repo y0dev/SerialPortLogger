@@ -3,7 +3,9 @@
                     xmlns:local="clr-namespace:SerialLogAnalyzer.Themes">
 
 	<Style TargetType="Label">
+		<Setter Property="FontSize" Value="14"/>
 		<Setter Property="Foreground" Value="{StaticResource FontBrush}"/>
+		<Setter Property="Margin" Value="0,0,0,5"/>
 	</Style>
 
 	<!-- Style for Label and TextBox layout -->
@@ -12,10 +14,4 @@
 		<Setter Property="Margin" Value="5"/>
 	</Style>
 
-	<!-- Style for the Label -->
-	<Style x:Key="LabelStyle" TargetType="Label">
-		<Setter Property="FontSize" Value="14"/>
-		<Setter Property="Foreground" Value="White"/>
-		<Setter Property="Margin" Value="0,0,0,5"/>
-	</Style>
 </ResourceDictionary>

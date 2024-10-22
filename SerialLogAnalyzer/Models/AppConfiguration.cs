@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Serialization;
 
@@ -17,9 +18,9 @@ namespace SerialLogAnalyzer.Models
 		[XmlArray("ComputerConfigs")]
 		[XmlArrayItem("ComputerConfig")]
 		public List<ComputerConfig> ComputerConfigs { get; set; }
-
-		[XmlElement("LastFileParsed")]
-		public LastFileParsed LastFileParsed { get; set; }
+		
+		[XmlElement("RecentActivity")]
+		public RecentActivity RecentActivity { get; set; }
 	}
 
 	public class Item
@@ -108,16 +109,30 @@ namespace SerialLogAnalyzer.Models
 		public ushort FontSize { get; set; }
 	}
 
-	public class LastFileParsed
+	public class RecentActivity
 	{
-		[XmlArray("LastFiles")]
-		[XmlArrayItem("File")]
-		public List<string> LastFiles { get; set; }
+		[XmlElement("Activity")]
+		public List<Activity> Activities { get; set; } = new List<Activity>();
+	}
 
-		[XmlElement("Status")]
-		public string Status { get; set; }
+	public class Activity
+	{
+		[XmlElement("Type")]
+		public string Type { get; set; }
 
-		[XmlElement("TotalFailureCount")]
-		public int TotalFailureCount { get; set; }
+		[XmlElement("SerialPort")]
+		public string SerialPort { get; set; }
+
+		[XmlElement("FilesAnalyzed")]
+		public int? FilesAnalyzed { get; set; } // Nullable in case it's not applicable
+
+		[XmlElement("FilesTransferred")]
+		public int? FilesTransferred { get; set; } // Nullable in case it's not applicable
+
+		[XmlElement("IPAddress")]
+		public string IPAddress { get; set; }
+
+		[XmlElement("DateTime")]
+		public DateTime ActivityDateTime { get; set; }
 	}
 }

@@ -15,6 +15,11 @@ namespace SerialLogAnalyzer.Services
 			configFilePath = filePath;
 		}
 
+		public ConfigurationService()
+		{
+
+		}
+
 		public AppConfiguration LoadConfiguration()
 		{
 			XmlSerializer serializer = new XmlSerializer(typeof(AppConfiguration));

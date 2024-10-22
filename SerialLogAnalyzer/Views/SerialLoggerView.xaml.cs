@@ -19,6 +19,7 @@ namespace SerialLogAnalyzer.Views
 		public ObservableCollection<int> BaudRates { get; set; }
 		public int SelectedBaudRate { get; set; }
 
+		private MainViewModel viewModel;
 		private Logger logger;
 		private bool isLogging;
 
@@ -30,10 +31,11 @@ namespace SerialLogAnalyzer.Views
 		private Thread watchdogThread;
 		private bool watchdogRunning = true;
 
-		public SerialLoggerView()
+		public SerialLoggerView(MainViewModel viewModel)
 		{
 			InitializeComponent();
 
+			this.viewModel = viewModel;
 			AvailablePorts = new ObservableCollection<string>(SerialPort.GetPortNames());
 
 			// Initialize with common baud rates
@@ -166,6 +168,14 @@ namespace SerialLogAnalyzer.Views
 				stopAllLoggersButton.IsEnabled = true;
 				createLoggerButton.IsEnabled = AvailablePorts.Count > 0;
 				logger.Log($"Created a console thread for port '{selectedPort}' at baud rate '{selectedBaudRate}'", LogLevel.Info);
+				logger.Log($"Adding '{selectedPort}' to recent activity.", LogLevel.Debug);
+				ConfigHelper.SaveConfigWithRecentActivities(viewModel, 
+					new Models.Activity
+					{
+						Type = "Serial Logger",
+						SerialPort = selectedPort,
+						ActivityDateTime = DateTime.Now
+					});
 			}
 			else
 			{

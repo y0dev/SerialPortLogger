@@ -74,7 +74,7 @@
 		</StackPanel>
 
 		<!-- ListView -->
-		<ListView x:Name="consoleOutputListView" Style="{StaticResource RoundedListViewStyle}" Grid.Row="3" Grid.ColumnSpan="3" Height="270" Visibility="Visible" Margin="10"/>
+		<ListView x:Name="consoleOutputListView" Grid.Row="3" Grid.ColumnSpan="3" Height="270" Visibility="Visible" Margin="10"/>
 
 		<!-- TabControl (hidden by default) -->
 		<TabControl x:Name="consoleOutputTabControl" Grid.Row="3" Grid.ColumnSpan="3" Height="270" Visibility="Collapsed" Margin="10"/>

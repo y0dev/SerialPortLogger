@@ -56,7 +56,7 @@ namespace SerialLogAnalyzer.ViewModels
 			configService = new ConfigurationService(Properties.Resources.CONFIG_PATH);
 			LoadConfig();
 
-			SelectedView = new HomeView();
+			SelectedView = new HomeView(this);
 		}
 
 		private void LoadConfig()
@@ -76,16 +76,16 @@ namespace SerialLogAnalyzer.ViewModels
 			switch (viewName)
 			{
 				case "Home":
-					SelectedView = new HomeView(); // Or however you're creating your view
+					SelectedView = new HomeView(this); // Or however you're creating your view
 					break;
 				case "Serial Logger":
-					SelectedView = new SerialLoggerView();
+					SelectedView = new SerialLoggerView(this);
 					break;
 				case "Serial Analyzer":
 					SelectedView = new SerialAnalyzerView(this);
 					break;
 				case "TFTP Server":
-					SelectedView = new TFTPServerView();
+					SelectedView = new TFTPServerView(this);
 					break;
 				case "Settings":
 					SelectedView = new SettingsView(this);

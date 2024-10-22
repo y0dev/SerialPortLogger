@@ -37,16 +37,19 @@
 			<RowDefinition Height="Auto"/>
 			<!-- Row for Font Size ComboBox -->
 			<RowDefinition Height="Auto"/>
+			<!-- Row for New Config Button -->
+			<RowDefinition Height="Auto"/>
 			<!-- Row for Save Button -->
 		</Grid.RowDefinitions>
 
-		<!-- Title -->
-		<TextBlock FontSize="16" FontWeight="Bold" Margin="0,0,0,10" Grid.Row="0">Application Settings</TextBlock>
-		
+		<!-- Header Label -->
+		<TextBlock x:Name="headerLabel" Grid.Row="0" Grid.ColumnSpan="2" Text="Application Settings" FontSize="28" Margin="0,0,0,10"/>
+
 		<!-- Available Font ComboBox -->
 		<StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center" Margin="10">
 			<TextBlock Text="Light" VerticalAlignment="Center" Margin="5,0"/>
-			<ToggleButton x:Name="themeToggleButton" Style="{StaticResource ToggleSwitchStyle}" IsChecked="{Binding IsDarkTheme}" Margin="10,0"
+			<ToggleButton x:Name="themeToggleButton" Style="{StaticResource ToggleSwitchStyle}" 
+						  IsChecked="{Binding IsDarkTheme, Mode=TwoWay}" Margin="10,0"
 						  Click="ToggleButton_Click"/>
 			<TextBlock Text="Dark" VerticalAlignment="Center" Margin="5,0"/>
 		</StackPanel>
@@ -65,9 +68,17 @@
                       SelectedItem="{Binding SelectedFontSize}"/>
 		</StackPanel>
 
+		<!-- Font Size ComboBox -->
+		<StackPanel Orientation="Horizontal" Grid.Row="4" Margin="0,5">
+			<TextBlock Text="Create Serial Config:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+			<Button x:Name="newConfigButton" Content="Add" Style="{StaticResource RoundedButtonStyle}" 
+				Width="100" Height="30" HorizontalAlignment="Right" Grid.Row="4" 
+				Margin="0,10,0,0" Click="NewConfigButton_Click"/>
+		</StackPanel>
+
 		<!-- Save Button -->
 		<Button x:Name="saveButton" Content="Save" Style="{StaticResource RoundedButtonStyle}" 
-				Width="100" Height="30" HorizontalAlignment="Right" Grid.Row="4" 
+				Width="100" Height="30" HorizontalAlignment="Right" Grid.Row="5" 
 				Margin="0,10,0,0" Click="SaveButton_Click"/>
 	</Grid>
 </UserControl>

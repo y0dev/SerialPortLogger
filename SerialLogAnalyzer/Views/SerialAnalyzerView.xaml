@@ -70,7 +70,7 @@
                     Grid.Row="1" Grid.Column="3" Margin="0,0,10,10" Click="BrowseButton_Click"/>
 
 		<!-- Files ListView -->
-		<ListView x:Name="filesListView" Style="{StaticResource RoundedListViewStyle}" Grid.Row="4" Grid.ColumnSpan="3" Height="270" 
+		<ListView x:Name="filesListView" Grid.Row="4" Grid.ColumnSpan="3" Height="270" 
                   Margin="10,0,10,5"/>
 
 		<!-- Buttons Panel -->

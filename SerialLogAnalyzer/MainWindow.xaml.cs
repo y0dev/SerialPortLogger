@@ -49,8 +49,6 @@ namespace SerialLogAnalyzer
 
 		private void NewMenuItem_Click(object sender, RoutedEventArgs e)
 		{
-			NewConfigWindow newConfigWindow = new NewConfigWindow();
-			newConfigWindow.ShowDialog();
 		}
 	
 		private void SaveMenuItem_Click(object sender, RoutedEventArgs e)

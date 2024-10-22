@@ -5,7 +5,7 @@
 	<converters:BooleanToDropShadowEffectConverter x:Key="BooleanToDropShadowEffectConverter" />
 
 	<!-- Define a style for ListView -->
-	<Style TargetType="ListView" x:Key="RoundedListViewStyle">
+	<Style TargetType="ListView" x:Key="{x:Type ListView}">
 		<Setter Property="Background" Value="{DynamicResource ListViewBaseColor}"/>
 		<!-- Base background color -->
 		<Setter Property="Foreground" Value="{DynamicResource ListViewTextColor}"/>
@@ -33,7 +33,7 @@
 	</Style>
 
 	<!-- Define a style for ListViewItems -->
-	<Style TargetType="ListViewItem" x:Key="RoundedListViewItemStyle">
+	<Style TargetType="ListViewItem" x:Key="{x:Type ListViewItem}">
 		<Setter Property="Background" Value="{DynamicResource ListViewItemBaseColor}"/>
 		<!-- Base background color for items -->
 		<Setter Property="Foreground" Value="{DynamicResource ListViewItemTextColor}"/>

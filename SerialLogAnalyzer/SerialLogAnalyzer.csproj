@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Helpers\ColorScheme.cs" />
+    <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\ConsoleLogger.cs" />
     <Compile Include="Helpers\Converters\EffectConverter .cs" />
     <Compile Include="Helpers\Converters\NullToVisibilityConverter.cs" />

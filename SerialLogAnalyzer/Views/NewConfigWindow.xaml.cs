@@ -9,7 +9,9 @@ namespace SerialLogAnalyzer
 {
 	public partial class NewConfigWindow : Window
 	{
-		private AppConfiguration appConfiguration;
+		public bool NewConfigCreated;
+		public AppConfiguration appConfiguration;
+		
 
 		public NewConfigWindow()
 		{
@@ -18,12 +20,13 @@ namespace SerialLogAnalyzer
 			{
 				ComputerConfigs = new List<ComputerConfig>()
 			};
+			NewConfigCreated = false;
 		}
 
 		// Handler for creating a new PC configuration
 		private void CreatePcConfigButton_Click(object sender, RoutedEventArgs e)
 		{
-			string pcName = PcNameTextBox.Text.Trim();
+			string pcName = pcNameTextBox.Text.Trim();
 			if (string.IsNullOrEmpty(pcName))
 			{
 				MessageBox.Show("Please enter a valid PC name.");
@@ -37,10 +40,10 @@ namespace SerialLogAnalyzer
 			};
 			
 			// After creating the PC config, enable the serial console config button
-			CreateSerialConsoleConfigButton.IsEnabled = true;
+			createSerialConsoleConfigButton.IsEnabled = true;
 
 			appConfiguration.ComputerConfigs.Add(computerConfig);
-			PcNameTextBox.Clear();
+			pcNameTextBox.Clear();
 			UpdateSerialConsoleConfigList();
 		}
 
@@ -68,11 +71,7 @@ namespace SerialLogAnalyzer
 
 				// Update the list to reflect the new config
 				UpdateSerialConsoleConfigList();
-			}
-			else
-			{
-				// The user canceled the creation
-				MessageBox.Show("Serial Console Config creation was canceled.");
+				NewConfigCreated = true;
 			}
 		}
 
@@ -98,8 +97,8 @@ namespace SerialLogAnalyzer
 				// Call the SaveCustomConfiguration from ConfigurationService
 				configurationService.SaveCustomConfiguration(appConfiguration, fileName);
 			}
-		}
-		
+		} // End of SaveConfigurationButton_Click()
+
 
 		// Helper method to update the ListBox showing Serial Console Configs
 		private void UpdateSerialConsoleConfigList()
@@ -114,8 +113,48 @@ namespace SerialLogAnalyzer
 				}
 			}
 
-			SerialConsoleConfigDataGrid.ItemsSource = serialConfigs;
-		}
+			serialConsoleConfigDataGrid.ItemsSource = serialConfigs;
+		} // End of UpdateSerialConsoleConfigList()
 
+		private void ImportXmlButton_Click(object sender, RoutedEventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog
+			{
+				Filter = "XML Files (*.xml)|*.xml",
+				Title = "Import Configuration XML"
+			};
+
+			if (openFileDialog.ShowDialog() == true)
+			{
+				try
+				{
+					string xmlFilePath = openFileDialog.FileName;
+					// Logic to parse and load XML file
+					ConfigurationService configurationService = new ConfigurationService();
+					appConfiguration = configurationService.LoadCustomConfiguration(xmlFilePath);
+					List<ComputerConfig> configs = appConfiguration.ComputerConfigs;
+
+					// Populate ComboBox with configuration options
+					xmlConfigComboBox.ItemsSource = configs;
+					xmlConfigComboBox.DisplayMemberPath = "Name";
+					xmlConfigComboBox.IsEnabled = true;
+					
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"Error importing XML file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				}
+			}
+		} // End of ImportXmlButton_Click()
+
+		private void XmlConfigComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+		{
+			ComputerConfig computerConfig = (ComputerConfig)xmlConfigComboBox.SelectedItem;
+			if(computerConfig != null)
+			{
+				// Update the DataGrid with the selected config's SerialConsoleConfigs
+				serialConsoleConfigDataGrid.ItemsSource = computerConfig.SerialConsoleConfigs;
+			}
+		} // End of XmlConfigComboBox_SelectionChanged()
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using SerialLogAnalyzer.Helpers;
+using SerialLogAnalyzer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,12 +28,14 @@ namespace SerialLogAnalyzer.Views
 		private TftpServer tftpServer;
 		private Logger logger;
 		private Logger tftpLogger;
+		private MainViewModel viewModel;
 
 
-		public TFTPServerView()
+		public TFTPServerView(MainViewModel viewModel)
 		{
 			InitializeComponent();
 
+			this.viewModel = viewModel;
 			SelectedRootDir = AppDomain.CurrentDomain.BaseDirectory;
 
 			logger = Logger.GetInstance("slate_app.log", false);

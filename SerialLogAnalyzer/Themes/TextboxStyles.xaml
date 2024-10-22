@@ -3,13 +3,13 @@
                     xmlns:converters="clr-namespace:SerialLogAnalyzer.Helpers.Converters">
 
 	<converters:BooleanToDropShadowEffectConverter x:Key="BooleanToDropShadowEffectConverter" />
-	
+
 	<Style TargetType="TextBlock">
-		<Setter Property="Foreground" Value="{DynamicResource FontBrush}"/>
+		<Setter Property="Foreground" Value="{StaticResource FontBrush}"/>
 	</Style>
 
 	<Style TargetType="TextBox">
-		<Setter Property="Foreground" Value="{DynamicResource FontBrush}"/>
+		<Setter Property="Foreground" Value="{StaticResource FontBrush}"/>
 	</Style>
 
 	<!-- Define a style for rounded TextBoxes -->
