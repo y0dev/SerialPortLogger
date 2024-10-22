@@ -1,4 +1,5 @@
 ﻿using SerialLogAnalyzer.Helpers;
+using SerialLogAnalyzer.Models;
 using SerialLogAnalyzer.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace SerialLogAnalyzer.Views
 		private Logger logger;
 		private Logger tftpLogger;
 		private MainViewModel viewModel;
+		private int filesTransfered = 0;
 
 
 		public TFTPServerView(MainViewModel viewModel)
@@ -111,6 +113,7 @@ namespace SerialLogAnalyzer.Views
 				{
 					tftpServer.Stop();
 					logger.Log("TFTP Server has been stopped.", LogLevel.Info);
+					filesTransfered = tftpServer.FilesTransfered;
 				}
 				else
 				{
@@ -120,6 +123,16 @@ namespace SerialLogAnalyzer.Views
 				// Update button states
 				StopTftpServerButton.IsEnabled = false;
 				StartTftpServerButton.IsEnabled = true;
+
+				ConfigHelper.SaveConfigWithRecentActivities(viewModel,
+							new Activity
+							{
+								ComputerName = Environment.MachineName,
+								Type = "TFTP Server",
+								FilesTransferred = filesTransfered,
+								IPAddress = tftpServerIPAddresTextBox.Text,
+								ActivityDateTime = DateTime.Now
+							});
 			}
 			catch (Exception ex)
 			{

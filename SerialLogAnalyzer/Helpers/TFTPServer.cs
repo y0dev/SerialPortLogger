@@ -19,6 +19,7 @@ namespace SerialLogAnalyzer.Helpers
 		private Thread serverThread;
 
 		private Logger _logger;
+		public int FilesTransfered;
 
 		public TftpServer(string ipAddress, string baseDirectory, Logger logger)
 		{
@@ -29,6 +30,7 @@ namespace SerialLogAnalyzer.Helpers
 			isRunning = false;
 			this.baseDirectory = baseDirectory;
 			this._logger = logger;
+			FilesTransfered = 0;
 
 		}
 
@@ -149,6 +151,7 @@ namespace SerialLogAnalyzer.Helpers
 				block++;
 			}
 
+			FilesTransfered += 1;
 			_logger.Log($"File transfer complete: {filePath}", LogLevel.Info);
 		}
 
@@ -171,7 +174,7 @@ namespace SerialLogAnalyzer.Helpers
 					block++;
 				}
 			}
-
+			FilesTransfered += 1;
 			_logger.Log($"File successfully received: {filePath}", LogLevel.Info);
 		}
 

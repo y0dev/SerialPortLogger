@@ -133,5 +133,17 @@ namespace SerialLogAnalyzer.Views
 			NewConfigWindow newConfigWindow = new NewConfigWindow();
 			newConfigWindow.ShowDialog();
 		}
+
+		private void AboutButton_Click(object sender, RoutedEventArgs e)
+		{
+			AboutPage aboutPage = new AboutPage();
+			aboutPage.ShowDialog();
+		}
+
+		private void HelpButton_Click(object sender, RoutedEventArgs e)
+		{
+			HelpPage helpPage = new HelpPage();
+			helpPage.ShowDialog();
+		}
 	}
 }

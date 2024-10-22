@@ -168,10 +168,11 @@ namespace SerialLogAnalyzer.Views
 				stopAllLoggersButton.IsEnabled = true;
 				createLoggerButton.IsEnabled = AvailablePorts.Count > 0;
 				logger.Log($"Created a console thread for port '{selectedPort}' at baud rate '{selectedBaudRate}'", LogLevel.Info);
-				logger.Log($"Adding '{selectedPort}' to recent activity.", LogLevel.Debug);
+				logger.Log($"Adding '{selectedPort}' to recent activity for PC '{Environment.MachineName}'.", LogLevel.Debug);
 				ConfigHelper.SaveConfigWithRecentActivities(viewModel, 
 					new Models.Activity
 					{
+						ComputerName = Environment.MachineName,
 						Type = "Serial Logger",
 						SerialPort = selectedPort,
 						ActivityDateTime = DateTime.Now

@@ -117,6 +117,9 @@ namespace SerialLogAnalyzer.Models
 
 	public class Activity
 	{
+		[XmlAttribute("ComputerName")]
+		public string ComputerName { get; set; }
+
 		[XmlElement("Type")]
 		public string Type { get; set; }
 

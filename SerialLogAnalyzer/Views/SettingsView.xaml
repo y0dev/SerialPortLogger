@@ -37,6 +37,7 @@
 			<RowDefinition Height="Auto"/>
 			<!-- Row for Font Size ComboBox -->
 			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<!-- Row for New Config Button -->
 			<RowDefinition Height="Auto"/>
 			<!-- Row for Save Button -->
@@ -76,9 +77,19 @@
 				Margin="0,10,0,0" Click="NewConfigButton_Click"/>
 		</StackPanel>
 
+		<!-- Font Size ComboBox -->
+		<StackPanel Orientation="Horizontal" Grid.Row="5" Margin="0,5">
+			<Button x:Name="helpButton" Content="Help" Style="{StaticResource RoundedButtonStyle}" 
+				Width="100" Height="30" HorizontalAlignment="Right" 
+				Margin="10,0,0,0" Click="HelpButton_Click"/>
+			<Button x:Name="aboutButton" Content="About" Style="{StaticResource RoundedButtonStyle}" 
+				Width="100" Height="30" HorizontalAlignment="Right" 
+				Margin="10,0,0,0" Click="AboutButton_Click"/>
+		</StackPanel>
+
 		<!-- Save Button -->
 		<Button x:Name="saveButton" Content="Save" Style="{StaticResource RoundedButtonStyle}" 
-				Width="100" Height="30" HorizontalAlignment="Right" Grid.Row="5" 
+				Width="100" Height="30" HorizontalAlignment="Right" Grid.Row="6" 
 				Margin="0,10,0,0" Click="SaveButton_Click"/>
 	</Grid>
 </UserControl>

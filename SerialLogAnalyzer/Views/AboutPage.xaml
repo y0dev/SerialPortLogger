@@ -2,6 +2,20 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="About SLATE" Height="300" Width="600">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Themes/LightTheme.xaml"/>
+				<ResourceDictionary Source="../Themes/ButtonStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/ComboBoxStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/CheckboxStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/LabelStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/ListviewStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/TabItemStyles.xaml"/>
+				<ResourceDictionary Source="../Themes/TextboxStyles.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
 	<Grid>
 		<!-- Define Grid Rows and Columns -->
 		<Grid.RowDefinitions>
@@ -44,8 +58,8 @@
                    Margin="20, 60, 20, 10" TextWrapping="Wrap"/>
 
 		<!-- Close Button -->
-		<Button Grid.Row="3" Grid.Column="0" Content="Close"
-                Width="100" Click="CloseButton_Click"
+		<Button Grid.Row="3" Grid.Column="0" Content="Close" Width="100" Height="30"
+				Click="CloseButton_Click" Style="{StaticResource RoundedButtonStyle}"
                 HorizontalAlignment="Center" Margin="0, 10, 0, 10" />
 	</Grid>
 </Window>

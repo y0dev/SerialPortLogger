@@ -12,13 +12,12 @@ namespace SerialLogAnalyzer.Helpers
 		public string FilePath { get; set; }
 		public List<string> Keywords { get; set; }
 
-		public KeywordParser(string filePath, List<string> keywords)
+		public KeywordParser(string filePath)
 		{
 			FilePath = filePath;
-			Keywords = keywords ?? new List<string>();
 		}
 
-		public Dictionary<string, List<object>> ParseFile()
+		public Dictionary<string, List<object>> ParseFile(List<string> keywords)
 		{
 			var keywordData = new Dictionary<string, List<object>>();
 
@@ -29,46 +28,32 @@ namespace SerialLogAnalyzer.Helpers
 
 			// Get the dictionary of keyword regexes
 			var keywordRegexDict = KeywordRegexList.GetKeywordRegexDictionary();
-
-			// A dictionary to track the current keyword context based on the detected header
 			var currentHeaderKeyword = string.Empty;
-
-			int arrayNum = 0;
-			List<int> intergerArr = new List<int>();
 
 			// Read the file line by line
 			foreach (var line in File.ReadLines(FilePath))
 			{
-				// Skip blank lines
-				if (string.IsNullOrWhiteSpace(line))
-				{
-					continue; // Skip to the next iteration of the loop
-				}
+				if (string.IsNullOrWhiteSpace(line)) continue; // Skip blank lines
 
 				if (string.IsNullOrEmpty(currentHeaderKeyword))
 				{
-					// Check if the line matches any header keywords
+					// Check for header keywords
 					foreach (var headerKeyword in keywordRegexDict.Keys)
 					{
-						if (keywordRegexDict[headerKeyword].Regex.IsMatch(line))
+						if (keywords.Contains(headerKeyword) && keywordRegexDict[headerKeyword].Regex.IsMatch(line))
 						{
-							// Set the current header keyword when a header is found
 							currentHeaderKeyword = headerKeyword;
 							break;
 						}
 					}
-					if (!string.IsNullOrEmpty(currentHeaderKeyword))
-					{
-						continue;
-					}
+					if (!string.IsNullOrEmpty(currentHeaderKeyword)) continue;
 				}
 
-				// Now check for subkeywords based on the current header keyword
+				// Check for subkeywords based on the current header keyword
 				if (!string.IsNullOrEmpty(currentHeaderKeyword))
 				{
 					var headerKeywordRegex = keywordRegexDict[currentHeaderKeyword];
 
-					// Check subkeywords
 					foreach (var subKeyword in headerKeywordRegex.SubKeywordsRegex)
 					{
 						if (subKeyword.Regex.IsMatch(line))
@@ -76,7 +61,7 @@ namespace SerialLogAnalyzer.Helpers
 							List<object> dataList;
 							if (!keywordData.TryGetValue(subKeyword.Keyword, out dataList))
 							{
-								dataList = new List<object>(); // Use List<object> here
+								dataList = new List<object>();
 								keywordData[subKeyword.Keyword] = dataList;
 							}
 
@@ -85,73 +70,49 @@ namespace SerialLogAnalyzer.Helpers
 							{
 								if (subKeyword.DataType == "Integer")
 								{
-									// Check if the line contains a game header like "Game #1"
-									if (line.Contains("Game #"))
-									{
-										if (intergerArr.Count != 0)
-										{
-											keywordData[$"{subKeyword.DataType} Array {arrayNum - 1}"].Add(intergerArr); // Store the list of integers
-										}
-
-										// Start a new dataList for this new game
-										dataList = new List<object>();
-										keywordData[$"{subKeyword.DataType} Array {arrayNum}"] = dataList;
-										arrayNum += 1;
-										intergerArr = new List<int>();										
-									}
-
-									// Extract the entire string of numbers (across multiple lines if needed)
+									// Extract integers from the line
 									var match = subKeyword.Regex.Match(line);
 									if (match.Success)
 									{
-										// Split the string by commas and convert to a list of integers
 										var numbers = match.Value.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-																 .Select(n => int.Parse(n.Trim()))
-																 .ToList();
-										if (numbers.Count > 1)
-										{
-											foreach (int value in numbers)
-											{
-												intergerArr.Add(value);
-											}
-										}
+											.Select(n => int.Parse(n.Trim()))
+											.ToList();
+										dataList.Add(numbers); // Store as an array
 									}
 								}
 								else if (subKeyword.DataType == "Coordinate")
 								{
-									// Extract coordinates in format (x, y)
+									// Extract coordinates
 									var matches = Regex.Matches(line, @"\((-?\d+\.\d+),\s*(-?\d+\.\d+)\)");
 									var coordinates = new List<Tuple<double, double>>();
 									foreach (Match match in matches)
 									{
 										coordinates.Add(new Tuple<double, double>(
 											double.Parse(match.Groups[1].Value),
-											double.Parse(match.Groups[2].Value)
-										));
+											double.Parse(match.Groups[2].Value)));
 									}
-									dataList.Add(coordinates); // Store list of coordinate tuples
+									dataList.Add(coordinates); // Store as an array
 								}
 							}
 							else
 							{
+								// Handle single values
 								if (subKeyword.DataType == "Double")
 								{
-									// Use regex to find the first double value in the line
 									var match = Regex.Match(line, @"-?\d+(\.\d+)?");
 									if (match.Success)
 									{
-										double value = double.Parse(match.Value); // Parse the numeric portion
-										dataList.Add(value); // Add the parsed double value to the data list
+										double value = double.Parse(match.Value);
+										dataList.Add(value);
 									}
 								}
 								else if (subKeyword.DataType == "Integer")
 								{
-									// Use regex to find the first integer value in the line
 									var match = Regex.Match(line, @"-?\d+");
 									if (match.Success)
 									{
-										int value = int.Parse(match.Value); // Parse the numeric portion
-										dataList.Add(value); // Add the parsed integer value to the data list
+										int value = int.Parse(match.Value);
+										dataList.Add(value);
 									}
 								}
 							}
@@ -160,8 +121,7 @@ namespace SerialLogAnalyzer.Helpers
 				}
 			}
 			return keywordData;
-		}
-		// End of ParseFile()
+		} // End of ParseFile()
 
 		public void WriteOutput(string outputFilePath, Dictionary<string, List<object>> keywordData)
 		{
@@ -175,6 +135,9 @@ namespace SerialLogAnalyzer.Helpers
 				case ".txt":
 					WriteTxt(outputFilePath, keywordData);
 					break;
+				case ".h":
+					WriteHeaderFile(outputFilePath, keywordData);
+					break;
 				default:
 					throw new NotSupportedException($"The output file format {extension} is not supported.");
 			}
@@ -185,7 +148,7 @@ namespace SerialLogAnalyzer.Helpers
 			using (var writer = new StreamWriter(outputFilePath))
 			{
 				// Write header
-				writer.WriteLine("Keyword,Value");
+				writer.WriteLine("Keyword,Value Type,Value");
 
 				foreach (var entry in keywordData)
 				{
@@ -193,13 +156,23 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						if (item is List<int> intList)
 						{
-							// Join the list of integers as a comma-separated string
-							writer.WriteLine($"{entry.Key},{string.Join(",", intList)}");
+							// Store arrays in a single column
+							writer.WriteLine($"{entry.Key},Integer,{string.Join(",", intList)}");
 						}
-						else
+						else if (item is List<Tuple<double, double>> coordinates)
 						{
-							// Handle other types as needed (e.g., doubles, tuples, etc.)
-							writer.WriteLine($"{entry.Key},{item}");
+							var coordString = string.Join(" | ", coordinates.Select(c => $"({c.Item1}, {c.Item2})"));
+							writer.WriteLine($"{entry.Key},Coordinate,{coordString}");
+						}
+						else if (item is double)
+						{
+							// Store single double values
+							writer.WriteLine($"{entry.Key},Double,{item}");
+						}
+						else if (item is int)
+						{
+							// Store single integer values
+							writer.WriteLine($"{entry.Key},Integer,{item}");
 						}
 					}
 				}
@@ -217,13 +190,22 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						if (item is List<int> intList)
 						{
-							// Join the list of integers and format it
-							writer.WriteLine($" - Values: {string.Join(", ", intList)}");
+							// Store arrays in a similar format
+							writer.WriteLine($" - Values (Integer): {string.Join(", ", intList)}");
+						}
+						else if (item is List<Tuple<double, double>> coordinates)
+						{
+							var coordString = string.Join(" | ", coordinates.Select(c => $"({c.Item1}, {c.Item2})"));
+							writer.WriteLine($" - Values (Coordinates): {coordString}");
 						}
 						else
 						{
-							// Handle other types as needed (e.g., doubles, tuples, etc.)
-							writer.WriteLine($" - Value: {item}");
+							// Handle single values and format with a new line every 100 characters
+							var formattedValue = item.ToString();
+							for (int i = 0; i < formattedValue.Length; i += 100)
+							{
+								writer.WriteLine($" - Value: {formattedValue.Substring(i, Math.Min(100, formattedValue.Length - i))}");
+							}
 						}
 					}
 					writer.WriteLine(); // Add a blank line between keywords
@@ -231,7 +213,34 @@ namespace SerialLogAnalyzer.Helpers
 			}
 		} // End of WriteTxt()
 
+		private void WriteHeaderFile(string outputFilePath, Dictionary<string, List<object>> keywordData)
+		{
+			using (var writer = new StreamWriter(outputFilePath))
+			{
+				writer.WriteLine("// Header File for Parsed Data");
+				writer.WriteLine("// This file contains keyword definitions and expected data types.");
 
+				foreach (var entry in keywordData)
+				{
+					writer.WriteLine($"// Keyword: {entry.Key}");
+					if (entry.Value.Any())
+					{
+						// Assuming the first item determines the data type
+						var typeName = entry.Value.First().GetType().Name;
+						if (typeName == "List`1") // Checking if it's a list type
+						{
+							// Get the type of the list's contents
+							var innerType = entry.Value.First() is List<int> ? "int[]" : "Coordinate[]"; // Modify as needed
+							writer.WriteLine($"const {innerType} {entry.Key}_Data = {{ /* Array values here */ }};");
+						}
+						else
+						{
+							writer.WriteLine($"const {typeName} {entry.Key} = /* Value here */;");
+						}
+					}
+				}
+			}
+		} // End of WriteHeaderFile()
 	} // End of class KeywordParser
 
 	public class KeywordRegex

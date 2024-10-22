@@ -84,39 +84,52 @@
     </ComputerConfig>
   </ComputerConfigs>
   <RecentActivity>
-    <Activity>
-      <Type>TFTPServer</Type>
-      <FilesAnalyzed xsi:nil="true" />
-      <FilesTransferred>2</FilesTransferred>
-      <IPAddress>0.0.0.0</IPAddress>
-      <DateTime>2024-10-21T12:45:00</DateTime>
-    </Activity>
-    <Activity>
+    <Activity ComputerName="YourComputerNameHere">
       <Type>SerialLogging</Type>
       <SerialPort>COM1</SerialPort>
       <FilesAnalyzed xsi:nil="true" />
       <FilesTransferred xsi:nil="true" />
       <DateTime>2024-10-21T14:45:40</DateTime>
     </Activity>
-    <Activity>
+    <Activity ComputerName="YourComputerNameHere">
       <Type>SerialAnalyzing</Type>
       <FilesAnalyzed>3</FilesAnalyzed>
       <FilesTransferred xsi:nil="true" />
       <DateTime>2024-10-21T14:45:00</DateTime>
     </Activity>
-    <Activity>
+    <Activity ComputerName="YourComputerNameHere">
       <Type>Serial Logger</Type>
       <SerialPort>COM3</SerialPort>
       <FilesAnalyzed xsi:nil="true" />
       <FilesTransferred xsi:nil="true" />
       <DateTime>2024-10-22T00:05:00</DateTime>
     </Activity>
-    <Activity>
+    <Activity ComputerName="COG">
+      <Type>TFTPServer</Type>
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred>2</FilesTransferred>
+      <IPAddress>0.0.0.0</IPAddress>
+      <DateTime>2024-10-21T12:45:00</DateTime>
+    </Activity>
+    <Activity ComputerName="COG">
       <Type>Serial Logger</Type>
       <SerialPort>COM3</SerialPort>
       <FilesAnalyzed xsi:nil="true" />
       <FilesTransferred xsi:nil="true" />
       <DateTime>2024-10-22T00:19:26.5457714-05:00</DateTime>
+    </Activity>
+    <Activity ComputerName="COG">
+      <Type>Serial Analyzer</Type>
+      <FilesAnalyzed>1</FilesAnalyzed>
+      <FilesTransferred xsi:nil="true" />
+      <DateTime>2024-10-22T02:15:50.0304871-05:00</DateTime>
+    </Activity>
+    <Activity ComputerName="COG">
+      <Type>TFTP Server</Type>
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred>0</FilesTransferred>
+      <IPAddress>0.0.0.0</IPAddress>
+      <DateTime>2024-10-22T02:23:39.1488638-05:00</DateTime>
     </Activity>
   </RecentActivity>
 </Configuration>

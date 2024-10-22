@@ -1,4 +1,5 @@
 ﻿using SerialLogAnalyzer.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -21,36 +22,53 @@ namespace SerialLogAnalyzer.ViewModels
 		{
 			RecentItems = new ObservableCollection<RecentItem>();
 			List<Activity> activities = viewModel.Config.RecentActivity.Activities;
-			var sortedActivities = activities.OrderByDescending(a => a.ActivityDateTime).ToList();
+			// Get the current computer name
+			string currentComputerName = Environment.MachineName;
 
-			for (int i = 0; i < sortedActivities.Count; i++)
+			// Create a list to hold the filtered activities
+			List<Activity> filteredActivities = new List<Activity>();
+
+			// Filter activities for the current computer
+			for (int j = 0; j < activities.Count; j++)
+			{
+				if (activities[j].ComputerName == currentComputerName)
+				{
+					filteredActivities.Add(activities[j]);
+				}
+			}
+
+			// Sort the filtered activities by ActivityDateTime in descending order
+			filteredActivities.Sort((a, b) => b.ActivityDateTime.CompareTo(a.ActivityDateTime));
+
+			// Now add the filtered and sorted activities to RecentItems
+			for (int i = 0; i < filteredActivities.Count; i++)
 			{
 				RecentItem item = new RecentItem
 				{
-					Title = sortedActivities[i].Type,
-					Date = sortedActivities[i].ActivityDateTime.ToString("MMM dd, yyyy"),
+					Title = filteredActivities[i].Type,
+					Date = filteredActivities[i].ActivityDateTime.ToString("MMM dd, yyyy"),
 					BackgroundColor = (i % 2 == 0) ? "#844EFF" : "#4E99FF",
 				};
 
-				if (!string.IsNullOrEmpty(sortedActivities[i].SerialPort))
+				if (!string.IsNullOrEmpty(filteredActivities[i].SerialPort))
 				{
-					item.Details = sortedActivities[i].SerialPort;
+					item.Details = filteredActivities[i].SerialPort;
 					RecentItems.Add(item);
 					continue;
 				}
 
-				if (sortedActivities[i].FilesAnalyzed != null)
+				if (filteredActivities[i].FilesAnalyzed != null)
 				{
-					string details = sortedActivities[i].FilesAnalyzed > 1 ? "Files Analyzed" : "File Analyzed";
-					item.Details = $"{sortedActivities[i].FilesAnalyzed} {details}";
+					string details = filteredActivities[i].FilesAnalyzed > 1 ? "Files Analyzed" : "File Analyzed";
+					item.Details = $"{filteredActivities[i].FilesAnalyzed} {details}";
 					RecentItems.Add(item);
 					continue;
 				}
 
-				if (sortedActivities[i].FilesTransferred != null)
+				if (filteredActivities[i].FilesTransferred != null)
 				{
-					string details = sortedActivities[i].FilesTransferred > 1 ? "Files Transferred" : "File Transferred";
-					item.Details = $"{sortedActivities[i].FilesTransferred} {details} from {sortedActivities[i].IPAddress}";
+					string details = filteredActivities[i].FilesTransferred > 1 ? "Files Transferred" : "File Transferred";
+					item.Details = $"{filteredActivities[i].FilesTransferred} {details} from {filteredActivities[i].IPAddress}";
 					RecentItems.Add(item);
 					continue;
 				}

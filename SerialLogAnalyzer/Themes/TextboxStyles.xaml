@@ -14,9 +14,9 @@
 
 	<!-- Define a style for rounded TextBoxes -->
 	<Style TargetType="TextBox" x:Key="RoundedTextBoxStyle">
-		<Setter Property="Background" Value="{DynamicResource TextBoxBaseColor}"/>
+		<Setter Property="Background" Value="{StaticResource TextBoxBaseColor}"/>
 		<!-- Base background color -->
-		<Setter Property="Foreground" Value="{DynamicResource TextBoxTextColor}"/>
+		<Setter Property="Foreground" Value="{StaticResource TextBoxTextColor}"/>
 		<!-- Text color -->
 		<Setter Property="Padding" Value="10,5"/>
 		<!-- Inner spacing -->

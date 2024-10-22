@@ -17,11 +17,6 @@
 				<ResourceDictionary Source="Themes/TextboxStyles.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 
-			<!-- Global Font Resources -->
-			<FontFamily x:Key="ApplicationFontFamily">Segoe UI</FontFamily>
-			<!-- Default Font Family -->
-			<System:Double x:Key="ApplicationFontSize">12</System:Double>
-			<!-- Default Font Size using System:Double -->
 		</ResourceDictionary>
 
 	</Application.Resources>

@@ -28,13 +28,16 @@ namespace SerialLogAnalyzer.Views
 		public ObservableCollection<Item> AvailableProducts { get; private set; }
 		public ObservableCollection<string> AvailableModes { get; set; }
 		private Logger logger;
+		private MainViewModel viewModel;
 
+		private Dictionary<string, List<object>> parseData;
 		private List<string> selectedFiles = new List<string>();
 		private bool isAnalyzing = false;
 
 		public SerialAnalyzerView(MainViewModel viewModel)
 		{
 			InitializeComponent();
+			this.viewModel = viewModel;
 
 			AvailableProducts = new ObservableCollection<Item>(viewModel.Config.Items);
 
@@ -62,19 +65,11 @@ namespace SerialLogAnalyzer.Views
 
 			if (selectedFiles.Count > 0 && selectedProduct != null && selectedMode != null)
 			{
+				KeywordParser keywordParser;
+				parseData = new Dictionary<string, List<object>>();
 				isAnalyzing = true;
 				analyzeButton.IsEnabled = false; // Disable analyze button
 				cancelButton.IsEnabled = true; // Enable cancel button
-
-				// Get keywords from the selected mode
-				var keywords = new List<string>();
-				if (selectedMode.KeywordGroups != null)
-				{
-					foreach (var keywordGroup in selectedMode.KeywordGroups)
-					{
-						keywords.AddRange(keywordGroup.Keywords); // Add all keywords from each group
-					}
-				}
 
 				// Start a new thread for file analysis
 				Thread analysisThread = new Thread(() =>
@@ -83,12 +78,25 @@ namespace SerialLogAnalyzer.Views
 					{
 						logger.Log($"Analyzing {file}...", LogLevel.Info);
 
-						// Create the KeywordParser with the file and keywords
-						KeywordParser keywordParser = new KeywordParser(file, keywords);
-						var keywordData = keywordParser.ParseFile(); // Parse the file using the provided keywords
+						// Create the KeywordParser with the file
+						keywordParser = new KeywordParser(file);
 
-						// Here, you might want to handle or display the results from keywordData as needed
-						// For example, you could log them, display them in a UI element, etc.
+						// Process each KeywordGroup separately
+						foreach (var keywordGroup in selectedMode.KeywordGroups)
+						{
+							// Get keywords for this group
+							var keywords = keywordGroup.Keywords;
+
+							// Parse the file using the provided keywords
+							parseData = keywordParser.ParseFile(keywords);
+
+							// Check if the output file is specified
+							if (!string.IsNullOrEmpty(keywordGroup.OutputFile) && parseData.Count > 0)
+							{
+								// Write output to the corresponding file for this keyword group
+								keywordParser.WriteOutput(keywordGroup.OutputFile, parseData);
+							}
+						}
 
 						Thread.Sleep(1000); // Simulate time taken for analyzing each file
 					}
@@ -101,6 +109,14 @@ namespace SerialLogAnalyzer.Views
 					{
 						analyzeButton.IsEnabled = true; // Enable analyze button
 						cancelButton.IsEnabled = false; // Disable cancel button
+						ConfigHelper.SaveConfigWithRecentActivities(viewModel,
+							new Activity
+							{
+								ComputerName = Environment.MachineName,
+								Type = "Serial Analyzer",
+								FilesAnalyzed = selectedFiles.Count,
+								ActivityDateTime = DateTime.Now
+							});
 						logger.Log("Analysis complete.", LogLevel.Info);
 					}));
 				});
@@ -113,6 +129,7 @@ namespace SerialLogAnalyzer.Views
 				MessageBox.Show("Please select a product and mode before analyzing.");
 				logger.Log("Product and Mode weren't selected", LogLevel.Warning);
 			}
+
 		} // End of AnalyzeButton_Click()
 
 

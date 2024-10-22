@@ -45,17 +45,6 @@ namespace SerialLogAnalyzer
 		}
 		
 
-		// File menu event handlers (existing ones)
-
-		private void NewMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-		}
-	
-		private void SaveMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			
-		}
-
 		private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
 		{
 			Application.Current.Shutdown();
@@ -125,21 +114,7 @@ namespace SerialLogAnalyzer
 			MessageBox.Show("Contacting Support...", "Contact Support", MessageBoxButton.OK, MessageBoxImage.Information);
 			// Implement actual support contact logic (e.g., open email, show a support form, etc.)
 		} // End of ContactSupportMenuItem_Click()
-
-		// Event handler for View Help menu item
-		private void ViewHelpMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			HelpPage helpPage = new HelpPage();
-			helpPage.ShowDialog();
-		} // End of ViewHelpMenuItem_Click()
-
-		// Help menu event handler
-		private void AboutMenuItem_Click(object sender, RoutedEventArgs e)
-		{
-			AboutPage aboutPage = new AboutPage();
-			aboutPage.ShowDialog(); // Show it as a dialog
-		} // End of AboutMenuItem_Click()
-
+		
 		// Event handler for Export Data menu item
 		private void ExportDataMenuItem_Click(object sender, RoutedEventArgs e)
 		{
@@ -228,7 +203,6 @@ namespace SerialLogAnalyzer
 		{
 			RadioButton radioButton = (RadioButton)sender;
 			Console.WriteLine($"Radio Button Selected: {radioButton.Content}");
-
 		}
 	}
 }
