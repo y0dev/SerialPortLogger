@@ -30,7 +30,7 @@ namespace SerialLogAnalyzer.Views
 		private Logger logger;
 		private MainViewModel viewModel;
 
-		private Dictionary<string, List<object>> parseData;
+		private Dictionary<string, List<ParseData>> parseData;
 		private List<string> selectedFiles = new List<string>();
 		private bool isAnalyzing = false;
 
@@ -66,7 +66,7 @@ namespace SerialLogAnalyzer.Views
 			if (selectedFiles.Count > 0 && selectedProduct != null && selectedMode != null)
 			{
 				KeywordParser keywordParser;
-				parseData = new Dictionary<string, List<object>>();
+				parseData = new Dictionary<string, List<ParseData>>();
 				isAnalyzing = true;
 				analyzeButton.IsEnabled = false; // Disable analyze button
 				cancelButton.IsEnabled = true; // Enable cancel button

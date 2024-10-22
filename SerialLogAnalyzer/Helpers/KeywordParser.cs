@@ -7,6 +7,18 @@ using System.Text.RegularExpressions;
 
 namespace SerialLogAnalyzer.Helpers
 {
+	public class ParseData
+	{
+		public string Type { get; set; } // Type of data: "Integer", "Double", "Array"
+		public string Title { get; set; } // Type of data: "Integer", "Double", "Array"
+		public List<int> IntArray { get; set; } // Nullable integer array (List<int> is already nullable)
+		public List<double> DoubleArray { get; set; } // Nullable double array (List<double> is already nullable)
+		public int? SingleInt { get; set; } // Single nullable integer value
+		public double? SingleDouble { get; set; } // Single nullable double value
+	}
+
+
+
 	public class KeywordParser
 	{
 		public string FilePath { get; set; }
@@ -17,27 +29,25 @@ namespace SerialLogAnalyzer.Helpers
 			FilePath = filePath;
 		}
 
-		public Dictionary<string, List<object>> ParseFile(List<string> keywords)
+		public Dictionary<string, List<ParseData>> ParseFile(List<string> keywords)
 		{
-			var keywordData = new Dictionary<string, List<object>>();
+			var keywordData = new Dictionary<string, List<ParseData>>();
 
 			if (!File.Exists(FilePath))
 			{
 				throw new FileNotFoundException($"The file {FilePath} was not found.");
 			}
 
-			// Get the dictionary of keyword regexes
 			var keywordRegexDict = KeywordRegexList.GetKeywordRegexDictionary();
 			var currentHeaderKeyword = string.Empty;
 
 			// Read the file line by line
 			foreach (var line in File.ReadLines(FilePath))
 			{
-				if (string.IsNullOrWhiteSpace(line)) continue; // Skip blank lines
+				if (string.IsNullOrWhiteSpace(line)) continue;
 
 				if (string.IsNullOrEmpty(currentHeaderKeyword))
 				{
-					// Check for header keywords
 					foreach (var headerKeyword in keywordRegexDict.Keys)
 					{
 						if (keywords.Contains(headerKeyword) && keywordRegexDict[headerKeyword].Regex.IsMatch(line))
@@ -49,7 +59,6 @@ namespace SerialLogAnalyzer.Helpers
 					if (!string.IsNullOrEmpty(currentHeaderKeyword)) continue;
 				}
 
-				// Check for subkeywords based on the current header keyword
 				if (!string.IsNullOrEmpty(currentHeaderKeyword))
 				{
 					var headerKeywordRegex = keywordRegexDict[currentHeaderKeyword];
@@ -58,64 +67,61 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						if (subKeyword.Regex.IsMatch(line))
 						{
-							List<object> dataList;
+							List<ParseData> dataList;
 							if (!keywordData.TryGetValue(subKeyword.Keyword, out dataList))
 							{
-								dataList = new List<object>();
+								dataList = new List<ParseData>();
 								keywordData[subKeyword.Keyword] = dataList;
 							}
 
-							// Handle different data types
+							var parseData = new ParseData { Title = subKeyword.Keyword, Type = subKeyword.DataType };
+
 							if (subKeyword.IsArray)
 							{
 								if (subKeyword.DataType == "Integer")
 								{
-									// Extract integers from the line
 									var match = subKeyword.Regex.Match(line);
 									if (match.Success)
 									{
 										var numbers = match.Value.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
 											.Select(n => int.Parse(n.Trim()))
 											.ToList();
-										dataList.Add(numbers); // Store as an array
+										parseData.IntArray = numbers;
 									}
 								}
-								else if (subKeyword.DataType == "Coordinate")
+								else if (subKeyword.DataType == "Double")
 								{
-									// Extract coordinates
-									var matches = Regex.Matches(line, @"\((-?\d+\.\d+),\s*(-?\d+\.\d+)\)");
-									var coordinates = new List<Tuple<double, double>>();
-									foreach (Match match in matches)
+									var match = subKeyword.Regex.Match(line);
+									if (match.Success)
 									{
-										coordinates.Add(new Tuple<double, double>(
-											double.Parse(match.Groups[1].Value),
-											double.Parse(match.Groups[2].Value)));
+										var numbers = match.Value.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+											.Select(n => double.Parse(n.Trim()))
+											.ToList();
+										parseData.DoubleArray = numbers;
 									}
-									dataList.Add(coordinates); // Store as an array
 								}
 							}
 							else
 							{
-								// Handle single values
-								if (subKeyword.DataType == "Double")
-								{
-									var match = Regex.Match(line, @"-?\d+(\.\d+)?");
-									if (match.Success)
-									{
-										double value = double.Parse(match.Value);
-										dataList.Add(value);
-									}
-								}
-								else if (subKeyword.DataType == "Integer")
+								if (subKeyword.DataType == "Integer")
 								{
 									var match = Regex.Match(line, @"-?\d+");
 									if (match.Success)
 									{
-										int value = int.Parse(match.Value);
-										dataList.Add(value);
+										parseData.SingleInt = int.Parse(match.Value);
+									}
+								}
+								else if (subKeyword.DataType == "Double")
+								{
+									var match = Regex.Match(line, @"-?\d+(\.\d+)?");
+									if (match.Success)
+									{
+										parseData.SingleDouble = double.Parse(match.Value);
 									}
 								}
 							}
+
+							dataList.Add(parseData);
 						}
 					}
 				}
@@ -123,7 +129,7 @@ namespace SerialLogAnalyzer.Helpers
 			return keywordData;
 		} // End of ParseFile()
 
-		public void WriteOutput(string outputFilePath, Dictionary<string, List<object>> keywordData)
+		public void WriteOutput(string outputFilePath, Dictionary<string, List<ParseData>> keywordData)
 		{
 			string extension = Path.GetExtension(outputFilePath).ToLowerInvariant();
 
@@ -143,99 +149,94 @@ namespace SerialLogAnalyzer.Helpers
 			}
 		} // End of WriteOutput()
 
-		private void WriteCsv(string outputFilePath, Dictionary<string, List<object>> keywordData)
+		private void WriteCsv(string outputFilePath, Dictionary<string, List<ParseData>> keywordData)
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
-				// Write header
-				writer.WriteLine("Keyword,Value Type,Value");
+				writer.WriteLine("Keyword,Type,Value");
 
 				foreach (var entry in keywordData)
 				{
-					foreach (var item in entry.Value)
+					foreach (var data in entry.Value)
 					{
-						if (item is List<int> intList)
+						if (data.IntArray != null)
 						{
-							// Store arrays in a single column
-							writer.WriteLine($"{entry.Key},Integer,{string.Join(",", intList)}");
+							writer.WriteLine($"{data.Title},Integer Array,{string.Join(",", data.IntArray)}");
 						}
-						else if (item is List<Tuple<double, double>> coordinates)
+						else if (data.DoubleArray != null)
 						{
-							var coordString = string.Join(" | ", coordinates.Select(c => $"({c.Item1}, {c.Item2})"));
-							writer.WriteLine($"{entry.Key},Coordinate,{coordString}");
+							writer.WriteLine($"{data.Title},Double Array,{string.Join(",", data.DoubleArray)}");
 						}
-						else if (item is double)
+						else if (data.SingleInt.HasValue)
 						{
-							// Store single double values
-							writer.WriteLine($"{entry.Key},Double,{item}");
+							writer.WriteLine($"{data.Title},Integer,{data.SingleInt.Value}");
 						}
-						else if (item is int)
+						else if (data.SingleDouble.HasValue)
 						{
-							// Store single integer values
-							writer.WriteLine($"{entry.Key},Integer,{item}");
+							writer.WriteLine($"{data.Title},Double,{data.SingleDouble.Value}");
 						}
 					}
 				}
 			}
 		} // End of WriteCsv()
 
-		private void WriteTxt(string outputFilePath, Dictionary<string, List<object>> keywordData)
+		private void WriteTxt(string outputFilePath, Dictionary<string, List<ParseData>> keywordData)
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
 				foreach (var entry in keywordData)
 				{
 					writer.WriteLine($"Keyword: {entry.Key}");
-					foreach (var item in entry.Value)
+
+					foreach (var data in entry.Value)
 					{
-						if (item is List<int> intList)
+						if (data.IntArray != null)
 						{
-							// Store arrays in a similar format
-							writer.WriteLine($" - Values (Integer): {string.Join(", ", intList)}");
+							writer.WriteLine($" - Values (Integer Array): {string.Join(", ", data.IntArray)}");
 						}
-						else if (item is List<Tuple<double, double>> coordinates)
+						else if (data.DoubleArray != null)
 						{
-							var coordString = string.Join(" | ", coordinates.Select(c => $"({c.Item1}, {c.Item2})"));
-							writer.WriteLine($" - Values (Coordinates): {coordString}");
+							writer.WriteLine($" - Values (Double Array): {string.Join(", ", data.DoubleArray)}");
 						}
-						else
+						else if (data.SingleInt.HasValue)
 						{
-							// Handle single values and format with a new line every 100 characters
-							var formattedValue = item.ToString();
-							for (int i = 0; i < formattedValue.Length; i += 100)
-							{
-								writer.WriteLine($" - Value: {formattedValue.Substring(i, Math.Min(100, formattedValue.Length - i))}");
-							}
+							writer.WriteLine($" - Value (Integer): {data.SingleInt.Value}");
+						}
+						else if (data.SingleDouble.HasValue)
+						{
+							writer.WriteLine($" - Value (Double): {data.SingleDouble.Value}");
 						}
 					}
-					writer.WriteLine(); // Add a blank line between keywords
+					writer.WriteLine(); // Blank line between keywords
 				}
 			}
 		} // End of WriteTxt()
 
-		private void WriteHeaderFile(string outputFilePath, Dictionary<string, List<object>> keywordData)
+		private void WriteHeaderFile(string outputFilePath, Dictionary<string, List<ParseData>> keywordData)
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
 				writer.WriteLine("// Header File for Parsed Data");
-				writer.WriteLine("// This file contains keyword definitions and expected data types.");
 
 				foreach (var entry in keywordData)
 				{
-					writer.WriteLine($"// Keyword: {entry.Key}");
-					if (entry.Value.Any())
+					foreach (var data in entry.Value)
 					{
-						// Assuming the first item determines the data type
-						var typeName = entry.Value.First().GetType().Name;
-						if (typeName == "List`1") // Checking if it's a list type
+						if (data.IntArray != null)
 						{
-							// Get the type of the list's contents
-							var innerType = entry.Value.First() is List<int> ? "int[]" : "Coordinate[]"; // Modify as needed
-							writer.WriteLine($"const {innerType} {entry.Key}_Data = {{ /* Array values here */ }};");
+							writer.WriteLine($"const int {data.Title}[] = {{ {string.Join(", ", data.IntArray)} }};");
 						}
-						else
+						else if (data.DoubleArray != null)
 						{
-							writer.WriteLine($"const {typeName} {entry.Key} = /* Value here */;");
+							writer.WriteLine($"const double {data.Title}[] = {{ {string.Join(", ", data.DoubleArray)} }};");
+						}
+						else if (data.SingleInt.HasValue)
+						{
+							writer.WriteLine($"const int {data.Title} = {data.SingleInt.Value};");
+						}
+						else if (data.SingleDouble.HasValue)
+						{
+							writer.WriteLine($"const double {data.Title} = {data.SingleDouble.Value};");
 						}
 					}
 				}

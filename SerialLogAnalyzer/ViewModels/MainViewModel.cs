@@ -3,7 +3,9 @@ using SerialLogAnalyzer.Models;
 using SerialLogAnalyzer.Services;
 using SerialLogAnalyzer.Views;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows;
 
 namespace SerialLogAnalyzer.ViewModels
 {
@@ -56,8 +58,48 @@ namespace SerialLogAnalyzer.ViewModels
 			configService = new ConfigurationService(Properties.Resources.CONFIG_PATH);
 			LoadConfig();
 
+			// Apply the theme when the ViewModel is instantiated
+			ApplyInitialTheme();
+
 			SelectedView = new HomeView(this);
 		}
+
+		private void ApplyInitialTheme()
+		{
+			// Check the saved theme in config or other state management (dark or light)
+			bool isDarkTheme = SelectedTheme == "Dark";
+
+			// Save the existing dictionaries excluding the theme dictionary
+			var existingDictionaries = new List<ResourceDictionary>();
+
+			foreach (var dictionary in Application.Current.Resources.MergedDictionaries)
+			{
+				// Check if the dictionary is a theme dictionary by its source or other criteria
+				var source = dictionary.Source?.ToString();
+				if (source != null && (source.Contains("DarkTheme.xaml") || source.Contains("LightTheme.xaml")))
+				{
+					continue; // Skip the current theme dictionary
+				}
+
+				// Add non-theme dictionaries to the list
+				existingDictionaries.Add(dictionary);
+			}
+
+			// Clear all the dictionaries from the merged dictionary collection
+			Application.Current.Resources.MergedDictionaries.Clear();
+
+			// Add the non-theme dictionaries back
+			foreach (var dictionary in existingDictionaries)
+			{
+				Application.Current.Resources.MergedDictionaries.Add(dictionary);
+			}
+
+			// Add the new theme dictionary based on the selected theme
+			var themeUri = isDarkTheme ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml";
+			Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri(themeUri, UriKind.Relative) });
+		}
+
+
 
 		private void LoadConfig()
 		{
