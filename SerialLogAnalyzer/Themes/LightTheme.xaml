@@ -10,9 +10,10 @@
 	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}" />
 	<SolidColorBrush x:Key="SidebarBrush" Color="{StaticResource SecondaryColor}"/>
 	<SolidColorBrush x:Key="FontBrush" Color="{StaticResource FontColor}" />
+	<SolidColorBrush x:Key="ForegroundBrush" Color="#272537"/>
 
 	<!-- Toggle Switch Colors -->
-	<SolidColorBrush x:Key="ToggleSwitchBackground" Color="#4B5563"/>
+	<SolidColorBrush x:Key="ToggleSwitchBackground" Color="#272537"/>
 	<SolidColorBrush x:Key="ToggleSwitchCheckedBackground" Color="#2563EB"/>
 	<SolidColorBrush x:Key="ToggleSwitchBorderColor" Color="#374151"/>
 	<SolidColorBrush x:Key="ToggleSwitchThumbColor" Color="White"/>
@@ -21,6 +22,7 @@
 
 	<!-- TextBox Styles -->
 	<SolidColorBrush x:Key="TextBoxBaseColor" Color="#F9FAFB" />
+	<SolidColorBrush x:Key="TextBoxTextColor" Color="#272537"/>
 	<SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#66A3FF" />
 	<SolidColorBrush x:Key="TextBoxFocusedColor" Color="#005BB5" />
 	<SolidColorBrush x:Key="TextBoxDisabledColor" Color="#F8FAFC" />
@@ -75,16 +77,16 @@
 	<SolidColorBrush x:Key="MenuButtonStyleCheckedBackgroundBrush" Color="#D5D7E0"/>
 
 	<!-- Define Brushes for ComboBox -->
-	<SolidColorBrush x:Key="ComboBoxToggleButtonBackgroundBrush" Color="#3F3F3F"/>
+	<SolidColorBrush x:Key="ComboBoxToggleButtonBackgroundBrush" Color="#FAF9F6"/>
 	<SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="#888888"/>
-	<SolidColorBrush x:Key="ComboBoxArrowFillBrush" Color="White"/>
+	<SolidColorBrush x:Key="ComboBoxArrowFillBrush" Color="#272537"/>
 	<SolidColorBrush x:Key="ComboBoxArrowHoverFillBrush" Color="#E0E0E0"/>
 	<SolidColorBrush x:Key="ComboBoxArrowPressedFillBrush" Color="#CCCCCC"/>
-	<SolidColorBrush x:Key="ComboBoxTextBoxBackgroundBrush" Color="#FF3F3F3F"/>
-	<SolidColorBrush x:Key="ComboBoxTextBoxForegroundBrush" Color="Green"/>
+	<SolidColorBrush x:Key="ComboBoxTextBoxBackgroundBrush" Color="#FAF9F6"/>
+	<SolidColorBrush x:Key="ComboBoxTextBoxForegroundBrush" Color="#272537"/>
 	<SolidColorBrush x:Key="DropDownBorderBrush" Color="#888888"/>
-	<SolidColorBrush x:Key="DropDownBackgroundBrush" Color="#FF3F3F3F"/>
-	<SolidColorBrush x:Key="ComboBoxItemHighlightBackgroundBrush" Color="#FF4F4F4F"/>
-	<SolidColorBrush x:Key="ComboBoxItemDisabledForegroundBrush" Color="#888888"/>
+	<SolidColorBrush x:Key="DropDownBackgroundBrush" Color="#FAF9F6"/>
+	<SolidColorBrush x:Key="ComboBoxItemHighlightBackgroundBrush" Color="#AFAEAC"/>
+	<SolidColorBrush x:Key="ComboBoxItemDisabledForegroundBrush" Color="#232222"/>
 
 </ResourceDictionary>
