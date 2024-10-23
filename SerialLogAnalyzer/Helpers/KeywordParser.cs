@@ -40,10 +40,15 @@ namespace SerialLogAnalyzer.Helpers
 
 			var keywordRegexDict = KeywordRegexList.GetKeywordRegexDictionary();
 			var currentHeaderKeyword = string.Empty;
+			int index = 0;
+			int lastArrayIndex = 0;
 
 			// Read the file line by line
 			foreach (var line in File.ReadLines(FilePath))
 			{
+				List<int> currentIntArray = null;
+				List<double> currentDoubleArray = null;
+
 				if (string.IsNullOrWhiteSpace(line)) continue;
 
 				if (string.IsNullOrEmpty(currentHeaderKeyword))
@@ -86,7 +91,27 @@ namespace SerialLogAnalyzer.Helpers
 										var numbers = match.Value.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
 											.Select(n => int.Parse(n.Trim()))
 											.ToList();
-										parseData.IntArray = numbers;
+
+										// Initialize or continue the array
+										if (currentIntArray == null)
+										{
+											if (index - lastArrayIndex == 0 || index - lastArrayIndex > 1)
+											{
+												currentIntArray = new List<int>();
+												currentIntArray.AddRange(numbers);
+												parseData.IntArray = currentIntArray;
+												currentIntArray = null; // Reset for next use
+												dataList.Add(parseData);
+											}
+											else if (index - lastArrayIndex == 1)
+											{
+												dataList[dataList.Count - 1].IntArray.AddRange(numbers);
+												currentIntArray = null; // Reset for next use
+											}
+											lastArrayIndex = index;
+											index++;
+											break;
+										}
 									}
 								}
 								else if (subKeyword.DataType == "Double")
@@ -94,10 +119,29 @@ namespace SerialLogAnalyzer.Helpers
 									var match = subKeyword.Regex.Match(line);
 									if (match.Success)
 									{
-										var numbers = match.Value.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-											.Select(n => double.Parse(n.Trim()))
-											.ToList();
-										parseData.DoubleArray = numbers;
+										// Initialize or continue the array
+										if (currentDoubleArray == null)
+										{
+											var numbers = match.Value.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+												.Select(n => double.Parse(n.Trim()))
+												.ToList();
+											if (index - lastArrayIndex == 0 || index - lastArrayIndex > 1)
+											{
+												currentDoubleArray = new List<double>();
+												currentDoubleArray.AddRange(numbers);
+												parseData.IntArray = currentIntArray;
+												currentDoubleArray = null; // Reset for next use
+												dataList.Add(parseData);
+											}
+											else if (index - lastArrayIndex == 1)
+											{
+												dataList[dataList.Count - 1].DoubleArray.AddRange(numbers);
+												currentDoubleArray = null; // Reset for next use
+											}
+											lastArrayIndex = index;
+											index++;
+											break;
+										}
 									}
 								}
 							}
@@ -122,8 +166,10 @@ namespace SerialLogAnalyzer.Helpers
 							}
 
 							dataList.Add(parseData);
+							index++;
+							break;
 						}
-					}
+					} // End foreach subKeyword
 				}
 			}
 			return keywordData;
@@ -153,7 +199,31 @@ namespace SerialLogAnalyzer.Helpers
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
-				writer.WriteLine("Keyword,Type,Value");
+				StringBuilder sb = new StringBuilder();
+				int columnNum = 0;
+
+				// Check if a single value exist first
+				foreach (var entry in keywordData)
+				{
+					foreach (var data in entry.Value)
+					{
+						if (data.SingleInt.HasValue)
+						{
+							writer.WriteLine($"{data.Title},{data.SingleInt.Value}");
+							columnNum = 3;
+						}
+						else if (data.SingleDouble.HasValue)
+						{
+							writer.WriteLine($"{data.Title},{data.SingleDouble.Value}");
+							columnNum = 3;
+						}
+					}
+				}
+
+				for(int i = 0;i < columnNum;i++)
+				{
+					sb.Append(',');
+				}
 
 				foreach (var entry in keywordData)
 				{
@@ -161,19 +231,21 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						if (data.IntArray != null)
 						{
-							writer.WriteLine($"{data.Title},Integer Array,{string.Join(",", data.IntArray)}");
+							writer.WriteLine($"{sb.ToString()}{data.Title}");
+							foreach (var number in data.IntArray)
+							{
+								writer.WriteLine($"{sb.ToString()}{number}");
+							}
+							sb.Append(',');
 						}
 						else if (data.DoubleArray != null)
 						{
-							writer.WriteLine($"{data.Title},Double Array,{string.Join(",", data.DoubleArray)}");
-						}
-						else if (data.SingleInt.HasValue)
-						{
-							writer.WriteLine($"{data.Title},Integer,{data.SingleInt.Value}");
-						}
-						else if (data.SingleDouble.HasValue)
-						{
-							writer.WriteLine($"{data.Title},Double,{data.SingleDouble.Value}");
+							writer.WriteLine($"{sb.ToString()}{data.Title}");
+							foreach (var number in data.DoubleArray)
+							{
+								writer.WriteLine($"{sb.ToString()}{number}");
+							}
+							sb.Append(',');
 						}
 					}
 				}
@@ -275,13 +347,6 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						new KeywordRegex
 						{
-							Keyword = "Dribble Numbers Game",
-							Regex = new Regex(@"(\d+(?:,\s*\d+)*)", RegexOptions.Multiline),
-							DataType = "Integer",
-							IsArray = true
-						},
-						new KeywordRegex
-						{
 							Keyword = "Total Possessions",
 							Regex = new Regex(@"Total Possessions:\s*(\d+)", RegexOptions.Multiline),
 							DataType = "Integer",
@@ -321,7 +386,14 @@ namespace SerialLogAnalyzer.Helpers
 							Regex = new Regex(@"Number of times the Least Dribbles Occurred:\s*(\d+)", RegexOptions.Multiline),
 							DataType = "Integer",
 							IsArray = false
-						}
+						},
+						new KeywordRegex
+						{
+							Keyword = "Dribble Numbers Game",
+							Regex = new Regex(@"(\d+(?:,\s*\d+)*)", RegexOptions.Multiline),
+							DataType = "Integer",
+							IsArray = true
+						},
 					}
 				}
 			},
