@@ -105,37 +105,38 @@
       <DateTime>2024-10-22T00:05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
-      <Type>TFTPServer</Type>
-      <FilesAnalyzed xsi:nil="true" />
-      <FilesTransferred>2</FilesTransferred>
-      <IPAddress>0.0.0.0</IPAddress>
-      <DateTime>2024-10-21T12:45:00</DateTime>
-    </Activity>
-    <Activity ComputerName="COG">
-      <Type>Serial Logger</Type>
-      <SerialPort>COM3</SerialPort>
-      <FilesAnalyzed xsi:nil="true" />
-      <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-22T00:19:26.5457714-05:00</DateTime>
-    </Activity>
-    <Activity ComputerName="COG">
       <Type>Serial Analyzer</Type>
       <FilesAnalyzed>1</FilesAnalyzed>
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-22T02:15:50.0304871-05:00</DateTime>
+      <DateTime>2024-10-22T13:29:21.3606784-05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
       <Type>TFTP Server</Type>
       <FilesAnalyzed xsi:nil="true" />
       <FilesTransferred>0</FilesTransferred>
       <IPAddress>0.0.0.0</IPAddress>
-      <DateTime>2024-10-22T02:23:39.1488638-05:00</DateTime>
+      <DateTime>2024-10-22T22:52:53.5390849-05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
-      <Type>Serial Analyzer</Type>
-      <FilesAnalyzed>1</FilesAnalyzed>
-      <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-22T13:29:21.3606784-05:00</DateTime>
+      <Type>TFTP Server</Type>
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred>0</FilesTransferred>
+      <IPAddress>0.0.0.0</IPAddress>
+      <DateTime>2024-10-22T23:11:31.7679743-05:00</DateTime>
+    </Activity>
+    <Activity ComputerName="COG">
+      <Type>TFTP Server</Type>
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred>0</FilesTransferred>
+      <IPAddress>0.0.0.0</IPAddress>
+      <DateTime>2024-10-22T23:13:59.9960804-05:00</DateTime>
+    </Activity>
+    <Activity ComputerName="COG">
+      <Type>TFTP Server</Type>
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred>0</FilesTransferred>
+      <IPAddress>0.0.0.0</IPAddress>
+      <DateTime>2024-10-22T23:28:11.5107559-05:00</DateTime>
     </Activity>
   </RecentActivity>
 </Configuration>

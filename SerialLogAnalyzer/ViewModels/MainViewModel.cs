@@ -15,6 +15,7 @@ namespace SerialLogAnalyzer.ViewModels
 		private AppConfiguration config;
 		private string selectedTheme; // Field to store the selected theme
 		private object _currentView;
+		private string previousView = null; 
 
 		public RelayCommand ChangeViewCommand { get; private set; }
 
@@ -99,8 +100,6 @@ namespace SerialLogAnalyzer.ViewModels
 			Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri(themeUri, UriKind.Relative) });
 		}
 
-
-
 		private void LoadConfig()
 		{
 			Config = configService.LoadConfiguration();
@@ -115,6 +114,13 @@ namespace SerialLogAnalyzer.ViewModels
 
 		private void ChangeView(object viewName)
 		{
+			// Check if the previous view was "Settings" before switching views
+			if (previousView == "Settings")
+			{
+				// Reload config, assuming it may have been updated
+				LoadConfig();
+			}
+
 			switch (viewName)
 			{
 				case "Home":
@@ -134,6 +140,12 @@ namespace SerialLogAnalyzer.ViewModels
 					break;
 					// Add other cases as needed
 			}
+
+			// Save the current view as the previous view for future reference
+			previousView = viewName.ToString();
+
+			// Apply the theme after the view is changed
+			ApplyInitialTheme();
 		}
 
 

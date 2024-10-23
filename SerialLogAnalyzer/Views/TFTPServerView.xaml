@@ -26,6 +26,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
 			<!-- Status and configuration -->
 			<RowDefinition Height="*"/>
 			<!-- ListView for logs -->
@@ -40,14 +41,14 @@
 
 		<!-- Status and Configuration Panel -->
 		<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
-			<TextBlock x:Name="tftpServerStatusTextBlock" 
+			<TextBlock x:Name="tftpServerStatusTextBlock" TextWrapping="Wrap" Width="120"
                Text="Status: Stopped" 
                VerticalAlignment="Center" 
                Foreground="Red" 
                Margin="0,0,20,0" />
 
 			<!-- IP Address -->
-			<StackPanel Style="{StaticResource LabelOnTopStyle}">
+			<StackPanel Style="{StaticResource LabelOnTopStyle}" Margin="0,0,20,0">
 				<Label Content="IP Address:" />
 				<TextBox x:Name="tftpServerIPAddresTextBox" 
                  Style="{StaticResource RoundedTextBoxStyle}" 
@@ -55,34 +56,39 @@
 			</StackPanel>
 
 			<!-- Port -->
-			<StackPanel Style="{StaticResource LabelOnTopStyle}">
+			<StackPanel Style="{StaticResource LabelOnTopStyle}" Margin="0,0,20,0">
 				<Label Content="Port:" />
 				<TextBox x:Name="tftpServerPortTextBox" 
                  Style="{StaticResource RoundedTextBoxStyle}" 
                  Text="69" Width="150" 
                  IsEnabled="False"/>
 			</StackPanel>
+		</StackPanel>
 
-			<!-- Root Directory -->
-			<StackPanel Style="{StaticResource LabelOnTopStyle}">
-				<Label Content="Root Directory:" />
-				<TextBox x:Name="tftpRootDirectoryTextBox" Text="."
-                 Style="{StaticResource RoundedTextBoxStyle}" Width="250"/>
+
+		<!-- Root Directory -->
+		<StackPanel Grid.Row="2" Margin="10" Style="{StaticResource LabelOnTopStyle}">
+			<Label Content="Root Directory:" />
+			<StackPanel Orientation="Horizontal">
+				<TextBox x:Name="tftpRootDirectoryTextBox" Text="." Margin="0, 10, 20, 10"
+							 Style="{StaticResource RoundedTextBoxStyle}" Width="350" />
+				<Button x:Name="BrowseDirButton" Style="{StaticResource RoundedButtonStyle}" Content="Browse" 
+					Width="100" Height="30" Margin="0,0,10,0" Click="BrowseDirButton_Click"/>
 			</StackPanel>
 		</StackPanel>
 
 
 		<!-- ListView to display TFTP server logs or activity -->
-		<ListView x:Name="tftpServerListView" Grid.Row="2" Margin="10" />
+		<ListView x:Name="tftpServerListView" Grid.Row="3" Margin="10" />
 
 		<!-- Progress bar for file transfer -->
-		<StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
+		<StackPanel Grid.Row="4" Orientation="Horizontal" Margin="10" VerticalAlignment="Center">
 			<Label Content="File Transfer Progress:" Margin="0,0,10,0" VerticalAlignment="Center"/>
 			<ProgressBar x:Name="FileTransferProgressBar" Width="300" Height="20" Minimum="0" Maximum="100" Value="0"/>
 		</StackPanel>
 
 		<!-- StackPanel for Start/Stop, Export, Clear Logs, and File Operations -->
-		<StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+		<StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
 			<Button x:Name="StartTftpServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Start" 
 					Width="100" Height="30" Margin="0,0,10,0" Click="StartServerButton_Click"/>
 			<Button x:Name="StopTftpServerButton" Style="{StaticResource RoundedButtonStyle}" Content="Stop" 

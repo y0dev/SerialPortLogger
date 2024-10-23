@@ -86,20 +86,28 @@ namespace SerialLogAnalyzer.Views
 			try
 			{
 				// Initialize and start the TFTP server
-				tftpServer = new TftpServer(ipAddress, rootDirectory, tftpLogger);
+				tftpServer = new TftpServer(ipAddress, rootDirectory, tftpLogger, tftpServerListView);
 				logger.Log($"TFTP Server has been initialized with IP: '{ipAddress}' and root directory '{rootDirectory}'.", LogLevel.Info);
 				tftpServer.Start();
+
+				tftpServerStatusTextBlock.Text = "Status: Started";
+				tftpServerStatusTextBlock.Foreground = new SolidColorBrush(Colors.Green);
 
 				// Update button states
 				StartTftpServerButton.IsEnabled = false;
 				StopTftpServerButton.IsEnabled = true;
 
+				// Log success message
+				tftpServer.AddLogEntry($"TFTP Server started at IP: {ipAddress} and Port: {port}.");
 				logger.Log($"TFTP Server started at IP: {ipAddress} and Port: {port}.", LogLevel.Info);
+
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Failed to start the TFTP server. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				tftpServer.AddLogEntry($"Error starting TFTP Server: {ex.Message}");
 				logger.Log($"Error starting TFTP Server: {ex.Message}", LogLevel.Error);
+				tftpServerStatusTextBlock.Text = "Status: Error Starting";
+				tftpServerStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
 			}
 
 		} // End of StartServerButton_Click()
@@ -112,6 +120,7 @@ namespace SerialLogAnalyzer.Views
 				if (tftpServer != null)
 				{
 					tftpServer.Stop();
+					tftpServer.AddLogEntry("TFTP Server has been stopped.");
 					logger.Log("TFTP Server has been stopped.", LogLevel.Info);
 					filesTransfered = tftpServer.FilesTransfered;
 				}
@@ -123,6 +132,10 @@ namespace SerialLogAnalyzer.Views
 				// Update button states
 				StopTftpServerButton.IsEnabled = false;
 				StartTftpServerButton.IsEnabled = true;
+
+
+				tftpServerStatusTextBlock.Text = "Status: Stopped";
+				tftpServerStatusTextBlock.Foreground = new SolidColorBrush(Colors.Red);
 
 				ConfigHelper.SaveConfigWithRecentActivities(viewModel,
 							new Activity
@@ -136,7 +149,7 @@ namespace SerialLogAnalyzer.Views
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Failed to stop the TFTP server. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				tftpServer.AddLogEntry($"Error stopping TFTP Server: {ex.Message}");
 				logger.Log($"Error stopping TFTP Server: {ex.Message}", LogLevel.Error);
 			}
 
@@ -149,7 +162,7 @@ namespace SerialLogAnalyzer.Views
 				// Clear the logs in the logger
 				if (tftpLogger != null)
 				{
-					tftpLogger.ClearLog(); 
+					tftpLogger.ClearLog();
 					logger.Log("TFTP Server logs have been cleared.", LogLevel.Info);
 				}
 
@@ -162,10 +175,10 @@ namespace SerialLogAnalyzer.Views
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Failed to clear logs. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				tftpServer.AddLogEntry($"Failed to clear logs. Error: {ex.Message}");
 				logger.Log($"Error clearing logs: {ex.Message}", LogLevel.Error);
 			}
-		}
+		} // End of ClearLogsButton_Click()
 
 		private void ExportLogsButton_Click(object sender, RoutedEventArgs e)
 		{
@@ -190,6 +203,7 @@ namespace SerialLogAnalyzer.Views
 					if (tftpLogger != null)
 					{
 						tftpLogger.Export(filePath); // Assuming the logger class has an Export method to write logs to file
+						tftpServer.AddLogEntry($"TFTP Server logs have been exported to {filePath}.");
 						logger.Log($"TFTP Server logs have been exported to {filePath}.", LogLevel.Info);
 
 						MessageBox.Show($"Logs have been exported successfully to {filePath}.", "Export Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -198,19 +212,28 @@ namespace SerialLogAnalyzer.Views
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Failed to export logs. Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				tftpServer.AddLogEntry($"Failed to export logs. Error: {ex.Message}");
 				logger.Log($"Error exporting logs: {ex.Message}", LogLevel.Error);
 			}
-		}
+		} // End of ExportLogsButton_Click()
 
-		private void UploadFileButton_Click(object sender, RoutedEventArgs e)
+		private void BrowseDirButton_Click(object sender, RoutedEventArgs e)
 		{
+			// Create an instance of FolderBrowserDialog
+			using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+			{
+				// Set the initial selected path (optional, starts with the current directory)
+				dialog.SelectedPath = tftpRootDirectoryTextBox.Text;
 
-		}
+				// Show the dialog and check if a folder was selected
+				System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
-		private void DownloadFileButton_Click(object sender, RoutedEventArgs e)
-		{
-
-		}
+				if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
+				{
+					// Update the TextBox with the selected directory path
+					tftpRootDirectoryTextBox.Text = dialog.SelectedPath;
+				}
+			}
+		} // End of BrowseDirButton_Click()
 	}
 }

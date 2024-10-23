@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Windows.Controls;
 
 namespace SerialLogAnalyzer.Helpers
 {
@@ -18,10 +19,12 @@ namespace SerialLogAnalyzer.Helpers
 		private string baseDirectory;
 		private Thread serverThread;
 
+		private ListView tftpServerListView;
+
 		private Logger _logger;
 		public int FilesTransfered;
 
-		public TftpServer(string ipAddress, string baseDirectory, Logger logger)
+		public TftpServer(string ipAddress, string baseDirectory, Logger logger, ListView listView)
 		{
 			// Bind to the specific IP address
 			localEP = new IPEndPoint(IPAddress.Parse(ipAddress), TftpPort);
@@ -30,9 +33,16 @@ namespace SerialLogAnalyzer.Helpers
 			isRunning = false;
 			this.baseDirectory = baseDirectory;
 			this._logger = logger;
+			this.tftpServerListView = listView;
 			FilesTransfered = 0;
 
 		}
+
+		// Add a new log entry to the ListView
+		public void AddLogEntry(string message)
+		{
+			tftpServerListView.Items.Add($"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}: {message}"); // Add the log entry to the ListView
+		} // End of AddLogEntry()
 
 		// Method to start the TFTP server
 		public void Start()
