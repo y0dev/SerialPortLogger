@@ -50,9 +50,8 @@
 			<!-- IP Address -->
 			<StackPanel Style="{StaticResource LabelOnTopStyle}" Margin="0,0,20,0">
 				<Label Content="IP Address:" />
-				<TextBox x:Name="tftpServerIPAddresTextBox" 
-                 Style="{StaticResource RoundedTextBoxStyle}" 
-                 Text="0.0.0.0" Width="150"/>
+				<TextBox x:Name="tftpServerIPAddresTextBox" Style="{StaticResource RoundedTextBoxStyle}" 
+						 Text="0.0.0.0" Width="150" LostFocus="TftpServerIPAddresTextBox_LostFocus"/>
 			</StackPanel>
 
 			<!-- Port -->

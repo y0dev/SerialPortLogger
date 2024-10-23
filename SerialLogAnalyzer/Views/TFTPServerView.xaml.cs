@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -235,5 +236,27 @@ namespace SerialLogAnalyzer.Views
 				}
 			}
 		} // End of BrowseDirButton_Click()
+
+		private void TftpServerIPAddresTextBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			var textBox = sender as TextBox;
+			string ipAddress = textBox.Text;
+
+			if (!IsValidIPAddress(ipAddress))
+			{
+				MessageBox.Show("Please enter a valid IP address.", "Invalid IP Address", MessageBoxButton.OK, MessageBoxImage.Warning);
+			}
+		}
+
+		// Function to validate the IP address
+		private bool IsValidIPAddress(string ipAddress)
+		{
+			// Regex pattern for matching a valid IP address
+			string pattern = @"^((25[0-5]|(2[0-4][0-9])|([01]?[0-9][0-9]?))\.){3}(25[0-5]|(2[0-4][0-9])|([01]?[0-9][0-9]?))$";
+			var regex = new Regex(pattern);
+
+			// Check if the input matches the IP address pattern
+			return regex.IsMatch(ipAddress);
+		} // End of IsValidIPAddress()
 	}
 }
