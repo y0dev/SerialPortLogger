@@ -3,7 +3,9 @@ using SerialLogAnalyzer.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +20,7 @@ namespace SerialLogAnalyzer.Views
 		public ObservableCollection<string> AvailablePorts { get; private set; }
 		public ObservableCollection<int> BaudRates { get; set; }
 		public int SelectedBaudRate { get; set; }
+		public ObservableCollection<string> OpenedPorts { get; private set; } // Collection to track opened ports
 
 		private MainViewModel viewModel;
 		private Logger logger;
@@ -28,8 +31,8 @@ namespace SerialLogAnalyzer.Views
 		private Dictionary<string, SerialLoggerTabItem> serialLoggers = new Dictionary<string, SerialLoggerTabItem>();
 		private Dictionary<string, Thread> loggerThreads = new Dictionary<string, Thread>();
 		
-		private Thread watchdogThread;
-		private bool watchdogRunning = true;
+		private Thread portWatcherThread;
+		private bool portWatcherRunning = true;
 
 		public SerialLoggerView(MainViewModel viewModel)
 		{
@@ -37,6 +40,7 @@ namespace SerialLogAnalyzer.Views
 
 			this.viewModel = viewModel;
 			AvailablePorts = new ObservableCollection<string>(SerialPort.GetPortNames());
+			OpenedPorts = new ObservableCollection<string>();
 
 			// Initialize with common baud rates
 			BaudRates = new ObservableCollection<int> { 9600, 14400, 19200, 38400, 57600, 115200, 230400 };
@@ -46,6 +50,9 @@ namespace SerialLogAnalyzer.Views
 
 			// Set the DataContext to itself for binding
 			this.DataContext = this;
+
+			// Start the port watcher thread
+			StartPortWatcher();
 		}
 
 		private void UpdateLoggingButtons()
@@ -151,7 +158,6 @@ namespace SerialLogAnalyzer.Views
 					consoleThread.IsBackground = true;
 					consoleThread.Start();
 
-					loggerThreads[selectedPort] = consoleThread;
 				}
 				else
 				{
@@ -163,6 +169,12 @@ namespace SerialLogAnalyzer.Views
 
 				// Remove the selected port from the available ports
 				AvailablePorts.Remove(selectedPort);
+
+				// Add the selected port to the list of opened ports
+				if (!OpenedPorts.Contains(selectedPort))
+				{
+					OpenedPorts.Add(selectedPort);
+				}
 
 				isLogging = true;
 				stopAllLoggersButton.IsEnabled = true;
@@ -188,61 +200,86 @@ namespace SerialLogAnalyzer.Views
 		private void StopAllLoggersButton_Click(object sender, RoutedEventArgs e)
 		{
 			isLogging = false;
-			watchdogRunning = false;
 
-			// Stop all logger threads
-			foreach (var loggerThread in loggerThreads.Values)
+			// Close all opened serial ports
+			foreach (var port in OpenedPorts.ToList()) // Using ToList() to avoid modifying the collection while iterating
 			{
-				if (loggerThread.IsAlive)
+				if (consolelLoggers.ContainsKey(port))
 				{
-					loggerThread.Join();
+					// Close the ConsoleLogger for the port
+					ConsoleLogger consoleLogger = consolelLoggers[port];
+					consoleLogger.StopReading(); // Assuming the ConsoleLogger class has a ClosePort method
+					SetLogFileReadOnly(consoleLogger.LogFileName); // Set log file to read-only
+					consolelLoggers.Remove(port);
 				}
+				else if (serialLoggers.ContainsKey(port))
+				{
+					// Close the SerialLoggerTabItem for the port
+					SerialLoggerTabItem serialLogger = serialLoggers[port];
+					// serialLogger.ClosePort(); // Assuming SerialLoggerTabItem class has a ClosePort method
+					// SetLogFileReadOnly(serialLogger.LogFileName); // Set log file to read-only
+					// serialLoggers.Remove(port);
+				}
+
+				logger.Log($"Closed serial port: {port} and set its log file to read-only.", LogLevel.Info);
 			}
 
-			// Stop the watchdog thread
-			if (watchdogThread != null && watchdogThread.IsAlive)
-			{
-				watchdogThread.Join();
-			}
+
+			// Clear the opened ports list when stopping loggers
+			OpenedPorts.Clear();
 
 			stopAllLoggersButton.IsEnabled = false;
 			UpdateLoggingButtons();
 
 		}
 
-		// Method to start the watchdog thread
-		private void StartWatchdog()
+		private void StartPortWatcher()
 		{
-			watchdogThread = new Thread(new ThreadStart(delegate
+			portWatcherThread = new Thread(() =>
 			{
-				while (watchdogRunning)
+				while (portWatcherRunning)
 				{
-					foreach (var portThread in loggerThreads)
+					// Get the currently available ports
+					string[] currentPorts = SerialPort.GetPortNames();
+
+					// Compare with the AvailablePorts collection
+					var newPorts = currentPorts.Except(AvailablePorts).ToList(); // Find newly added ports
+					var removedPorts = AvailablePorts.Except(currentPorts).ToList(); // Find removed ports
+
+					// If there are new ports, add them to the AvailablePorts collection
+					if (newPorts.Any())
 					{
-						string port = portThread.Key;
-						Thread loggerThread = portThread.Value;
-
-						// Check if the logger thread is still alive
-						if (!loggerThread.IsAlive)
+						Dispatcher.Invoke(new Action(delegate
 						{
-							// Use Dispatcher to show the message box on the UI thread
-							Dispatcher.Invoke(new Action(delegate
+							foreach (var port in newPorts)
 							{
-								MessageBox.Show($"Logger thread for {port} has stopped unexpectedly.");
-							}));
-
-							// Optionally: Restart the thread or handle it based on your use case
-							RestartLoggerThread(port);
-						}
+								AvailablePorts.Add(port);
+								logger.Log($"New port detected: {port}", LogLevel.Info);
+							}
+						}));
 					}
 
-					Thread.Sleep(2000); // Check every 2 seconds
-				}
-			}));
+					// If there are removed ports, remove them from the AvailablePorts collection
+					if (removedPorts.Any())
+					{
+						Dispatcher.Invoke(new Action(delegate
+						{
+							foreach (var port in newPorts)
+							{
+								AvailablePorts.Remove(port);
+								logger.Log($"Port removed: {port}", LogLevel.Info);
+							}
+						}));
+					}
 
-			watchdogThread.IsBackground = true; // Make it a background thread
-			watchdogThread.Start();
-		}
+					// Sleep for 10 seconds before checking again
+					Thread.Sleep(10000);
+				}
+			});
+
+			portWatcherThread.IsBackground = true;
+			portWatcherThread.Start();
+		} // End of StartPortWatcher()
 
 		// Method to restart a logger thread if it stops unexpectedly
 		private void RestartLoggerThread(string port)
@@ -292,7 +329,34 @@ namespace SerialLogAnalyzer.Views
 				}
 			}
 		} // End of AppendLogToTab()
-		
 
+		private void OnUnloaded(object sender, RoutedEventArgs e)
+		{
+			// Stop the port watcher thread when the view is unloaded
+			portWatcherRunning = false;
+			if (portWatcherThread != null && portWatcherThread.IsAlive)
+			{
+				portWatcherThread.Join();
+			}
+		} // End of OnUnloaded()
+
+		// Helper method to set the log file to read-only
+		private void SetLogFileReadOnly(string logFileName)
+		{
+			try
+			{
+				string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logFileName);
+				if (File.Exists(filePath))
+				{
+					FileInfo fileInfo = new FileInfo(filePath);
+					fileInfo.IsReadOnly = true; // Set the file as read-only
+					logger.Log($"Log file '{logFileName}' set to read-only.", LogLevel.Info);
+				}
+			}
+			catch (Exception ex)
+			{
+				logger.Log($"Error setting log file '{logFileName}' to read-only: {ex.Message}", LogLevel.Error);
+			}
+		} // End of SetLogFileReadOnly()
 	}
 }

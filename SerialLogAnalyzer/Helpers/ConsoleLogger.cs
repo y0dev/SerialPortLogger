@@ -9,8 +9,11 @@ namespace SerialLogAnalyzer.Helpers
 		private Process externalConsoleProcess; // Track the process of the external console
 		private string externalAppPath = Properties.Resources.SCRIPTS_DIR_PATH;
 
+		public string LogFileName { set; get; }
+
 		public ConsoleLogger(string consoleTitle, ushort fontSize, string portName, int baudRate, string schemeName, string baseDirectory, string logFileName)
 		{
+			LogFileName = logFileName;
 			// Launch the external application (e.g., cmd.exe or custom logger)
 			StartExternalConsole(consoleTitle, fontSize, portName, baudRate, schemeName, baseDirectory, logFileName);
 		}

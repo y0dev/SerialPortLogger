@@ -199,6 +199,7 @@ namespace SerialLogAnalyzer.Helpers
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
+				StringBuilder outputSB = new StringBuilder();
 				StringBuilder sb = new StringBuilder();
 				int columnNum = 0;
 
@@ -209,12 +210,12 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						if (data.SingleInt.HasValue)
 						{
-							writer.WriteLine($"{data.Title},{data.SingleInt.Value}");
+							outputSB.Append($"{data.Title},{data.SingleInt.Value}\n");
 							columnNum = 3;
 						}
 						else if (data.SingleDouble.HasValue)
 						{
-							writer.WriteLine($"{data.Title},{data.SingleDouble.Value}");
+							outputSB.Append($"{data.Title},{data.SingleDouble.Value}\n");
 							columnNum = 3;
 						}
 					}
@@ -231,24 +232,49 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						if (data.IntArray != null)
 						{
-							writer.WriteLine($"{sb.ToString()}{data.Title}");
+							if (outputSB.Length > 0)
+							{
+								// Split the existing string into lines
+								var lines = outputSB.ToString().Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+								// Update the first line with the new title
+								lines[0] = $"{sb.ToString()}{data.Title}";
+
+								// Clear the StringBuilder
+								outputSB.Clear();
+
+								// Append the updated lines back to the StringBuilder
+								foreach (var line in lines)
+								{
+									outputSB.Append(line + "\n");
+								}
+
+								// Append each number in the IntArray, keeping the existing rows intact
+								foreach (var number in data.IntArray)
+								{
+									outputSB.Append($"{sb.ToString()}{number}\n");
+								}
+
+							}
+							outputSB.Append($"{sb.ToString()}{data.Title}\n");
 							foreach (var number in data.IntArray)
 							{
-								writer.WriteLine($"{sb.ToString()}{number}");
+								outputSB.Append($"{sb.ToString()}{number}\n");
 							}
 							sb.Append(',');
 						}
 						else if (data.DoubleArray != null)
 						{
-							writer.WriteLine($"{sb.ToString()}{data.Title}");
+							outputSB.Append($"{sb.ToString()}{data.Title}\n");
 							foreach (var number in data.DoubleArray)
 							{
-								writer.WriteLine($"{sb.ToString()}{number}");
+								outputSB.Append($"{sb.ToString()}{number}\n");
 							}
 							sb.Append(',');
 						}
 					}
 				}
+				writer.WriteLine($"{outputSB.ToString()}");
 			}
 		} // End of WriteCsv()
 
