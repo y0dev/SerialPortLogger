@@ -105,39 +105,34 @@
       <DateTime>2024-10-22T00:05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
-      <Type>Serial Logger</Type>
-      <SerialPort>COM3</SerialPort>
-      <FilesAnalyzed xsi:nil="true" />
+      <Type>Serial Analyzer</Type>
+      <FilesAnalyzed>1</FilesAnalyzed>
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-24T00:01:48.1573546-05:00</DateTime>
+      <DateTime>2024-10-24T00:42:19.8342686-05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
-      <Type>Serial Logger</Type>
-      <SerialPort>COM3</SerialPort>
-      <FilesAnalyzed xsi:nil="true" />
+      <Type>Serial Analyzer</Type>
+      <FilesAnalyzed>1</FilesAnalyzed>
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-24T00:03:11.8964931-05:00</DateTime>
+      <DateTime>2024-10-24T00:54:40.4363839-05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
-      <Type>Serial Logger</Type>
-      <SerialPort>COM3</SerialPort>
-      <FilesAnalyzed xsi:nil="true" />
+      <Type>Serial Analyzer</Type>
+      <FilesAnalyzed>1</FilesAnalyzed>
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-24T00:03:35.3616204-05:00</DateTime>
+      <DateTime>2024-10-24T01:00:42.229978-05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
-      <Type>Serial Logger</Type>
-      <SerialPort>COM3</SerialPort>
-      <FilesAnalyzed xsi:nil="true" />
+      <Type>Serial Analyzer</Type>
+      <FilesAnalyzed>1</FilesAnalyzed>
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-24T00:05:39.9663651-05:00</DateTime>
+      <DateTime>2024-10-24T01:08:22.8157657-05:00</DateTime>
     </Activity>
     <Activity ComputerName="COG">
-      <Type>Serial Logger</Type>
-      <SerialPort>COM3</SerialPort>
-      <FilesAnalyzed xsi:nil="true" />
+      <Type>Serial Analyzer</Type>
+      <FilesAnalyzed>1</FilesAnalyzed>
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2024-10-24T00:06:02.7726806-05:00</DateTime>
+      <DateTime>2024-10-24T01:09:23.0172506-05:00</DateTime>
     </Activity>
   </RecentActivity>
 </Configuration>

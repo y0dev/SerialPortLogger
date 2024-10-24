@@ -10,7 +10,7 @@ namespace SerialLogAnalyzer.Helpers
 	public class ParseData
 	{
 		public string Type { get; set; } // Type of data: "Integer", "Double", "Array"
-		public string Title { get; set; } // Type of data: "Integer", "Double", "Array"
+		public string Title { get; set; } 
 		public List<int> IntArray { get; set; } // Nullable integer array (List<int> is already nullable)
 		public List<double> DoubleArray { get; set; } // Nullable double array (List<double> is already nullable)
 		public int? SingleInt { get; set; } // Single nullable integer value
@@ -199,82 +199,88 @@ namespace SerialLogAnalyzer.Helpers
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
-				StringBuilder outputSB = new StringBuilder();
-				StringBuilder sb = new StringBuilder();
-				int columnNum = 0;
+				// Get field names from the first ParseData object
+				var firstEntry = keywordData.Values.FirstOrDefault();
+				var fieldNames = firstEntry != null && firstEntry.Count > 0
+					? firstEntry.First().GetType().GetProperties().Select(p => p.Name).ToArray()
+					: new string[0];
 
-				// Check if a single value exist first
+				// Write header row (adjusted for SingleInt/SingleDouble)
+				if (!fieldNames.Any(f => f == "SingleInt" || f == "SingleDouble"))
+				{
+					writer.WriteLine("Title,Value");  // Only Title and Value if no SingleInt/SingleDouble
+				}
+				else
+				{
+					writer.Write("Title");
+					foreach (var fieldName in fieldNames)
+					{
+						if (fieldName == "SingleInt" || fieldName == "SingleDouble")
+						{
+							writer.Write(",Value"); // Use "Value" for SingleInt/SingleDouble
+						}
+						else
+						{
+							writer.Write(string.Format(",{0}", fieldName)); // Use field names for others
+						}
+					}
+					writer.WriteLine();
+				}
+
+				// Write data rows
 				foreach (var entry in keywordData)
 				{
-					foreach (var data in entry.Value)
+					var keyword = entry.Key;
+					var parseDataList = entry.Value;
+
+					foreach (var parseData in parseDataList)
 					{
-						if (data.SingleInt.HasValue)
+						// Check for SingleInt or SingleDouble values
+						if (parseData.SingleInt.HasValue || parseData.SingleDouble.HasValue)
 						{
-							outputSB.Append($"{data.Title},{data.SingleInt.Value}\n");
-							columnNum = 3;
+							// Write Title and the SingleInt/SingleDouble value
+							writer.Write(string.Format("{0},", parseData.Title));
+							writer.Write(parseData.SingleInt.HasValue
+								? parseData.SingleInt.Value.ToString()
+								: parseData.SingleDouble.HasValue
+									? parseData.SingleDouble.Value.ToString()
+									: string.Empty);
+							writer.WriteLine();
 						}
-						else if (data.SingleDouble.HasValue)
+
+						// Check for arrays and write them if present
+						if ((parseData.IntArray != null && parseData.IntArray.Count > 0) ||
+							(parseData.DoubleArray != null && parseData.DoubleArray.Count > 0))
 						{
-							outputSB.Append($"{data.Title},{data.SingleDouble.Value}\n");
-							columnNum = 3;
+							writer.Write(string.Format("{0},", parseData.Title));
+							bool intArrayExists = parseData.IntArray != null && parseData.IntArray.Count > 0;
+							bool doubleArrayExists = parseData.DoubleArray != null && parseData.DoubleArray.Count > 0;
+
+							// Write headers for arrays
+							if (intArrayExists)
+							{
+								writer.Write("IntArray");
+							}
+							if (doubleArrayExists)
+							{
+								if (intArrayExists) writer.Write(",");
+								writer.Write("DoubleArray");
+							}
+							writer.WriteLine();
+
+							// Write array values
+							if (intArrayExists)
+							{
+								writer.WriteLine(string.Join(",", parseData.IntArray));
+							}
+							if (doubleArrayExists)
+							{
+								writer.WriteLine(string.Join(",", parseData.DoubleArray));
+							}
 						}
 					}
 				}
 
-				for(int i = 0;i < columnNum;i++)
-				{
-					sb.Append(',');
-				}
-
-				foreach (var entry in keywordData)
-				{
-					foreach (var data in entry.Value)
-					{
-						if (data.IntArray != null)
-						{
-							if (outputSB.Length > 0)
-							{
-								// Split the existing string into lines
-								var lines = outputSB.ToString().Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-
-								// Update the first line with the new title
-								lines[0] = $"{sb.ToString()}{data.Title}";
-
-								// Clear the StringBuilder
-								outputSB.Clear();
-
-								// Append the updated lines back to the StringBuilder
-								foreach (var line in lines)
-								{
-									outputSB.Append(line + "\n");
-								}
-
-								// Append each number in the IntArray, keeping the existing rows intact
-								foreach (var number in data.IntArray)
-								{
-									outputSB.Append($"{sb.ToString()}{number}\n");
-								}
-
-							}
-							outputSB.Append($"{sb.ToString()}{data.Title}\n");
-							foreach (var number in data.IntArray)
-							{
-								outputSB.Append($"{sb.ToString()}{number}\n");
-							}
-							sb.Append(',');
-						}
-						else if (data.DoubleArray != null)
-						{
-							outputSB.Append($"{sb.ToString()}{data.Title}\n");
-							foreach (var number in data.DoubleArray)
-							{
-								outputSB.Append($"{sb.ToString()}{number}\n");
-							}
-							sb.Append(',');
-						}
-					}
-				}
-				writer.WriteLine($"{outputSB.ToString()}");
 			}
 		} // End of WriteCsv()
 
