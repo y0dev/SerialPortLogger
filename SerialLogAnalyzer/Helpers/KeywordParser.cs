@@ -252,35 +252,24 @@ namespace SerialLogAnalyzer.Helpers
 						if ((parseData.IntArray != null && parseData.IntArray.Count > 0) ||
 							(parseData.DoubleArray != null && parseData.DoubleArray.Count > 0))
 						{
-							writer.Write(string.Format("{0},", parseData.Title));
+							// Write Title before array values
 							bool intArrayExists = parseData.IntArray != null && parseData.IntArray.Count > 0;
 							bool doubleArrayExists = parseData.DoubleArray != null && parseData.DoubleArray.Count > 0;
-
-							// Write headers for arrays
-							if (intArrayExists)
-							{
-								writer.Write("IntArray");
-							}
-							if (doubleArrayExists)
-							{
-								if (intArrayExists) writer.Write(",");
-								writer.Write("DoubleArray");
-							}
-							writer.WriteLine();
 
 							// Write array values
 							if (intArrayExists)
 							{
+								writer.Write(string.Format("{0},", parseData.Title)); // Write Title before array
 								writer.WriteLine(string.Join(",", parseData.IntArray));
 							}
 							if (doubleArrayExists)
 							{
+								writer.Write(string.Format("{0},", parseData.Title)); // Write Title before array
 								writer.WriteLine(string.Join(",", parseData.DoubleArray));
 							}
 						}
 					}
 				}
-
 			}
 		} // End of WriteCsv()
 
