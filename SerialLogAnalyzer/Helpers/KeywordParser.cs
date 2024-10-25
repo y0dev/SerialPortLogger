@@ -10,7 +10,8 @@ namespace SerialLogAnalyzer.Helpers
 	public class ParseData
 	{
 		public string Type { get; set; } // Type of data: "Integer", "Double", "Array"
-		public string Title { get; set; } 
+		public string Title { get; set; }
+		public string VariableName { get; set; }
 		public List<int> IntArray { get; set; } // Nullable integer array (List<int> is already nullable)
 		public List<double> DoubleArray { get; set; } // Nullable double array (List<double> is already nullable)
 		public int? SingleInt { get; set; } // Single nullable integer value
@@ -99,6 +100,7 @@ namespace SerialLogAnalyzer.Helpers
 											{
 												currentIntArray = new List<int>();
 												currentIntArray.AddRange(numbers);
+												parseData.VariableName = subKeyword.VariableName;
 												parseData.IntArray = currentIntArray;
 												currentIntArray = null; // Reset for next use
 												dataList.Add(parseData);
@@ -129,6 +131,7 @@ namespace SerialLogAnalyzer.Helpers
 											{
 												currentDoubleArray = new List<double>();
 												currentDoubleArray.AddRange(numbers);
+												parseData.VariableName = subKeyword.VariableName;
 												parseData.IntArray = currentIntArray;
 												currentDoubleArray = null; // Reset for next use
 												dataList.Add(parseData);
@@ -153,6 +156,7 @@ namespace SerialLogAnalyzer.Helpers
 									if (match.Success)
 									{
 										parseData.SingleInt = int.Parse(match.Value);
+										parseData.VariableName = subKeyword.VariableName;
 									}
 								}
 								else if (subKeyword.DataType == "Double")
@@ -161,6 +165,7 @@ namespace SerialLogAnalyzer.Helpers
 									if (match.Success)
 									{
 										parseData.SingleDouble = double.Parse(match.Value);
+										parseData.VariableName = subKeyword.VariableName;
 									}
 								}
 							}
@@ -356,19 +361,19 @@ namespace SerialLogAnalyzer.Helpers
 					{
 						if (data.IntArray != null)
 						{
-							writer.WriteLine($"const int {data.Title}[] = {{ {string.Join(", ", data.IntArray)} }};");
+							writer.WriteLine($"const int {data.VariableName}[] = {{ {string.Join(", ", data.IntArray)} }};");
 						}
 						else if (data.DoubleArray != null)
 						{
-							writer.WriteLine($"const double {data.Title}[] = {{ {string.Join(", ", data.DoubleArray)} }};");
+							writer.WriteLine($"const double {data.VariableName}[] = {{ {string.Join(", ", data.DoubleArray)} }};");
 						}
 						else if (data.SingleInt.HasValue)
 						{
-							writer.WriteLine($"const int {data.Title} = {data.SingleInt.Value};");
+							writer.WriteLine($"const int {data.VariableName} = {data.SingleInt.Value};");
 						}
 						else if (data.SingleDouble.HasValue)
 						{
-							writer.WriteLine($"const double {data.Title} = {data.SingleDouble.Value};");
+							writer.WriteLine($"const double {data.VariableName} = {data.SingleDouble.Value};");
 						}
 					}
 				}
@@ -380,6 +385,7 @@ namespace SerialLogAnalyzer.Helpers
 	{
 		public string Keyword { get; set; }
 		public Regex Regex { get; set; }
+		public string VariableName { get; set; }
 		public string DataType { get; set; } // Type: "Integer", "Double", "Coordinate", etc.
 		public bool IsArray { get; set; } // Indicates if it's an array of data
 	} // End of class KeywordRegex
@@ -410,6 +416,7 @@ namespace SerialLogAnalyzer.Helpers
 							Keyword = "Total Possessions",
 							Regex = new Regex(@"Total Possessions:\s*(\d+)", RegexOptions.Multiline),
 							DataType = "Integer",
+							VariableName = "total_poss",
 							IsArray = false
 						},
 						new KeywordRegex
@@ -417,6 +424,7 @@ namespace SerialLogAnalyzer.Helpers
 							Keyword = "Dribble Average Per Possession",
 							Regex = new Regex(@"Dribble Average Per Possession:\s*([\d.]+)", RegexOptions.Multiline),
 							DataType = "Integer",
+							VariableName = "ave_dribble_per_poss",
 							IsArray = false
 						},
 						new KeywordRegex
@@ -424,6 +432,7 @@ namespace SerialLogAnalyzer.Helpers
 							Keyword = "Most Dribbles in a Single Possession",
 							Regex = new Regex(@"Most Dribbles in a Single Possession:\s*(\d+)", RegexOptions.Multiline),
 							DataType = "Integer",
+							VariableName = "max_dribble_in_poss",
 							IsArray = false
 						},
 						new KeywordRegex
@@ -431,6 +440,7 @@ namespace SerialLogAnalyzer.Helpers
 							Keyword = "Least Dribbles in a Single Possession",
 							Regex = new Regex(@"Least Dribbles in a Single Possession:\s*(\d+)", RegexOptions.Multiline),
 							DataType = "Integer",
+							VariableName = "min_dribble_in_poss",
 							IsArray = false
 						},
 						new KeywordRegex
@@ -438,6 +448,7 @@ namespace SerialLogAnalyzer.Helpers
 							Keyword = "Max Dribbles Occurred",
 							Regex = new Regex(@"Number of times the Max Dribbles Occurred:\s*(\d+)", RegexOptions.Multiline),
 							DataType = "Integer",
+							VariableName = "max_dribbles",
 							IsArray = false
 						},
 						new KeywordRegex
@@ -445,6 +456,7 @@ namespace SerialLogAnalyzer.Helpers
 							Keyword = "Least Dribbles Occurred",
 							Regex = new Regex(@"Number of times the Least Dribbles Occurred:\s*(\d+)", RegexOptions.Multiline),
 							DataType = "Integer",
+							VariableName = "min_dribbles",
 							IsArray = false
 						},
 						new KeywordRegex
@@ -452,6 +464,7 @@ namespace SerialLogAnalyzer.Helpers
 							Keyword = "Dribble Numbers Game",
 							Regex = new Regex(@"(\d+(?:,\s*\d+)*)", RegexOptions.Multiline),
 							DataType = "Integer",
+							VariableName = "dribbles_per_poss",
 							IsArray = true
 						},
 					}
