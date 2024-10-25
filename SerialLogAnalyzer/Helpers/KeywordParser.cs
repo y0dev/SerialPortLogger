@@ -197,6 +197,7 @@ namespace SerialLogAnalyzer.Helpers
 
 		private void WriteCsv(string outputFilePath, Dictionary<string, List<ParseData>> keywordData)
 		{
+
 			using (var writer = new StreamWriter(outputFilePath))
 			{
 				// Get field names from the first ParseData object
@@ -204,6 +205,56 @@ namespace SerialLogAnalyzer.Helpers
 				var fieldNames = firstEntry != null && firstEntry.Count > 0
 					? firstEntry.First().GetType().GetProperties().Select(p => p.Name).ToArray()
 					: new string[0];
+				// Get all unique titles from the data
+				var titles = keywordData.SelectMany(entry => entry.Value.Select(pd => pd.Title)).Distinct();
+				// Sort the keywordData dictionary
+				var sortedKeywordData = keywordData
+					.OrderBy(entry => entry.Value.FirstOrDefault(), new ParseDataComparer());
+
+				bool hasSingles = fieldNames.Any(f => f == "SingleInt" || f == "SingleDouble");
+				bool hasArrays = fieldNames.Any(f => f == "IntArray" || f == "DoubleArray");
+
+				// Get all keys and entries as a list so we can check the next entry type
+				var sortedEntries = sortedKeywordData.ToList();
+
+				// Initialize a list to hold the output
+				var outputList = new List<string>();
+
+				for (int i = 0; i < sortedEntries.Count; i++)
+				{
+					var currentEntry = sortedEntries[i];
+					var currentKey = currentEntry.Key;
+
+					// Add the current key to the output
+					outputList.Add(currentKey);
+
+					// If this isn't the last entry, check the next one for arrays
+					if (i < sortedEntries.Count - 1)
+					{
+						var nextEntry = sortedEntries[i + 1];
+
+						// Check if the next entry contains arrays
+						var nextParseData = nextEntry.Value.FirstOrDefault();
+						if (nextParseData != null && (nextParseData.IntArray?.Any() == true || nextParseData.DoubleArray?.Any() == true))
+						{
+							// If the next entry has arrays, add an empty column (or any marker)
+							outputList.Add(""); // Add a blank column between entries
+						}
+					}
+				}
+
+				// Write the output line with a comma separator
+				var outputLine = string.Join(",", outputList);
+				Console.WriteLine($"Keywords: {outputLine}");
+
+				// Write the output to the file
+				writer.WriteLine(outputLine);
+
+				if (hasSingles & hasArrays)
+				{
+				}
+
+				
 
 				// Write header row (adjusted for SingleInt/SingleDouble)
 				if (!fieldNames.Any(f => f == "SingleInt" || f == "SingleDouble"))
@@ -484,4 +535,41 @@ namespace SerialLogAnalyzer.Helpers
 			}
 		}
 	} // End of class KeywordRegexList
+
+	public class ParseDataComparer : IComparer<ParseData>
+	{
+		public int Compare(ParseData x, ParseData y)
+		{
+			// Prioritize SingleInt/SingleDouble over IntArray/DoubleArray
+			if (x.SingleInt.HasValue || x.SingleDouble.HasValue)
+			{
+				return y.SingleInt.HasValue || y.SingleDouble.HasValue ? 0 : -1;
+			}
+			else if (y.SingleInt.HasValue || y.SingleDouble.HasValue)
+			{
+				return 1;
+			}
+
+			// Compare IntArray/DoubleArray based on their presence
+			if (x.IntArray?.Any() == true && y.IntArray?.Any() != true)
+			{
+				return -1;
+			}
+			else if (x.IntArray?.Any() != true && y.IntArray?.Any() == true)
+			{
+				return 1;
+			}
+			else if (x.DoubleArray?.Any() == true && y.DoubleArray?.Any() != true)
+			{
+				return -1;
+			}
+			else if (x.DoubleArray?.Any() != true && y.DoubleArray?.Any() == true)
+			{
+				return 1;
+			}
+
+			// If all else fails, return 0 (equal)
+			return 0;
+		} // End of Compare()
+	} // End of class ParseDataComparer
 }
