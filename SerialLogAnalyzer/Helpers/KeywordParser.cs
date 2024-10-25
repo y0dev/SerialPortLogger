@@ -200,127 +200,115 @@ namespace SerialLogAnalyzer.Helpers
 
 			using (var writer = new StreamWriter(outputFilePath))
 			{
-				// Get field names from the first ParseData object
-				var firstEntry = keywordData.Values.FirstOrDefault();
-				var fieldNames = firstEntry != null && firstEntry.Count > 0
-					? firstEntry.First().GetType().GetProperties().Select(p => p.Name).ToArray()
-					: new string[0];
-				// Get all unique titles from the data
-				var titles = keywordData.SelectMany(entry => entry.Value.Select(pd => pd.Title)).Distinct();
 				// Sort the keywordData dictionary
 				var sortedKeywordData = keywordData
 					.OrderBy(entry => entry.Value.FirstOrDefault(), new ParseDataComparer());
 
-				bool hasSingles = fieldNames.Any(f => f == "SingleInt" || f == "SingleDouble");
-				bool hasArrays = fieldNames.Any(f => f == "IntArray" || f == "DoubleArray");
-
 				// Get all keys and entries as a list so we can check the next entry type
 				var sortedEntries = sortedKeywordData.ToList();
 
-				// Initialize a list to hold the output
-				var outputList = new List<string>();
-
-				for (int i = 0; i < sortedEntries.Count; i++)
-				{
-					var currentEntry = sortedEntries[i];
-					var currentKey = currentEntry.Key;
-
-					// Add the current key to the output
-					outputList.Add(currentKey);
-
-					// If this isn't the last entry, check the next one for arrays
-					if (i < sortedEntries.Count - 1)
-					{
-						var nextEntry = sortedEntries[i + 1];
-
-						// Check if the next entry contains arrays
-						var nextParseData = nextEntry.Value.FirstOrDefault();
-						if (nextParseData != null && (nextParseData.IntArray?.Any() == true || nextParseData.DoubleArray?.Any() == true))
-						{
-							// If the next entry has arrays, add an empty column (or any marker)
-							outputList.Add(""); // Add a blank column between entries
-						}
-					}
-				}
-
-				// Write the output line with a comma separator
-				var outputLine = string.Join(",", outputList);
-				Console.WriteLine($"Keywords: {outputLine}");
-
-				// Write the output to the file
-				writer.WriteLine(outputLine);
-
-				if (hasSingles & hasArrays)
-				{
-				}
-
+				// Create a list to hold the output lines for the header row
+				var headerRow = new List<string>();
+				// Create a list to hold lists of values for each keyword
+				var keywordValues = new List<List<string>>();
 				
-
-				// Write header row (adjusted for SingleInt/SingleDouble)
-				if (!fieldNames.Any(f => f == "SingleInt" || f == "SingleDouble"))
+				// Iterate through sorted keyword data
+				foreach (var entry in sortedKeywordData)
 				{
-					writer.WriteLine("Title,Value");  // Only Title and Value if no SingleInt/SingleDouble
-				}
-				else
-				{
-					writer.Write("Title");
-					foreach (var fieldName in fieldNames)
+					// Add the keyword to the header
+					if(entry.Value[0].IntArray == null && entry.Value[0].DoubleArray == null)
 					{
-						if (fieldName == "SingleInt" || fieldName == "SingleDouble")
+						headerRow.Add(entry.Key);
+					}
+					else
+					{
+						headerRow.Add("");
+						keywordValues.Add(new List<string>());
+					}
+
+					// Create a list for values under this keyword
+					var valuesList = new List<string>();
+
+					int intArrayCount = 0;   
+					int doubleArrayCount = 0;
+
+					// Go through each ParseData object
+					foreach (var parseData in entry.Value)
+					{
+						// Check for single values
+						if (parseData.SingleInt.HasValue)
 						{
-							writer.Write(",Value"); // Use "Value" for SingleInt/SingleDouble
+							valuesList.Add(parseData.SingleInt.Value.ToString());
 						}
-						else
+						else if (parseData.SingleDouble.HasValue)
 						{
-							writer.Write(string.Format(",{0}", fieldName)); // Use field names for others
+							valuesList.Add(parseData.SingleDouble.Value.ToString());
+						}
+
+						// Track the maximum length for arrays and increment array counters
+						if (parseData.IntArray?.Any() == true)
+						{
+							valuesList = new List<string>();
+							for (int i = 0; i < parseData.IntArray.Count; i++)
+							{
+								valuesList.Add(parseData.IntArray[i].ToString());
+							}
+							keywordValues.Add(valuesList);
+							intArrayCount++;
+						}
+
+						if (parseData.DoubleArray?.Any() == true)
+						{
+							valuesList = new List<string>();
+							for (int i = 0; i < parseData.DoubleArray.Count; i++)
+							{
+								valuesList.Add(parseData.DoubleArray[i].ToString());
+							}
+							keywordValues.Add(valuesList);
+							doubleArrayCount++;
 						}
 					}
-					writer.WriteLine();
-				}
 
-				// Write data rows
-				foreach (var entry in keywordData)
-				{
-					var keyword = entry.Key;
-					var parseDataList = entry.Value;
-
-					foreach (var parseData in parseDataList)
+					// Add placeholders in the header for each array element
+					for (int i = 0; i < intArrayCount; i++)
 					{
-						// Check for SingleInt or SingleDouble values
-						if (parseData.SingleInt.HasValue || parseData.SingleDouble.HasValue)
-						{
-							// Write Title and the SingleInt/SingleDouble value
-							writer.Write(string.Format("{0},", parseData.Title));
-							writer.Write(parseData.SingleInt.HasValue
-								? parseData.SingleInt.Value.ToString()
-								: parseData.SingleDouble.HasValue
-									? parseData.SingleDouble.Value.ToString()
-									: string.Empty);
-							writer.WriteLine();
-						}
+						headerRow.Add($"{entry.Key}_{i + 1}");
 
-						// Check for arrays and write them if present
-						if ((parseData.IntArray != null && parseData.IntArray.Count > 0) ||
-							(parseData.DoubleArray != null && parseData.DoubleArray.Count > 0))
-						{
-							// Write Title before array values
-							bool intArrayExists = parseData.IntArray != null && parseData.IntArray.Count > 0;
-							bool doubleArrayExists = parseData.DoubleArray != null && parseData.DoubleArray.Count > 0;
+					}
+					for (int i = 0; i < doubleArrayCount; i++)
+					{
+						headerRow.Add($"{entry.Key}_{i + 1}");
+					}
 
-							// Write array values
-							if (intArrayExists)
-							{
-								writer.Write(string.Format("{0},", parseData.Title)); // Write Title before array
-								writer.WriteLine(string.Join(",", parseData.IntArray));
-							}
-							if (doubleArrayExists)
-							{
-								writer.Write(string.Format("{0},", parseData.Title)); // Write Title before array
-								writer.WriteLine(string.Join(",", parseData.DoubleArray));
-							}
-						}
+					if((intArrayCount == 0) && (doubleArrayCount == 0))
+					{
+						// Add the list of values for the keyword to the main list
+						keywordValues.Add(valuesList);
 					}
 				}
+
+				// Write the header row to the output
+				string headerLine = string.Join(",", headerRow);
+				// Console.WriteLine(headerLine);
+				writer.WriteLine(headerLine);
+
+				// Write values row by row
+				for (int row = 0; row < keywordValues.Max(v => v.Count); row++)
+				{
+					var rowValues = new List<string>();
+
+					for (int col = 0; col < keywordValues.Count; col++)
+					{
+						// Add the value for the current row or an empty cell if out of range
+						rowValues.Add(row < keywordValues[col].Count ? keywordValues[col][row] : "");
+					}
+
+					// Write the row values to the output
+					string rowLine = string.Join(",", rowValues);
+					// Console.WriteLine(rowLine);
+					writer.WriteLine(rowLine);
+				}
+
 			}
 		} // End of WriteCsv()
 
