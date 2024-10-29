@@ -321,7 +321,14 @@ namespace SerialLogAnalyzer.Helpers
 		{
 			using (var writer = new StreamWriter(outputFilePath))
 			{
-				foreach (var entry in keywordData)
+
+				// Sort the keywordData dictionary
+				var sortedKeywordData = keywordData
+					.OrderBy(entry => entry.Value.FirstOrDefault(), new ParseDataComparer());
+
+				// Get all keys and entries as a list so we can check the next entry type
+				var sortedEntries = sortedKeywordData.ToList();
+				foreach (var entry in sortedKeywordData)
 				{
 					writer.WriteLine($"Keyword: {entry.Key}");
 
@@ -354,6 +361,13 @@ namespace SerialLogAnalyzer.Helpers
 			using (var writer = new StreamWriter(outputFilePath))
 			{
 				writer.WriteLine("// Header File for Parsed Data");
+
+				// Sort the keywordData dictionary
+				var sortedKeywordData = keywordData
+					.OrderBy(entry => entry.Value.FirstOrDefault(), new ParseDataComparer());
+
+				// Get all keys and entries as a list so we can check the next entry type
+				var sortedEntries = sortedKeywordData.ToList();
 
 				foreach (var entry in keywordData)
 				{
