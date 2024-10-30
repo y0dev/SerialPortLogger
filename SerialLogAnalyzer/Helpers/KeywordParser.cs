@@ -328,6 +328,7 @@ namespace SerialLogAnalyzer.Helpers
 
 				// Get all keys and entries as a list so we can check the next entry type
 				var sortedEntries = sortedKeywordData.ToList();
+
 				foreach (var entry in sortedKeywordData)
 				{
 					writer.WriteLine($"Keyword: {entry.Key}");
@@ -369,30 +370,105 @@ namespace SerialLogAnalyzer.Helpers
 				// Get all keys and entries as a list so we can check the next entry type
 				var sortedEntries = sortedKeywordData.ToList();
 
-				foreach (var entry in keywordData)
+				var minLengths = GetMinLengthsForEntries(sortedEntries);
+
+				for(int i = 0; i < minLengths; i++)
 				{
-					foreach (var data in entry.Value)
+					foreach (var entry in keywordData)
 					{
-						if (data.IntArray != null)
+						var data = entry.Value[i];
+						if (data != null)
 						{
-							writer.WriteLine($"const int {data.VariableName}[] = {{ {string.Join(", ", data.IntArray)} }};");
-						}
-						else if (data.DoubleArray != null)
-						{
-							writer.WriteLine($"const double {data.VariableName}[] = {{ {string.Join(", ", data.DoubleArray)} }};");
-						}
-						else if (data.SingleInt.HasValue)
-						{
-							writer.WriteLine($"const int {data.VariableName} = {data.SingleInt.Value};");
-						}
-						else if (data.SingleDouble.HasValue)
-						{
-							writer.WriteLine($"const double {data.VariableName} = {data.SingleDouble.Value};");
+							if (data.IntArray != null)
+							{
+								writer.WriteLine($"const int {data.VariableName}[] = {{ {string.Join(", ", data.IntArray)} }};");
+							}
+							else if (data.DoubleArray != null)
+							{
+								writer.WriteLine($"const double {data.VariableName}[] = {{ {string.Join(", ", data.DoubleArray)} }};");
+							}
+							else if (data.SingleInt.HasValue)
+							{
+								writer.WriteLine($"const int {data.VariableName} = {data.SingleInt.Value};");
+							}
+							else if (data.SingleDouble.HasValue)
+							{
+								writer.WriteLine($"const double {data.VariableName} = {data.SingleDouble.Value};");
+							}
 						}
 					}
+
+					writer.Write("\n\n");
 				}
+
+				
 			}
 		} // End of WriteHeaderFile()
+
+		public int GetMinLengthsForEntries(List<KeyValuePair<string, List<ParseData>>> entries)
+		{
+			// Initialize minLength to a large value for comparison
+			int minLength = int.MaxValue;
+
+			// Iterate through each entry in entries
+			foreach (var entry in entries)
+			{
+				string key = entry.Key;
+				var values = entry.Value;
+
+				// Update minLength if the current length is smaller
+				minLength = Math.Min(minLength, values.Count);
+			}
+
+			return minLength;
+		} // End of GetMinLengthsForEntries()
+
+		public void WriteArrayWithLineLimit(ParseData data, int maxPerLine, StreamWriter writer)
+		{
+			// Determine if we're dealing with an int or double array
+			if ((data.IntArray == null || data.IntArray.Count == 0) &&
+				(data.DoubleArray == null || data.DoubleArray.Count == 0))
+			{
+				return; // Exit if both arrays are empty or null
+			}
+
+			// Write the declaration line based on the data type
+			if (data.IntArray != null && data.IntArray.Count > 0)
+			{
+				writer.Write($"const int {data.VariableName}[] = {{ ");
+				WriteArrayElements(data.IntArray, maxPerLine, writer);
+			}
+			else if (data.DoubleArray != null && data.DoubleArray.Count > 0)
+			{
+				writer.Write($"const double {data.VariableName}[] = {{ ");
+				WriteArrayElements(data.DoubleArray, maxPerLine, writer);
+			}
+
+			writer.WriteLine(" };");
+		} // End of WriteArrayWithLineLimit()
+
+		// Helper method to write array elements with a line limit
+		private void WriteArrayElements<T>(List<T> array, int maxPerLine, StreamWriter writer)
+		{
+			for (int i = 0; i < array.Count; i++)
+			{
+				writer.Write(array[i]);
+
+				// Add a comma if it's not the last item in the array
+				if (i < array.Count - 1)
+				{
+					writer.Write(", ");
+				}
+
+				// Add a newline when reaching maxPerLine, except at the last element
+				if ((i + 1) % maxPerLine == 0 && i < array.Count - 1)
+				{
+					writer.WriteLine();
+					writer.Write("  "); // Optional: Indent for readability
+				}
+			}
+		} // End of WriteArrayElements()
+
 	} // End of class KeywordParser
 
 	public class KeywordRegex
