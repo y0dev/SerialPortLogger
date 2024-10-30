@@ -381,11 +381,11 @@ namespace SerialLogAnalyzer.Helpers
 						{
 							if (data.IntArray != null)
 							{
-								writer.WriteLine($"const int {data.VariableName}[] = {{ {string.Join(", ", data.IntArray)} }};");
+								WriteArrayWithLineLimit(writer, data, 30);
 							}
 							else if (data.DoubleArray != null)
 							{
-								writer.WriteLine($"const double {data.VariableName}[] = {{ {string.Join(", ", data.DoubleArray)} }};");
+								WriteArrayWithLineLimit(writer, data, 25);
 							}
 							else if (data.SingleInt.HasValue)
 							{
@@ -423,7 +423,7 @@ namespace SerialLogAnalyzer.Helpers
 			return minLength;
 		} // End of GetMinLengthsForEntries()
 
-		public void WriteArrayWithLineLimit(ParseData data, int maxPerLine, StreamWriter writer)
+		public void WriteArrayWithLineLimit(StreamWriter writer, ParseData data, int maxPerLine)
 		{
 			// Determine if we're dealing with an int or double array
 			if ((data.IntArray == null || data.IntArray.Count == 0) &&
@@ -432,23 +432,25 @@ namespace SerialLogAnalyzer.Helpers
 				return; // Exit if both arrays are empty or null
 			}
 
+
+			string prefix = $"const int {data.VariableName}[] = {{ ";
+			writer.Write(prefix);
 			// Write the declaration line based on the data type
 			if (data.IntArray != null && data.IntArray.Count > 0)
 			{
-				writer.Write($"const int {data.VariableName}[] = {{ ");
-				WriteArrayElements(data.IntArray, maxPerLine, writer);
+				WriteArrayElements(writer, data.IntArray, maxPerLine, prefix.Length);
 			}
 			else if (data.DoubleArray != null && data.DoubleArray.Count > 0)
 			{
 				writer.Write($"const double {data.VariableName}[] = {{ ");
-				WriteArrayElements(data.DoubleArray, maxPerLine, writer);
+				WriteArrayElements(writer, data.DoubleArray, maxPerLine, prefix.Length);
 			}
 
-			writer.WriteLine(" };");
+			writer.WriteLine(" };\n");
 		} // End of WriteArrayWithLineLimit()
 
 		// Helper method to write array elements with a line limit
-		private void WriteArrayElements<T>(List<T> array, int maxPerLine, StreamWriter writer)
+		private void WriteArrayElements<T>(StreamWriter writer, List<T> array, int maxPerLine, int tabLength)
 		{
 			for (int i = 0; i < array.Count; i++)
 			{
@@ -464,7 +466,7 @@ namespace SerialLogAnalyzer.Helpers
 				if ((i + 1) % maxPerLine == 0 && i < array.Count - 1)
 				{
 					writer.WriteLine();
-					writer.Write("  "); // Optional: Indent for readability
+					writer.Write(new string(' ', tabLength)); // Indent based on tabLength
 				}
 			}
 		} // End of WriteArrayElements()

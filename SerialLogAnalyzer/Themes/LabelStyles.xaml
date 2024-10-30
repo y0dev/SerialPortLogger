@@ -2,6 +2,15 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:SerialLogAnalyzer.Themes">
 
+	<Style x:Key="TitleTextBlockStyle" TargetType="TextBlock">
+		<Setter Property="FontWeight" Value="Bold" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+		<Setter Property="HorizontalAlignment" Value="Left" />
+		<Setter Property="FontSize" Value="32" />
+		<Setter Property="Margin" Value="20,20,0,0" />
+		<Setter Property="Foreground" Value="{StaticResource FontBrush}"/>
+	</Style>
+
 	<Style TargetType="Label">
 		<Setter Property="FontSize" Value="14"/>
 		<Setter Property="Foreground" Value="{StaticResource FontBrush}"/>

@@ -29,9 +29,7 @@
 
 		<Grid Grid.Column="0" Background="{DynamicResource SidebarBrush}">
 			<StackPanel>
-				<TextBlock x:Name="titleBlock" Text="Slate" FontWeight="Bold"
-                   VerticalAlignment="Center" HorizontalAlignment="Left"
-                   FontSize="32" Margin="20,20,0,0"/>
+				<TextBlock x:Name="titleBlock" Text="Slate" Style="{StaticResource TitleTextBlockStyle}"/>
 
 				<StackPanel>
 					<RadioButton Content="Home" Height="50"	Style="{StaticResource MenuButtonStyle}" 
