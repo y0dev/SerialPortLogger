@@ -16,6 +16,7 @@ namespace SerialLogAnalyzer.Helpers
 		public List<double> DoubleArray { get; set; } // Nullable double array (List<double> is already nullable)
 		public int? SingleInt { get; set; } // Single nullable integer value
 		public double? SingleDouble { get; set; } // Single nullable double value
+		public List<(double X, double Y)> CoordinatePairs { get; set; } // Nullable list of double pairs
 	}
 
 
@@ -144,6 +145,28 @@ namespace SerialLogAnalyzer.Helpers
 											lastArrayIndex = index;
 											index++;
 											break;
+										}
+									}
+								}
+								else if (subKeyword.DataType == "Coordinate")
+								{
+									// Parse coordinate pairs like (x, y)
+									var match = Regex.Matches(line, @"\((-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)\)");
+									foreach (Match coordinateMatch in match)
+									{
+										if (coordinateMatch.Success)
+										{
+											var x = double.Parse(coordinateMatch.Groups[1].Value);
+											var y = double.Parse(coordinateMatch.Groups[3].Value);
+											parseData.VariableName = subKeyword.VariableName;
+
+											// Initialize the coordinate list if necessary
+											if (parseData.CoordinatePairs == null)
+											{
+												parseData.CoordinatePairs = new List<(double X, double Y)>();
+											}
+											parseData.CoordinatePairs.Add((x, y));
+											dataList.Add(parseData);
 										}
 									}
 								}
