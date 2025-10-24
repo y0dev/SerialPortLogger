@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Items>
+    <Item name="basketball">
+      <Modes>
+        <Mode name="dribble">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Dribble Number Test</Keyword>
+              </Keywords>
+              <OutputFile>dribble_num_data.csv</OutputFile>
+            </KeywordGroup>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Game 1 Stats:</Keyword>
+              </Keywords>
+              <OutputFile>output1.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+        <Mode name="shoot">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword3</Keyword>
+              </Keywords>
+              <OutputFile>output2.h</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+      </Modes>
+    </Item>
+    <Item name="football">
+      <Modes>
+        <Mode name="blitz">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword1</Keyword>
+              </Keywords>
+              <OutputFile>output1.h</OutputFile>
+            </KeywordGroup>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>keyword2</Keyword>
+              </Keywords>
+              <OutputFile>output1.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+      </Modes>
+    </Item>
+  </Items>
+  
+  <Settings>
+    <Theme>Light</Theme>
+    <Font>Segoe UI</Font>
+    <FontSize>12</FontSize>
+  </Settings>
+  
+  <ComputerConfigs>
+    <ComputerConfig name="DefaultPC">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Default">
+          <Title>Default Serial Logger</Title>
+          <ColorScheme>Light Mode</ColorScheme>
+          <FontSize>12</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+  </ComputerConfigs>
+  
+  <RecentActivity>
+    <Activity ComputerName="DefaultPC" Type="Serial Logging" SerialPort="COM1" FilesAnalyzed="0" ActivityDateTime="2024-01-15T00:00:00" />
+  </RecentActivity>
+</Configuration>
