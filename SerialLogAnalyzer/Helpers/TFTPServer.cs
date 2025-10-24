@@ -11,31 +11,31 @@ namespace SerialLogAnalyzer.Helpers
 	// Public class that represents the TFTP Server
 	public class TftpServer
 	{
-		private const int TftpPort = 69;
 		private UdpClient udpServer;
 		private IPEndPoint localEP;
 		private IPEndPoint remoteEP;
 		private bool isRunning;
 		private string baseDirectory;
 		private Thread serverThread;
+		private int serverPort;
 
 		private ListView tftpServerListView;
 
 		private Logger _logger;
 		public int FilesTransfered;
 
-		public TftpServer(string ipAddress, string baseDirectory, Logger logger, ListView listView)
+		public TftpServer(string ipAddress, int port, string baseDirectory, Logger logger, ListView listView)
 		{
-			// Bind to the specific IP address
-			localEP = new IPEndPoint(IPAddress.Parse(ipAddress), TftpPort);
+			// Bind to the specific IP address and port
+			this.serverPort = port;
+			localEP = new IPEndPoint(IPAddress.Parse(ipAddress), port);
 			udpServer = new UdpClient(localEP);
-			remoteEP = new IPEndPoint(IPAddress.Any, TftpPort);
+			remoteEP = new IPEndPoint(IPAddress.Any, 0); // Will be set when we receive a request
 			isRunning = false;
 			this.baseDirectory = baseDirectory;
 			this._logger = logger;
 			this.tftpServerListView = listView;
 			FilesTransfered = 0;
-
 		}
 
 		// Add a new log entry to the ListView
@@ -149,43 +149,159 @@ namespace SerialLogAnalyzer.Helpers
 
 		private void SendFile(string filePath)
 		{
-			byte[] fileData = File.ReadAllBytes(filePath);
-			int block = 1;
-			int bytesRead = 0;
-
-			while (bytesRead < fileData.Length)
+			try
 			{
-				byte[] dataPacket = CreateDataPacket(block, fileData, bytesRead, Math.Min(512, fileData.Length - bytesRead));
-				udpServer.Send(dataPacket, dataPacket.Length, remoteEP);
-				bytesRead += 512;
-				block++;
-			}
+				byte[] fileData = File.ReadAllBytes(filePath);
+				int block = 1;
+				int bytesRead = 0;
+				int maxRetries = 5;
+				int timeoutMs = 5000;
 
-			FilesTransfered += 1;
-			_logger.Log($"File transfer complete: {filePath}", LogLevel.Info);
+				while (bytesRead < fileData.Length)
+				{
+					int dataSize = Math.Min(512, fileData.Length - bytesRead);
+					byte[] dataPacket = CreateDataPacket(block, fileData, bytesRead, dataSize);
+					
+					bool ackReceived = false;
+					int retryCount = 0;
+
+					while (!ackReceived && retryCount < maxRetries)
+					{
+						// Send data packet
+						udpServer.Send(dataPacket, dataPacket.Length, remoteEP);
+						_logger.Log($"Sent data block {block}, size: {dataSize}", LogLevel.Debug);
+
+						// Wait for ACK with timeout
+						try
+						{
+							udpServer.Client.ReceiveTimeout = timeoutMs;
+							byte[] ackResponse = udpServer.Receive(ref remoteEP);
+							
+							if (ackResponse.Length >= 4 && ackResponse[0] == 0 && ackResponse[1] == 4)
+							{
+								int ackBlock = (ackResponse[2] << 8) | ackResponse[3];
+								if (ackBlock == block)
+								{
+									ackReceived = true;
+									_logger.Log($"Received ACK for block {block}", LogLevel.Debug);
+								}
+								else
+								{
+									_logger.Log($"Received ACK for wrong block {ackBlock}, expected {block}", LogLevel.Warning);
+								}
+							}
+						}
+						catch (SocketException ex) when (ex.SocketErrorCode == SocketError.TimedOut)
+						{
+							retryCount++;
+							_logger.Log($"Timeout waiting for ACK block {block}, retry {retryCount}/{maxRetries}", LogLevel.Warning);
+						}
+					}
+
+					if (!ackReceived)
+					{
+						_logger.Log($"Failed to receive ACK for block {block} after {maxRetries} retries", LogLevel.Error);
+						SendError("Transfer failed - no ACK received");
+						return;
+					}
+
+					bytesRead += dataSize;
+					block++;
+				}
+
+				FilesTransfered += 1;
+				_logger.Log($"File transfer complete: {filePath}", LogLevel.Info);
+			}
+			catch (Exception ex)
+			{
+				_logger.Log($"Error sending file {filePath}: {ex.Message}", LogLevel.Error);
+				SendError("Internal server error");
+			}
 		}
 
 		private void ReceiveFile(string filePath)
 		{
-			using (FileStream fs = new FileStream(filePath, FileMode.Create))
+			try
 			{
-				int block = 1;
-				while (true)
+				using (FileStream fs = new FileStream(filePath, FileMode.Create))
 				{
-					byte[] ackPacket = CreateAckPacket(block);
-					udpServer.Send(ackPacket, ackPacket.Length, remoteEP);
+					int block = 0; // Start with block 0 for WRQ ACK
+					int maxRetries = 5;
+					int timeoutMs = 5000;
 
-					byte[] receivedData = udpServer.Receive(ref remoteEP);
-					int dataSize = receivedData.Length - 4;
-					fs.Write(receivedData, 4, dataSize);
+					// Send initial ACK for WRQ
+					byte[] initialAck = CreateAckPacket(block);
+					udpServer.Send(initialAck, initialAck.Length, remoteEP);
+					_logger.Log($"Sent initial ACK for WRQ", LogLevel.Debug);
 
-					if (dataSize < 512) break; // Last block of the file
+					while (true)
+					{
+						bool dataReceived = false;
+						int retryCount = 0;
 
-					block++;
+						while (!dataReceived && retryCount < maxRetries)
+						{
+							try
+							{
+								udpServer.Client.ReceiveTimeout = timeoutMs;
+								byte[] receivedData = udpServer.Receive(ref remoteEP);
+								
+								if (receivedData.Length >= 4 && receivedData[0] == 0 && receivedData[1] == 3)
+								{
+									int receivedBlock = (receivedData[2] << 8) | receivedData[3];
+									
+									if (receivedBlock == block + 1)
+									{
+										int dataSize = receivedData.Length - 4;
+										fs.Write(receivedData, 4, dataSize);
+										
+										// Send ACK for this block
+										byte[] ackPacket = CreateAckPacket(receivedBlock);
+										udpServer.Send(ackPacket, ackPacket.Length, remoteEP);
+										
+										_logger.Log($"Received and ACKed block {receivedBlock}, size: {dataSize}", LogLevel.Debug);
+										
+										if (dataSize < 512)
+										{
+											// Last block of the file
+											FilesTransfered += 1;
+											_logger.Log($"File successfully received: {filePath}", LogLevel.Info);
+											return;
+										}
+										
+										block = receivedBlock;
+										dataReceived = true;
+									}
+									else
+									{
+										_logger.Log($"Received wrong block {receivedBlock}, expected {block + 1}", LogLevel.Warning);
+										// Send ACK for the block we actually received (duplicate)
+										byte[] ackPacket = CreateAckPacket(receivedBlock);
+										udpServer.Send(ackPacket, ackPacket.Length, remoteEP);
+									}
+								}
+							}
+							catch (SocketException ex) when (ex.SocketErrorCode == SocketError.TimedOut)
+							{
+								retryCount++;
+								_logger.Log($"Timeout waiting for data block {block + 1}, retry {retryCount}/{maxRetries}", LogLevel.Warning);
+							}
+						}
+
+						if (!dataReceived)
+						{
+							_logger.Log($"Failed to receive data block {block + 1} after {maxRetries} retries", LogLevel.Error);
+							SendError("Transfer failed - no data received");
+							return;
+						}
+					}
 				}
 			}
-			FilesTransfered += 1;
-			_logger.Log($"File successfully received: {filePath}", LogLevel.Info);
+			catch (Exception ex)
+			{
+				_logger.Log($"Error receiving file {filePath}: {ex.Message}", LogLevel.Error);
+				SendError("Internal server error");
+			}
 		}
 
 		private byte[] CreateDataPacket(int block, byte[] fileData, int offset, int length)

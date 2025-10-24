@@ -86,9 +86,17 @@ namespace SerialLogAnalyzer.Views
 
 			try
 			{
+				// Parse port number
+				if (!int.TryParse(port, out int portNumber) || portNumber < 1 || portNumber > 65535)
+				{
+					MessageBox.Show("Please enter a valid port number (1-65535).", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+					logger.Log($"Invalid port number: '{port}'", LogLevel.Warning);
+					return;
+				}
+
 				// Initialize and start the TFTP server
-				tftpServer = new TftpServer(ipAddress, rootDirectory, tftpLogger, tftpServerListView);
-				logger.Log($"TFTP Server has been initialized with IP: '{ipAddress}' and root directory '{rootDirectory}'.", LogLevel.Info);
+				tftpServer = new TftpServer(ipAddress, portNumber, rootDirectory, tftpLogger, tftpServerListView);
+				logger.Log($"TFTP Server has been initialized with IP: '{ipAddress}', Port: '{portNumber}' and root directory '{rootDirectory}'.", LogLevel.Info);
 				tftpServer.Start();
 
 				tftpServerStatusTextBlock.Text = "Status: Started";
