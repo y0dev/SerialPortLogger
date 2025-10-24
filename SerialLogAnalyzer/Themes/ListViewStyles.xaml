@@ -42,6 +42,27 @@
 		<!-- Margin between items -->
 		<Setter Property="Padding" Value="5,2"/>
 		<!-- Inner spacing -->
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ListViewItem">
+					<Border Background="{TemplateBinding Background}" 
+							BorderBrush="{TemplateBinding BorderBrush}" 
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Padding="{TemplateBinding Padding}">
+						<GridViewRowPresenter />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" Value="{DynamicResource ListViewItemMouseOverColor}"/>
+						</Trigger>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter Property="Background" Value="{DynamicResource ListViewItemSelectedColor}"/>
+							<Setter Property="Foreground" Value="{DynamicResource ListViewItemSelectedTextColor}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
 
 		<Style.Triggers>
 			<Trigger Property="IsMouseOver" Value="True">
@@ -55,6 +76,25 @@
 				<!-- Text color when selected -->
 			</Trigger>
 		</Style.Triggers>
+	</Style>
+
+	<!-- Define a style for GridViewColumnHeader -->
+	<Style TargetType="GridViewColumnHeader" x:Key="{x:Type GridViewColumnHeader}">
+		<Setter Property="Background" Value="{DynamicResource ListViewItemBaseColor}"/>
+		<Setter Property="Foreground" Value="{DynamicResource ListViewItemTextColor}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BorderColor}"/>
+		<Setter Property="BorderThickness" Value="0,0,1,1"/>
+		<Setter Property="Padding" Value="8,4"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+		<Setter Property="HorizontalContentAlignment" Value="Left"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+	</Style>
+
+	<!-- Define a style for TextBlocks within ListView (GridView cells) -->
+	<Style TargetType="TextBlock" x:Key="ListViewTextBlockStyle">
+		<Setter Property="Foreground" Value="{DynamicResource ListViewItemTextColor}"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="Margin" Value="4,0"/>
 	</Style>
 
 </ResourceDictionary>
