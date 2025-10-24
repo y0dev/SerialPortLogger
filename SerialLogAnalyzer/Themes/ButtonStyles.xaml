@@ -4,22 +4,26 @@
 
 	<converters:BooleanToDropShadowEffectConverter x:Key="BooleanToDropShadowEffectConverter" />
 		
-	<!-- Define a style for rounded buttons -->
+	<!-- Define a style for rounded buttons - Enhanced for better visibility -->
 	<Style TargetType="Button" x:Key="RoundedButtonStyle">
 		<Setter Property="Background" Value="{StaticResource ButtonBaseColor}"/>
 		<Setter Property="Foreground" Value="White"/>
-		<Setter Property="Padding" Value="10,5"/>
+		<Setter Property="Padding" Value="12,8"/>
 		<Setter Property="Margin" Value="5"/>
-		<Setter Property="BorderBrush" Value="Transparent"/>
+		<Setter Property="BorderBrush" Value="{StaticResource ButtonBaseColor}"/>
 		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="Cursor" Value="Hand"/>
+		<Setter Property="FontWeight" Value="Medium"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="Button">
 					<Border Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="5">
+                        CornerRadius="6">
+						<Border.Effect>
+							<DropShadowEffect Color="#000000" BlurRadius="2" ShadowDepth="1" Opacity="0.1"/>
+						</Border.Effect>
 						<ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
 					</Border>
 				</ControlTemplate>
@@ -38,6 +42,7 @@
 			<Trigger Property="IsEnabled" Value="False">
 				<Setter Property="Background" Value="{StaticResource ButtonDisabledColor}"/>
 				<Setter Property="Foreground" Value="{StaticResource ButtonDisabledTextColor}"/>
+				<Setter Property="BorderBrush" Value="{StaticResource ButtonDisabledColor}"/>
 				<Setter Property="Cursor" Value="Arrow"/>
 			</Trigger>
 		</Style.Triggers>

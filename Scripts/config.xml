@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <Configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Items>
     <Item name="basketball">
@@ -52,13 +52,11 @@
       </Modes>
     </Item>
   </Items>
-  
   <Settings>
     <Theme>Light</Theme>
     <Font>Segoe UI</Font>
     <FontSize>12</FontSize>
   </Settings>
-  
   <ComputerConfigs>
     <ComputerConfig name="DefaultPC">
       <SerialConsoleConfigs>
@@ -70,8 +68,24 @@
       </SerialConsoleConfigs>
     </ComputerConfig>
   </ComputerConfigs>
-  
   <RecentActivity>
-    <Activity ComputerName="DefaultPC" Type="Serial Logging" SerialPort="COM1" FilesAnalyzed="0" ActivityDateTime="2024-01-15T00:00:00" />
+    <Activity ComputerName="DefaultPC">
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred xsi:nil="true" />
+      <DateTime>0001-01-01T00:00:00</DateTime>
+    </Activity>
+    <Activity ComputerName="COG">
+      <Type>Serial Logger</Type>
+      <SerialPort>COM6</SerialPort>
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred xsi:nil="true" />
+      <DateTime>2025-10-24T15:53:38.4603494-05:00</DateTime>
+    </Activity>
+    <Activity ComputerName="COG">
+      <Type>Serial Analyzer</Type>
+      <FilesAnalyzed>1</FilesAnalyzed>
+      <FilesTransferred xsi:nil="true" />
+      <DateTime>2025-10-24T15:54:05.2642049-05:00</DateTime>
+    </Activity>
   </RecentActivity>
 </Configuration>
