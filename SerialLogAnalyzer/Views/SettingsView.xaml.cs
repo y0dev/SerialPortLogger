@@ -75,6 +75,9 @@ namespace SerialLogAnalyzer.Views
 			// Initialize the toggle button state
 			currentThemeState = IsDarkTheme;
 			themeToggleButton.IsChecked = currentThemeState; // Set the toggle button based on current theme
+			
+			// Initialize ComboBox selections
+			InitializeComboBoxSelections();
 		}
 
 		private void LoadAvailableConfigs()
@@ -184,14 +187,25 @@ namespace SerialLogAnalyzer.Views
 			{
 				bool hasChanges = false;
 				string originalTheme = mainViewModel.Config?.Settings?.Theme ?? "Light";
+				string originalFont = mainViewModel.Config?.Settings?.Font ?? "Segoe UI";
+				int originalFontSize = mainViewModel.Config?.Settings?.FontSize ?? 12;
+
+				// Debug current values
+				logger.Log($"Save button clicked - Current values:", LogLevel.Info);
+				logger.Log($"  Original Theme: {originalTheme}", LogLevel.Info);
+				logger.Log($"  Original Font: {originalFont}", LogLevel.Info);
+				logger.Log($"  Original FontSize: {originalFontSize}", LogLevel.Info);
+				logger.Log($"  Current Toggle: {(themeToggleButton.IsChecked == true ? "Dark" : "Light")}", LogLevel.Info);
+				logger.Log($"  Current Font ComboBox: {(fontsComboBox.SelectedItem?.ToString() ?? "NULL")}", LogLevel.Info);
+				logger.Log($"  Current FontSize ComboBox: {(fontSizeComboBox.SelectedItem?.ToString() ?? "NULL")}", LogLevel.Info);
 
 				// Check font changes
 				if (fontsComboBox.SelectedItem != null &&
 					!string.IsNullOrEmpty(fontsComboBox.SelectedItem.ToString()) &&
-					mainViewModel.Config?.Settings?.Font != fontsComboBox.SelectedItem.ToString())
+					originalFont != fontsComboBox.SelectedItem.ToString())
 				{
 					string selectedFont = fontsComboBox.SelectedItem.ToString();
-					logger.Log($"Changing font from {mainViewModel.Config?.Settings?.Font} to {selectedFont}.", LogLevel.Info);
+					logger.Log($"Font change detected: {originalFont} -> {selectedFont}", LogLevel.Info);
 					if (mainViewModel.Config?.Settings != null)
 					{
 						mainViewModel.Config.Settings.Font = selectedFont;
@@ -202,9 +216,9 @@ namespace SerialLogAnalyzer.Views
 				// Check font size changes
 				if (fontSizeComboBox.SelectedItem != null &&
 					int.TryParse(fontSizeComboBox.SelectedItem.ToString(), out int selectedFontSize) &&
-					mainViewModel.Config?.Settings?.FontSize != selectedFontSize)
+					originalFontSize != selectedFontSize)
 				{
-					logger.Log($"Changing font size from {mainViewModel.Config?.Settings?.FontSize} to {selectedFontSize}.", LogLevel.Info);
+					logger.Log($"Font size change detected: {originalFontSize} -> {selectedFontSize}", LogLevel.Info);
 					if (mainViewModel.Config?.Settings != null)
 					{
 						mainViewModel.Config.Settings.FontSize = selectedFontSize;
@@ -434,6 +448,33 @@ namespace SerialLogAnalyzer.Views
 			logger.Log($"Selection State - SelectedConfig: {(SelectedConfig != null ? SelectedConfig.FileName : "NULL")}", LogLevel.Info);
 			logger.Log($"Selection State - ListView SelectedItem: {(configListView.SelectedItem != null ? ((ConfigFileInfo)configListView.SelectedItem).FileName : "NULL")}", LogLevel.Info);
 			logger.Log($"Selection State - AvailableConfigs Count: {AvailableConfigs.Count}", LogLevel.Info);
+		}
+
+		// Initialize ComboBox selections with current config values
+		private void InitializeComboBoxSelections()
+		{
+			try
+			{
+				// Set font ComboBox selection
+				if (fontsComboBox != null && SelectedFont != null)
+				{
+					fontsComboBox.SelectedItem = SelectedFont;
+					logger.Log($"Initialized font ComboBox to: {SelectedFont}", LogLevel.Info);
+				}
+
+				// Set font size ComboBox selection
+				if (fontSizeComboBox != null)
+				{
+					fontSizeComboBox.SelectedItem = SelectedFontSize.ToString();
+					logger.Log($"Initialized font size ComboBox to: {SelectedFontSize}", LogLevel.Info);
+				}
+
+				logger.Log($"ComboBox initialization completed - Font: {SelectedFont}, FontSize: {SelectedFontSize}, Theme: {(IsDarkTheme ? "Dark" : "Light")}", LogLevel.Info);
+			}
+			catch (Exception ex)
+			{
+				logger.Log($"Error initializing ComboBox selections: {ex.Message}", LogLevel.Error);
+			}
 		}
 
 		private void AboutButton_Click(object sender, RoutedEventArgs e)
