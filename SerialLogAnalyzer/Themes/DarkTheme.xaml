@@ -1,92 +1,99 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<!-- Primary and Secondary Colors for Dark Theme -->
-	<Color x:Key="PrimaryColor">#272537</Color>
-	<Color x:Key="SecondaryColor">#1E1C29</Color>
-	<Color x:Key="FontColor">#D6D6D6</Color>
+	<!-- Primary and Secondary Colors for Dark Theme - Modern and Consistent -->
+	<Color x:Key="PrimaryColor">#111827</Color>
+	<Color x:Key="SecondaryColor">#1F2937</Color>
+	<Color x:Key="FontColor">#F9FAFB</Color>
 
 	<!-- General Brushes -->
 	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}"/>
 	<SolidColorBrush x:Key="SidebarBrush" Color="{StaticResource SecondaryColor}"/>
 	<SolidColorBrush x:Key="FontBrush" Color="{StaticResource FontColor}"/>
-	<SolidColorBrush x:Key="ForegroundBrush" Color="Black"/>
+	<SolidColorBrush x:Key="ForegroundBrush" Color="#F9FAFB"/>
 
-	<!-- Toggle Switch Colors -->
-	<SolidColorBrush x:Key="ToggleSwitchBackground" Color="#4B5563"/>
-	<SolidColorBrush x:Key="ToggleSwitchCheckedBackground" Color="#2563EB"/>
-	<SolidColorBrush x:Key="ToggleSwitchBorderColor" Color="#374151"/>
+	<!-- Toggle Switch Colors - Better Contrast -->
+	<SolidColorBrush x:Key="ToggleSwitchBackground" Color="#374151"/>
+	<SolidColorBrush x:Key="ToggleSwitchCheckedBackground" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="ToggleSwitchBorderColor" Color="#4B5563"/>
 	<SolidColorBrush x:Key="ToggleSwitchThumbColor" Color="White"/>
 	<SolidColorBrush x:Key="ToggleSwitchDisabledBackground" Color="#1F2937"/>
-	<SolidColorBrush x:Key="ToggleSwitchDisabledThumbColor" Color="#4B5563"/>
+	<SolidColorBrush x:Key="ToggleSwitchDisabledThumbColor" Color="#6B7280"/>
 
-	<!-- TextBox Colors -->
+	<!-- TextBox Colors - Enhanced Visibility -->
 	<SolidColorBrush x:Key="TextBoxBaseColor" Color="#374151"/>
-	<SolidColorBrush x:Key="TextBoxTextColor" Color="#FFFFFF"/>
-	<SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#66A3FF"/>
-	<SolidColorBrush x:Key="TextBoxFocusedColor" Color="#3F83F8"/>
-	<SolidColorBrush x:Key="TextBoxDisabledColor" Color="#2E2E2E"/>
-	<SolidColorBrush x:Key="TextBoxDisabledTextColor" Color="#8A9BA8"/>
+	<SolidColorBrush x:Key="TextBoxTextColor" Color="#F9FAFB"/>
+	<SolidColorBrush x:Key="TextBoxMouseOverColor" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="TextBoxFocusedColor" Color="#2563EB"/>
+	<SolidColorBrush x:Key="TextBoxDisabledColor" Color="#1F2937"/>
+	<SolidColorBrush x:Key="TextBoxDisabledTextColor" Color="#6B7280"/>
 
-	<!-- Button Colors -->
-	<SolidColorBrush x:Key="ButtonBaseColor" Color="#1E88E5"/>
-	<SolidColorBrush x:Key="ButtonMouseOverColor" Color="#42A5F5"/>
-	<SolidColorBrush x:Key="ButtonPressedColor" Color="#0D47A1"/>
-	<SolidColorBrush x:Key="ButtonDisabledColor" Color="#555555"/>
-	<SolidColorBrush x:Key="ButtonDisabledTextColor" Color="#888888"/>
+	<!-- Button Colors - Modern and Visible -->
+	<SolidColorBrush x:Key="ButtonBaseColor" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="ButtonMouseOverColor" Color="#2563EB"/>
+	<SolidColorBrush x:Key="ButtonPressedColor" Color="#1D4ED8"/>
+	<SolidColorBrush x:Key="ButtonDisabledColor" Color="#374151"/>
+	<SolidColorBrush x:Key="ButtonDisabledTextColor" Color="#6B7280"/>
 
-	<!-- ListView Colors -->
-	<SolidColorBrush x:Key="ListViewBaseColor" Color="#374151"/>
-	<SolidColorBrush x:Key="ListViewTextColor" Color="#FFFFFF"/>
-	<SolidColorBrush x:Key="ListViewItemMouseOverColor" Color="#66A3FF"/>
-	<SolidColorBrush x:Key="ListViewItemBaseColor" Color="#3F83F8"/>
-	<SolidColorBrush x:Key="ListViewItemSelectedColor" Color="#2E2E2E"/>
-	<SolidColorBrush x:Key="ListViewItemSelectedTextColor" Color="#8A9BA8"/>
+	<!-- ListView Colors - Better Contrast -->
+	<SolidColorBrush x:Key="ListViewBaseColor" Color="#1F2937"/>
+	<SolidColorBrush x:Key="ListViewTextColor" Color="#F9FAFB"/>
+	<SolidColorBrush x:Key="ListViewItemMouseOverColor" Color="#374151"/>
+	<SolidColorBrush x:Key="ListViewItemBaseColor" Color="#1F2937"/>
+	<SolidColorBrush x:Key="ListViewItemSelectedColor" Color="#1E40AF"/>
+	<SolidColorBrush x:Key="ListViewItemSelectedTextColor" Color="#F9FAFB"/>
 
-	<!-- ComboBox Colors -->
+	<!-- ComboBox Colors - Enhanced Visibility -->
 	<SolidColorBrush x:Key="ComboBoxBaseColor" Color="#374151"/>
-	<SolidColorBrush x:Key="ComboBoxTextColor" Color="#FFFFFF"/>
-	<SolidColorBrush x:Key="ComboBoxItemMouseOverColor" Color="#66A3FF"/>
-	<SolidColorBrush x:Key="ComboBoxItemBaseColor" Color="#3F83F8"/>
-	<SolidColorBrush x:Key="ComboBoxItemSelectedColor" Color="#2E2E2E"/>
-	<SolidColorBrush x:Key="ComboBoxItemSelectedTextColor" Color="#8A9BA8"/>
+	<SolidColorBrush x:Key="ComboBoxTextColor" Color="#F9FAFB"/>
+	<SolidColorBrush x:Key="ComboBoxItemMouseOverColor" Color="#4B5563"/>
+	<SolidColorBrush x:Key="ComboBoxItemBaseColor" Color="#374151"/>
+	<SolidColorBrush x:Key="ComboBoxItemSelectedColor" Color="#1E40AF"/>
+	<SolidColorBrush x:Key="ComboBoxItemSelectedTextColor" Color="#F9FAFB"/>
 
-	<!-- Checkbox Colors -->
-	<SolidColorBrush x:Key="CheckboxBorderColor" Color="#D1D5DB"/>
-	<SolidColorBrush x:Key="CheckboxCheckedColor" Color="#2563EB"/>
-	<SolidColorBrush x:Key="CheckboxBackgroundColor" Color="#FFFFFF"/>
-	<SolidColorBrush x:Key="CheckboxHoverBorderColor" Color="#60A5FA"/>
+	<!-- Checkbox Colors - Better Visibility -->
+	<SolidColorBrush x:Key="CheckboxBorderColor" Color="#6B7280"/>
+	<SolidColorBrush x:Key="CheckboxCheckedColor" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="CheckboxBackgroundColor" Color="#374151"/>
+	<SolidColorBrush x:Key="CheckboxHoverBorderColor" Color="#3B82F6"/>
 
-	<!-- TabControl Colors -->
-	<SolidColorBrush x:Key="TabControlBackground" Color="#1E1E2E"/>
-	<SolidColorBrush x:Key="TabControlForeground" Color="#FFFFFF"/>
-	<SolidColorBrush x:Key="TabControlBorderColor" Color="#60A5FA"/>
+	<!-- TabControl Colors - Modern Look -->
+	<SolidColorBrush x:Key="TabControlBackground" Color="#1F2937"/>
+	<SolidColorBrush x:Key="TabControlForeground" Color="#F9FAFB"/>
+	<SolidColorBrush x:Key="TabControlBorderColor" Color="#374151"/>
 
-	<!-- TabItem Colors -->
-	<SolidColorBrush x:Key="TabItemBackground" Color="#1F2937"/>
-	<SolidColorBrush x:Key="TabItemSelectedBackground" Color="#334155"/>
+	<!-- TabItem Colors - Enhanced Contrast -->
+	<SolidColorBrush x:Key="TabItemBackground" Color="#374151"/>
+	<SolidColorBrush x:Key="TabItemSelectedBackground" Color="#111827"/>
 	<SolidColorBrush x:Key="TabItemHoverBackground" Color="#4B5563"/>
-	<SolidColorBrush x:Key="TabItemBorderColor" Color="#64748B"/>
-	<SolidColorBrush x:Key="TabItemSelectedBorderColor" Color="#60A5FA"/>
-	<SolidColorBrush x:Key="TabItemForeground" Color="#F3F4F6"/>
-	<SolidColorBrush x:Key="TabItemHoverForeground" Color="#D1D5DB"/>
+	<SolidColorBrush x:Key="TabItemBorderColor" Color="#6B7280"/>
+	<SolidColorBrush x:Key="TabItemSelectedBorderColor" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="TabItemForeground" Color="#D1D5DB"/>
+	<SolidColorBrush x:Key="TabItemHoverForeground" Color="#F3F4F6"/>
 	<SolidColorBrush x:Key="TabItemDisabledForeground" Color="#6B7280"/>
 
 	<!-- TabItem Colors -->
 	<SolidColorBrush x:Key="MenuButtonStyleForeground" Color="{StaticResource FontColor}"/>
-	<SolidColorBrush x:Key="MenuButtonStyleCheckedBackgroundBrush" Color="#22202F"/>
+	<SolidColorBrush x:Key="MenuButtonStyleCheckedBackgroundBrush" Color="#1E40AF"/>
 
-	<!-- Define Brushes for ComboBox -->
-	<SolidColorBrush x:Key="ComboBoxToggleButtonBackgroundBrush" Color="#3F3F3F"/>
-	<SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="#888888"/>
-	<SolidColorBrush x:Key="ComboBoxArrowFillBrush" Color="#FAF9F6"/>
-	<SolidColorBrush x:Key="ComboBoxArrowHoverFillBrush" Color="#E0E0E0"/>
-	<SolidColorBrush x:Key="ComboBoxArrowPressedFillBrush" Color="#CCCCCC"/>
-	<SolidColorBrush x:Key="ComboBoxTextBoxBackgroundBrush" Color="#FF3F3F3F"/>
-	<SolidColorBrush x:Key="ComboBoxTextBoxForegroundBrush" Color="#FAF9F6"/>
-	<SolidColorBrush x:Key="DropDownBorderBrush" Color="#888888"/>
-	<SolidColorBrush x:Key="DropDownBackgroundBrush" Color="#3F3F3F"/>
-	<SolidColorBrush x:Key="ComboBoxItemHighlightBackgroundBrush" Color="#AFAEAC"/>
-	<SolidColorBrush x:Key="ComboBoxItemDisabledForegroundBrush" Color="#232222"/>
+	<!-- Define Brushes for ComboBox - Improved Visibility -->
+	<SolidColorBrush x:Key="ComboBoxToggleButtonBackgroundBrush" Color="#374151"/>
+	<SolidColorBrush x:Key="ComboBoxToggleButtonBorderBrush" Color="#6B7280"/>
+	<SolidColorBrush x:Key="ComboBoxArrowFillBrush" Color="#9CA3AF"/>
+	<SolidColorBrush x:Key="ComboBoxArrowHoverFillBrush" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="ComboBoxArrowPressedFillBrush" Color="#2563EB"/>
+	<SolidColorBrush x:Key="ComboBoxTextBoxBackgroundBrush" Color="#374151"/>
+	<SolidColorBrush x:Key="ComboBoxTextBoxForegroundBrush" Color="#F9FAFB"/>
+	<SolidColorBrush x:Key="DropDownBorderBrush" Color="#6B7280"/>
+	<SolidColorBrush x:Key="DropDownBackgroundBrush" Color="#374151"/>
+	<SolidColorBrush x:Key="ComboBoxItemHighlightBackgroundBrush" Color="#4B5563"/>
+	<SolidColorBrush x:Key="ComboBoxItemDisabledForegroundBrush" Color="#6B7280"/>
+
+	<!-- Additional Modern Colors -->
+	<SolidColorBrush x:Key="BorderColor" Color="#374151"/>
+	<SolidColorBrush x:Key="AccentColor" Color="#3B82F6"/>
+	<SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+	<SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
+	<SolidColorBrush x:Key="ErrorColor" Color="#EF4444"/>
 
 </ResourceDictionary>
