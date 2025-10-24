@@ -7,10 +7,10 @@
 	<Color x:Key="FontColor">#F9FAFB</Color>
 
 	<!-- General Brushes -->
-	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}"/>
-	<SolidColorBrush x:Key="SidebarBrush" Color="{StaticResource SecondaryColor}"/>
-	<SolidColorBrush x:Key="FontBrush" Color="{StaticResource FontColor}"/>
-	<SolidColorBrush x:Key="ForegroundBrush" Color="#F9FAFB"/>
+	<SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource PrimaryColor}"/>
+	<SolidColorBrush x:Key="SidebarBrush" Color="{DynamicResource SecondaryColor}"/>
+	<SolidColorBrush x:Key="FontBrush" Color="{DynamicResource FontColor}"/>
+	<SolidColorBrush x:Key="ForegroundBrush" Color="{DynamicResource FontColor}"/>
 
 	<!-- Toggle Switch Colors - Better Contrast -->
 	<SolidColorBrush x:Key="ToggleSwitchBackground" Color="#374151"/>
@@ -97,6 +97,6 @@
 	<SolidColorBrush x:Key="ErrorColor" Color="#EF4444"/>
 
 	<!-- ListView Item Text Color -->
-	<SolidColorBrush x:Key="ListViewItemTextColor" Color="{StaticResource ListViewTextColor}"/>
+	<SolidColorBrush x:Key="ListViewItemTextColor" Color="{DynamicResource ListViewTextColor}"/>
 
 </ResourceDictionary>
