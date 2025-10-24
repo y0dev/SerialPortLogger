@@ -183,7 +183,9 @@ namespace SerialLogAnalyzer.Views
 			try
 			{
 				bool hasChanges = false;
+				string originalTheme = mainViewModel.Config?.Settings?.Theme ?? "Light";
 
+				// Check font changes
 				if (fontsComboBox.SelectedItem != null &&
 					!string.IsNullOrEmpty(fontsComboBox.SelectedItem.ToString()) &&
 					mainViewModel.Config?.Settings?.Font != fontsComboBox.SelectedItem.ToString())
@@ -197,6 +199,7 @@ namespace SerialLogAnalyzer.Views
 					}
 				}
 
+				// Check font size changes
 				if (fontSizeComboBox.SelectedItem != null &&
 					int.TryParse(fontSizeComboBox.SelectedItem.ToString(), out int selectedFontSize) &&
 					mainViewModel.Config?.Settings?.FontSize != selectedFontSize)
@@ -209,27 +212,40 @@ namespace SerialLogAnalyzer.Views
 					}
 				}
 
-				if (themeToggleButton.IsChecked.HasValue && 
-					themeToggleButton.IsChecked.Value != (mainViewModel.Config?.Settings?.Theme == "Dark"))
+				// Check theme changes - compare current toggle state with original theme
+				string currentToggleTheme = themeToggleButton.IsChecked == true ? "Dark" : "Light";
+				if (currentToggleTheme != originalTheme)
 				{
-					// Log the theme change
-					logger.Log($"Changing theme from {((mainViewModel.Config?.Settings?.Theme == "Dark") ? "Dark" : "Light")} to {(themeToggleButton.IsChecked.Value ? "Dark" : "Light")}.", LogLevel.Info);
-
-					// Update the settings to the new theme
+					logger.Log($"Theme change detected: {originalTheme} -> {currentToggleTheme}", LogLevel.Info);
 					if (mainViewModel.Config?.Settings != null)
 					{
-						mainViewModel.Config.Settings.Theme = themeToggleButton.IsChecked.Value ? "Dark" : "Light";
+						mainViewModel.Config.Settings.Theme = currentToggleTheme;
+						mainViewModel.SelectedTheme = currentToggleTheme;
 						hasChanges = true;
 					}
 				}
 
 				if (hasChanges)
 				{
+					// Ensure we have a valid config before saving
+					if (mainViewModel.Config == null)
+					{
+						mainViewModel.Config = new AppConfiguration();
+					}
+					
+					// Ensure Settings object exists
+					if (mainViewModel.Config.Settings == null)
+					{
+						mainViewModel.Config.Settings = new Settings();
+					}
+
 					mainViewModel.SaveConfig();
+					logger.Log("Configuration saved successfully", LogLevel.Info);
 					MessageBox.Show("Settings saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 				}
 				else
 				{
+					logger.Log("No changes detected to save", LogLevel.Info);
 					MessageBox.Show("No changes to save.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 				}
 			}
@@ -245,14 +261,17 @@ namespace SerialLogAnalyzer.Views
 			ToggleButton toggleButton = (ToggleButton)sender;
 			string theme = toggleButton.IsChecked == true ? "Dark" : "Light";
 			
-			// Update the MainViewModel's theme immediately for persistence
+			// Apply the theme immediately for visual feedback
+			ChangeTheme(theme);
+			
+			// Update the MainViewModel's theme for persistence
 			if (mainViewModel.Config?.Settings != null)
 			{
 				mainViewModel.Config.Settings.Theme = theme;
 				mainViewModel.SelectedTheme = theme;
 			}
 			
-			ChangeTheme(theme);
+			logger.Log($"Theme toggle clicked - Applied {theme} theme", LogLevel.Info);
 		}
 
 		private void ChangeTheme(string themeName)
