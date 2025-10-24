@@ -1,51 +1,64 @@
 <?xml version="1.0"?>
 <Configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Items>
-    <Item name="basketball">
+    <Item name="sports_analytics">
       <Modes>
-        <Mode name="dribble">
+        <Mode name="real_time">
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>
-                <Keyword>Dribble Number Test</Keyword>
+                <Keyword>Live Stats</Keyword>
+                <Keyword>Real-time Data</Keyword>
+                <Keyword>Performance Metrics</Keyword>
               </Keywords>
-              <OutputFile>dribble_num_data.csv</OutputFile>
+              <OutputFile>live_analytics.csv</OutputFile>
             </KeywordGroup>
             <KeywordGroup>
               <Keywords>
-                <Keyword>Game 1 Stats:</Keyword>
+                <Keyword>Player Movement</Keyword>
+                <Keyword>Position Tracking</Keyword>
               </Keywords>
-              <OutputFile>output1.csv</OutputFile>
+              <OutputFile>movement_data.csv</OutputFile>
             </KeywordGroup>
           </KeywordGroups>
         </Mode>
-        <Mode name="shoot">
+        <Mode name="historical">
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>
-                <Keyword>keyword3</Keyword>
+                <Keyword>Season Stats</Keyword>
+                <Keyword>Historical Data</Keyword>
+                <Keyword>Trend Analysis</Keyword>
               </Keywords>
-              <OutputFile>output2.h</OutputFile>
+              <OutputFile>historical_data.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+        <Mode name="comparative">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Player Comparison</Keyword>
+                <Keyword>Team Stats</Keyword>
+                <Keyword>Benchmark Data</Keyword>
+              </Keywords>
+              <OutputFile>comparison_data.csv</OutputFile>
             </KeywordGroup>
           </KeywordGroups>
         </Mode>
       </Modes>
     </Item>
-    <Item name="football">
+    <Item name="equipment_monitoring">
       <Modes>
-        <Mode name="blitz">
+        <Mode name="sensors">
           <KeywordGroups>
             <KeywordGroup>
               <Keywords>
-                <Keyword>keyword1</Keyword>
+                <Keyword>Temperature</Keyword>
+                <Keyword>Pressure</Keyword>
+                <Keyword>Vibration</Keyword>
               </Keywords>
-              <OutputFile>output1.h</OutputFile>
-            </KeywordGroup>
-            <KeywordGroup>
-              <Keywords>
-                <Keyword>keyword2</Keyword>
-              </Keywords>
-              <OutputFile>output1.csv</OutputFile>
+              <OutputFile>sensor_data.csv</OutputFile>
             </KeywordGroup>
           </KeywordGroups>
         </Mode>
@@ -53,39 +66,69 @@
     </Item>
   </Items>
   <Settings>
-    <Theme>Light</Theme>
-    <Font>Segoe UI</Font>
-    <FontSize>12</FontSize>
+    <Theme>Dark</Theme>
+    <Font>Consolas</Font>
+    <FontSize>14</FontSize>
   </Settings>
   <ComputerConfigs>
-    <ComputerConfig name="DefaultPC">
+    <ComputerConfig name="AnalyticsServer">
       <SerialConsoleConfigs>
-        <SerialConsoleConfig name="COM1_Default">
-          <Title>Default Serial Logger</Title>
-          <ColorScheme>Light Mode</ColorScheme>
+        <SerialConsoleConfig name="COM1_Analytics">
+          <Title>Analytics Data Logger</Title>
+          <ColorScheme>Monokai</ColorScheme>
           <FontSize>12</FontSize>
+        </SerialConsoleConfig>
+        <SerialConsoleConfig name="COM2_Sensors">
+          <Title>Sensor Data Monitor</Title>
+          <ColorScheme>Nord</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+        <SerialConsoleConfig name="COM3_Backup">
+          <Title>Backup Logger</Title>
+          <ColorScheme>Gruvbox Dark</ColorScheme>
+          <FontSize>16</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+    <ComputerConfig name="FieldStation1">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Field">
+          <Title>Field Data Collection</Title>
+          <ColorScheme>Solarized Dark</ColorScheme>
+          <FontSize>12</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+    <ComputerConfig name="FieldStation2">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Remote">
+          <Title>Remote Monitoring</Title>
+          <ColorScheme>Cyber Punk</ColorScheme>
+          <FontSize>14</FontSize>
         </SerialConsoleConfig>
       </SerialConsoleConfigs>
     </ComputerConfig>
   </ComputerConfigs>
   <RecentActivity>
-    <Activity ComputerName="DefaultPC">
+    <Activity ComputerName="AnalyticsServer">
       <FilesAnalyzed xsi:nil="true" />
       <FilesTransferred xsi:nil="true" />
       <DateTime>0001-01-01T00:00:00</DateTime>
     </Activity>
-    <Activity ComputerName="COG">
-      <Type>Serial Logger</Type>
-      <SerialPort>COM6</SerialPort>
+    <Activity ComputerName="FieldStation1">
       <FilesAnalyzed xsi:nil="true" />
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2025-10-24T15:53:38.4603494-05:00</DateTime>
+      <DateTime>0001-01-01T00:00:00</DateTime>
     </Activity>
-    <Activity ComputerName="COG">
-      <Type>Serial Analyzer</Type>
-      <FilesAnalyzed>1</FilesAnalyzed>
+    <Activity ComputerName="FieldStation2">
+      <FilesAnalyzed xsi:nil="true" />
       <FilesTransferred xsi:nil="true" />
-      <DateTime>2025-10-24T15:54:05.2642049-05:00</DateTime>
+      <DateTime>0001-01-01T00:00:00</DateTime>
+    </Activity>
+    <Activity ComputerName="AnalyticsServer">
+      <FilesAnalyzed xsi:nil="true" />
+      <FilesTransferred xsi:nil="true" />
+      <DateTime>0001-01-01T00:00:00</DateTime>
     </Activity>
   </RecentActivity>
 </Configuration>

@@ -98,6 +98,9 @@ namespace SerialLogAnalyzer.ViewModels
 			// Add the new theme dictionary based on the selected theme
 			var themeUri = isDarkTheme ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml";
 			Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri(themeUri, UriKind.Relative) });
+			
+			// Add ListView styles
+			Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("Themes/ListViewStyles.xaml", UriKind.Relative) });
 		}
 
 		private void LoadConfig()
@@ -144,6 +147,9 @@ namespace SerialLogAnalyzer.ViewModels
 				// Add the new theme dictionary
 				var themeUri = themeName == "Dark" ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml";
 				Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri(themeUri, UriKind.Relative) });
+				
+				// Add ListView styles
+				Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("Themes/ListViewStyles.xaml", UriKind.Relative) });
 			}
 			catch (Exception ex)
 			{

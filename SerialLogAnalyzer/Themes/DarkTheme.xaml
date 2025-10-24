@@ -96,4 +96,7 @@
 	<SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
 	<SolidColorBrush x:Key="ErrorColor" Color="#EF4444"/>
 
+	<!-- ListView Item Text Color -->
+	<SolidColorBrush x:Key="ListViewItemTextColor" Color="{StaticResource ListViewTextColor}"/>
+
 </ResourceDictionary>
