@@ -112,6 +112,46 @@ namespace SerialLogAnalyzer.ViewModels
 			configService.SaveConfiguration(Config);
 		}
 
+		public void ApplyTheme(string themeName)
+		{
+			try
+			{
+				// Update the selected theme
+				SelectedTheme = themeName;
+				
+				// Save existing dictionaries excluding theme dictionaries
+				var existingDictionaries = new List<ResourceDictionary>();
+				
+				foreach (var dictionary in Application.Current.Resources.MergedDictionaries)
+				{
+					var source = dictionary.Source?.ToString();
+					if (source != null && (source.Contains("DarkTheme.xaml") || source.Contains("LightTheme.xaml")))
+					{
+						continue; // Skip theme dictionaries
+					}
+					existingDictionaries.Add(dictionary);
+				}
+
+				// Clear all dictionaries
+				Application.Current.Resources.MergedDictionaries.Clear();
+
+				// Add non-theme dictionaries back
+				foreach (var dictionary in existingDictionaries)
+				{
+					Application.Current.Resources.MergedDictionaries.Add(dictionary);
+				}
+
+				// Add the new theme dictionary
+				var themeUri = themeName == "Dark" ? "Themes/DarkTheme.xaml" : "Themes/LightTheme.xaml";
+				Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri(themeUri, UriKind.Relative) });
+			}
+			catch (Exception ex)
+			{
+				// Log error if logger is available
+				System.Diagnostics.Debug.WriteLine($"Error applying theme {themeName}: {ex.Message}");
+			}
+		}
+
 		private void ChangeView(object viewName)
 		{
 			// Check if the previous view was "Settings" before switching views
