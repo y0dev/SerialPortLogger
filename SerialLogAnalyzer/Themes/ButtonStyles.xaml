@@ -6,11 +6,11 @@
 		
 	<!-- Define a style for rounded buttons - Enhanced for better visibility -->
 	<Style TargetType="Button" x:Key="RoundedButtonStyle">
-		<Setter Property="Background" Value="{StaticResource ButtonBaseColor}"/>
+		<Setter Property="Background" Value="{DynamicResource ButtonBaseColor}"/>
 		<Setter Property="Foreground" Value="White"/>
 		<Setter Property="Padding" Value="12,8"/>
 		<Setter Property="Margin" Value="5"/>
-		<Setter Property="BorderBrush" Value="{StaticResource ButtonBaseColor}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource ButtonBaseColor}"/>
 		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="Cursor" Value="Hand"/>
 		<Setter Property="FontWeight" Value="Medium"/>
@@ -32,17 +32,17 @@
 
 		<Style.Triggers>
 			<Trigger Property="IsMouseOver" Value="True">
-				<Setter Property="Background" Value="{StaticResource ButtonMouseOverColor}"/>
-				<Setter Property="BorderBrush" Value="{StaticResource ButtonMouseOverColor}"/>
+				<Setter Property="Background" Value="{DynamicResource ButtonMouseOverColor}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource ButtonMouseOverColor}"/>
 			</Trigger>
 			<Trigger Property="IsPressed" Value="True">
-				<Setter Property="Background" Value="{StaticResource ButtonPressedColor}"/>
-				<Setter Property="BorderBrush" Value="{StaticResource ButtonPressedColor}"/>
+				<Setter Property="Background" Value="{DynamicResource ButtonPressedColor}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource ButtonPressedColor}"/>
 			</Trigger>
 			<Trigger Property="IsEnabled" Value="False">
-				<Setter Property="Background" Value="{StaticResource ButtonDisabledColor}"/>
-				<Setter Property="Foreground" Value="{StaticResource ButtonDisabledTextColor}"/>
-				<Setter Property="BorderBrush" Value="{StaticResource ButtonDisabledColor}"/>
+				<Setter Property="Background" Value="{DynamicResource ButtonDisabledColor}"/>
+				<Setter Property="Foreground" Value="{DynamicResource ButtonDisabledTextColor}"/>
+				<Setter Property="BorderBrush" Value="{DynamicResource ButtonDisabledColor}"/>
 				<Setter Property="Cursor" Value="Arrow"/>
 			</Trigger>
 		</Style.Triggers>
@@ -52,7 +52,7 @@
 	<Style TargetType="RadioButton" x:Key="MenuButtonStyle">
 		<Style.Setters>
 			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="Foreground" Value="{StaticResource MenuButtonStyleForeground}"/>
+			<Setter Property="Foreground" Value="{DynamicResource MenuButtonStyleForeground}"/>
 			<Setter Property="BorderThickness" Value="0"/>
 			<Setter Property="Cursor" Value="Hand"/>
 			<Setter Property="Template">
@@ -70,7 +70,7 @@
 
 		<Style.Triggers>
 			<Trigger Property="IsChecked" Value="True">
-				<Setter Property="Background" Value="{StaticResource MenuButtonStyleCheckedBackgroundBrush}"/>
+				<Setter Property="Background" Value="{DynamicResource MenuButtonStyleCheckedBackgroundBrush}"/>
 			</Trigger>			
 		</Style.Triggers>
 	</Style>

@@ -7,9 +7,9 @@
 	<Color x:Key="FontColor">#1F2937</Color>
 
 	<!-- General Brushes -->
-	<SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource PrimaryColor}" />
-	<SolidColorBrush x:Key="SidebarBrush" Color="{StaticResource SecondaryColor}"/>
-	<SolidColorBrush x:Key="FontBrush" Color="{StaticResource FontColor}" />
+	<SolidColorBrush x:Key="BackgroundBrush" Color="{DynamicResource PrimaryColor}" />
+	<SolidColorBrush x:Key="SidebarBrush" Color="{DynamicResource SecondaryColor}"/>
+	<SolidColorBrush x:Key="FontBrush" Color="{DynamicResource FontColor}" />
 	<SolidColorBrush x:Key="ForegroundBrush" Color="#1F2937"/>
 
 	<!-- Toggle Switch Colors - Better Contrast -->

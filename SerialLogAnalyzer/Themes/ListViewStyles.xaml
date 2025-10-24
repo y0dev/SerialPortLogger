@@ -6,9 +6,9 @@
 
 	<!-- Define a style for ListView -->
 	<Style TargetType="ListView" x:Key="{x:Type ListView}">
-		<Setter Property="Background" Value="{StaticResource ListViewBaseColor}"/>
+		<Setter Property="Background" Value="{DynamicResource ListViewBaseColor}"/>
 		<!-- Base background color -->
-		<Setter Property="Foreground" Value="{StaticResource ListViewTextColor}"/>
+		<Setter Property="Foreground" Value="{DynamicResource ListViewTextColor}"/>
 		<!-- Text color -->
 		<Setter Property="Margin" Value="5"/>
 		<!-- Outer spacing -->
