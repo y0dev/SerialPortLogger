@@ -330,32 +330,65 @@ namespace SerialLogAnalyzer.Views
 
 		private void DeleteConfigButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (SelectedConfig != null)
+			try
 			{
-				try
+				// Debug selection state
+				LogSelectionState();
+				
+				// Check if SelectedConfig is null or if no item is selected
+				if (SelectedConfig == null || string.IsNullOrEmpty(SelectedConfig.FilePath))
 				{
-					var result = MessageBox.Show($"Are you sure you want to delete configuration '{SelectedConfig.DisplayName}'? This action cannot be undone.", 
-						"Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-					
-					if (result == MessageBoxResult.Yes)
+					logger.Log("Delete button clicked but no configuration selected", LogLevel.Warning);
+					MessageBox.Show("Please select a configuration to delete.", "No Selection", 
+						MessageBoxButton.OK, MessageBoxImage.Warning);
+					return;
+				}
+
+				// Additional safety check - verify the file exists
+				if (!File.Exists(SelectedConfig.FilePath))
+				{
+					MessageBox.Show($"Configuration file not found: {SelectedConfig.FilePath}", "File Not Found", 
+						MessageBoxButton.OK, MessageBoxImage.Error);
+					LoadAvailableConfigs(); // Refresh the list in case file was already deleted
+					return;
+				}
+
+				// Store the display name before deletion for the success message
+				string configDisplayName = SelectedConfig.DisplayName ?? "Unknown Configuration";
+				
+				var result = MessageBox.Show($"Are you sure you want to delete configuration '{configDisplayName}'?\n\nFile: {SelectedConfig.FilePath}\n\nThis action cannot be undone.", 
+					"Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				
+				if (result == MessageBoxResult.Yes)
+				{
+					// Double-check file still exists before deletion
+					if (File.Exists(SelectedConfig.FilePath))
 					{
 						File.Delete(SelectedConfig.FilePath);
-						LoadAvailableConfigs(); // Refresh the list
-						MessageBox.Show($"Configuration '{SelectedConfig.DisplayName}' deleted successfully!", "Success", 
+						logger.Log($"Successfully deleted configuration: {configDisplayName} from {SelectedConfig.FilePath}", LogLevel.Info);
+						
+						// Clear the selection
+						SelectedConfig = null;
+						
+						// Refresh the list
+						LoadAvailableConfigs();
+						
+						MessageBox.Show($"Configuration '{configDisplayName}' deleted successfully!", "Success", 
 							MessageBoxButton.OK, MessageBoxImage.Information);
 					}
-				}
-				catch (Exception ex)
-				{
-					logger.Log($"Error deleting config: {ex.Message}", LogLevel.Error);
-					MessageBox.Show($"Error deleting configuration: {ex.Message}", "Error", 
-						MessageBoxButton.OK, MessageBoxImage.Error);
+					else
+					{
+						MessageBox.Show($"Configuration file was not found and could not be deleted.", "File Not Found", 
+							MessageBoxButton.OK, MessageBoxImage.Warning);
+						LoadAvailableConfigs(); // Refresh the list
+					}
 				}
 			}
-			else
+			catch (Exception ex)
 			{
-				MessageBox.Show("Please select a configuration to delete.", "No Selection", 
-					MessageBoxButton.OK, MessageBoxImage.Warning);
+				logger.Log($"Error deleting config: {ex.Message}", LogLevel.Error);
+				MessageBox.Show($"Error deleting configuration: {ex.Message}", "Error", 
+					MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -374,6 +407,14 @@ namespace SerialLogAnalyzer.Views
 				MessageBox.Show($"Error refreshing configurations: {ex.Message}", "Error", 
 					MessageBoxButton.OK, MessageBoxImage.Error);
 			}
+		}
+
+		// Helper method to debug selection state
+		private void LogSelectionState()
+		{
+			logger.Log($"Selection State - SelectedConfig: {(SelectedConfig != null ? SelectedConfig.FileName : "NULL")}", LogLevel.Info);
+			logger.Log($"Selection State - ListView SelectedItem: {(configListView.SelectedItem != null ? ((ConfigFileInfo)configListView.SelectedItem).FileName : "NULL")}", LogLevel.Info);
+			logger.Log($"Selection State - AvailableConfigs Count: {AvailableConfigs.Count}", LogLevel.Info);
 		}
 
 		private void AboutButton_Click(object sender, RoutedEventArgs e)
