@@ -82,13 +82,17 @@ namespace SerialLogAnalyzer.Views
 			try
 			{
 				AvailableConfigs.Clear();
-				string scriptsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "Scripts");
+				string scriptsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Scripts");
+				
+				logger.Log($"Looking for configs in: {scriptsPath}", LogLevel.Info);
 				
 				if (Directory.Exists(scriptsPath))
 				{
 					var configFiles = Directory.GetFiles(scriptsPath, "*.xml")
 						.Where(f => !f.Contains("_old") && !f.Contains("Archive"))
 						.ToList();
+
+					logger.Log($"Found {configFiles.Count} config files", LogLevel.Info);
 
 					foreach (var filePath in configFiles)
 					{
@@ -116,12 +120,17 @@ namespace SerialLogAnalyzer.Views
 							}
 
 							AvailableConfigs.Add(configInfo);
+							logger.Log($"Added config: {configInfo.FileName}", LogLevel.Info);
 						}
 						catch (Exception ex)
 						{
 							logger.Log($"Error loading config file {filePath}: {ex.Message}", LogLevel.Warning);
 						}
 					}
+				}
+				else
+				{
+					logger.Log($"Scripts directory not found: {scriptsPath}", LogLevel.Warning);
 				}
 			}
 			catch (Exception ex)
