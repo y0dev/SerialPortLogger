@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Items>
+    <Item name="sports_analytics">
+      <Modes>
+        <Mode name="real_time">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Live Stats</Keyword>
+                <Keyword>Real-time Data</Keyword>
+                <Keyword>Performance Metrics</Keyword>
+              </Keywords>
+              <OutputFile>live_analytics.csv</OutputFile>
+            </KeywordGroup>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Player Movement</Keyword>
+                <Keyword>Position Tracking</Keyword>
+              </Keywords>
+              <OutputFile>movement_data.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+        <Mode name="historical">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Season Stats</Keyword>
+                <Keyword>Historical Data</Keyword>
+                <Keyword>Trend Analysis</Keyword>
+              </Keywords>
+              <OutputFile>historical_data.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+        <Mode name="comparative">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Player Comparison</Keyword>
+                <Keyword>Team Stats</Keyword>
+                <Keyword>Benchmark Data</Keyword>
+              </Keywords>
+              <OutputFile>comparison_data.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+      </Modes>
+    </Item>
+    <Item name="equipment_monitoring">
+      <Modes>
+        <Mode name="sensors">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Temperature</Keyword>
+                <Keyword>Pressure</Keyword>
+                <Keyword>Vibration</Keyword>
+              </Keywords>
+              <OutputFile>sensor_data.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+      </Modes>
+    </Item>
+  </Items>
+  
+  <Settings>
+    <Theme>Dark</Theme>
+    <Font>Consolas</Font>
+    <FontSize>14</FontSize>
+  </Settings>
+  
+  <ComputerConfigs>
+    <ComputerConfig name="AnalyticsServer">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Analytics">
+          <Title>Analytics Data Logger</Title>
+          <ColorScheme>Monokai</ColorScheme>
+          <FontSize>12</FontSize>
+        </SerialConsoleConfig>
+        <SerialConsoleConfig name="COM2_Sensors">
+          <Title>Sensor Data Monitor</Title>
+          <ColorScheme>Nord</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+        <SerialConsoleConfig name="COM3_Backup">
+          <Title>Backup Logger</Title>
+          <ColorScheme>Gruvbox Dark</ColorScheme>
+          <FontSize>16</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+    <ComputerConfig name="FieldStation1">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Field">
+          <Title>Field Data Collection</Title>
+          <ColorScheme>Solarized Dark</ColorScheme>
+          <FontSize>12</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+    <ComputerConfig name="FieldStation2">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Remote">
+          <Title>Remote Monitoring</Title>
+          <ColorScheme>Cyber Punk</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+  </ComputerConfigs>
+  
+  <RecentActivity>
+    <Activity ComputerName="AnalyticsServer" Type="Data Analysis" SerialPort="COM1" FilesAnalyzed="45" ActivityDateTime="2024-01-15T14:20:00" />
+    <Activity ComputerName="FieldStation1" Type="Serial Logging" SerialPort="COM1" FilesAnalyzed="23" ActivityDateTime="2024-01-15T13:45:00" />
+    <Activity ComputerName="FieldStation2" Type="File Transfer" IPAddress="192.168.1.150" FilesTransferred="12" ActivityDateTime="2024-01-15T12:30:00" />
+    <Activity ComputerName="AnalyticsServer" Type="TFTP Transfer" IPAddress="192.168.1.200" FilesTransferred="18" ActivityDateTime="2024-01-15T11:15:00" />
+  </RecentActivity>
+</Configuration>

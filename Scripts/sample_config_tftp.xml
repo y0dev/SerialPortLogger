@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Items>
+    <Item name="tftp_server_test">
+      <Modes>
+        <Mode name="file_transfer">
+          <KeywordGroups>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>TFTP Transfer</Keyword>
+                <Keyword>File Upload</Keyword>
+                <Keyword>File Download</Keyword>
+              </Keywords>
+              <OutputFile>tftp_log.csv</OutputFile>
+            </KeywordGroup>
+            <KeywordGroup>
+              <Keywords>
+                <Keyword>Transfer Complete</Keyword>
+                <Keyword>Transfer Failed</Keyword>
+                <Keyword>Connection Error</Keyword>
+              </Keywords>
+              <OutputFile>transfer_status.csv</OutputFile>
+            </KeywordGroup>
+          </KeywordGroups>
+        </Mode>
+      </Modes>
+    </Item>
+  </Items>
+  
+  <Settings>
+    <Theme>Dark</Theme>
+    <Font>Consolas</Font>
+    <FontSize>12</FontSize>
+  </Settings>
+  
+  <ComputerConfigs>
+    <ComputerConfig name="TFTPServer">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_TFTP">
+          <Title>TFTP Server Monitor</Title>
+          <ColorScheme>Cyber Punk</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+        <SerialConsoleConfig name="COM2_Logs">
+          <Title>Transfer Logs</Title>
+          <ColorScheme>Monokai</ColorScheme>
+          <FontSize>12</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+    <ComputerConfig name="ClientPC1">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Client">
+          <Title>TFTP Client</Title>
+          <ColorScheme>Nord</ColorScheme>
+          <FontSize>14</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+    <ComputerConfig name="ClientPC2">
+      <SerialConsoleConfigs>
+        <SerialConsoleConfig name="COM1_Backup">
+          <Title>Backup Client</Title>
+          <ColorScheme>Gruvbox Dark</ColorScheme>
+          <FontSize>12</FontSize>
+        </SerialConsoleConfig>
+      </SerialConsoleConfigs>
+    </ComputerConfig>
+  </ComputerConfigs>
+  
+  <RecentActivity>
+    <Activity ComputerName="TFTPServer" Type="TFTP Server" IPAddress="192.168.1.100" FilesTransferred="25" ActivityDateTime="2024-01-15T16:45:00" />
+    <Activity ComputerName="ClientPC1" Type="TFTP Transfer" IPAddress="192.168.1.101" FilesTransferred="8" ActivityDateTime="2024-01-15T16:30:00" />
+    <Activity ComputerName="ClientPC2" Type="TFTP Transfer" IPAddress="192.168.1.102" FilesTransferred="12" ActivityDateTime="2024-01-15T16:15:00" />
+    <Activity ComputerName="TFTPServer" Type="Serial Logging" SerialPort="COM1" FilesAnalyzed="35" ActivityDateTime="2024-01-15T15:45:00" />
+  </RecentActivity>
+</Configuration>

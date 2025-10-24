@@ -112,11 +112,18 @@ namespace SerialLogAnalyzer.Views
 								var config = tempService.LoadConfiguration();
 								configInfo.Theme = config?.Settings?.Theme ?? "Unknown";
 								configInfo.ComputerCount = config?.ComputerConfigs?.Count ?? 0;
+								
+								// Test if the config loaded successfully
+								if (config != null)
+								{
+									logger.Log($"Successfully loaded config: {configInfo.FileName} - Theme: {configInfo.Theme}, Computers: {configInfo.ComputerCount}", LogLevel.Info);
+								}
 							}
-							catch
+							catch (Exception ex)
 							{
 								configInfo.Theme = "Unknown";
 								configInfo.ComputerCount = 0;
+								logger.Log($"Failed to load config {configInfo.FileName}: {ex.Message}", LogLevel.Warning);
 							}
 
 							AvailableConfigs.Add(configInfo);
