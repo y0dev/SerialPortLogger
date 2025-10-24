@@ -82,17 +82,43 @@ namespace SerialLogAnalyzer.Views
 			try
 			{
 				AvailableConfigs.Clear();
-				string scriptsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Scripts");
 				
-				logger.Log($"Looking for configs in: {scriptsPath}", LogLevel.Info);
+				// Try multiple possible paths
+				string[] possiblePaths = {
+					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "Scripts"),
+					Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts"),
+					Path.Combine(Directory.GetCurrentDirectory(), "Scripts"),
+					Path.Combine(Directory.GetCurrentDirectory(), "..", "Scripts"),
+					@"F:\Programming\WPF\SerialLogAnalyzer\Scripts" // Absolute path as fallback
+				};
 				
-				if (Directory.Exists(scriptsPath))
+				string scriptsPath = null;
+				foreach (var path in possiblePaths)
+				{
+					if (Directory.Exists(path))
+					{
+						scriptsPath = path;
+						break;
+					}
+				}
+				
+				logger.Log($"Base Directory: {AppDomain.CurrentDomain.BaseDirectory}", LogLevel.Info);
+				logger.Log($"Current Directory: {Directory.GetCurrentDirectory()}", LogLevel.Info);
+				logger.Log($"Using Scripts path: {scriptsPath}", LogLevel.Info);
+				
+				if (scriptsPath != null && Directory.Exists(scriptsPath))
 				{
 					var configFiles = Directory.GetFiles(scriptsPath, "*.xml")
 						.Where(f => !f.Contains("_old") && !f.Contains("Archive"))
 						.ToList();
 
-					logger.Log($"Found {configFiles.Count} config files", LogLevel.Info);
+					logger.Log($"Found {configFiles.Count} config files in {scriptsPath}", LogLevel.Info);
+					
+					// List all found files for debugging
+					foreach (var file in configFiles)
+					{
+						logger.Log($"Found file: {Path.GetFileName(file)}", LogLevel.Info);
+					}
 
 					foreach (var filePath in configFiles)
 					{
@@ -127,17 +153,23 @@ namespace SerialLogAnalyzer.Views
 							}
 
 							AvailableConfigs.Add(configInfo);
-							logger.Log($"Added config: {configInfo.FileName}", LogLevel.Info);
+							logger.Log($"Added config to AvailableConfigs: {configInfo.FileName}", LogLevel.Info);
 						}
 						catch (Exception ex)
 						{
 							logger.Log($"Error loading config file {filePath}: {ex.Message}", LogLevel.Warning);
 						}
 					}
+					
+					logger.Log($"Total configs added to AvailableConfigs: {AvailableConfigs.Count}", LogLevel.Info);
 				}
 				else
 				{
-					logger.Log($"Scripts directory not found: {scriptsPath}", LogLevel.Warning);
+					logger.Log($"Scripts directory not found in any of the attempted paths", LogLevel.Warning);
+					foreach (var path in possiblePaths)
+					{
+						logger.Log($"Tried path: {path} - Exists: {Directory.Exists(path)}", LogLevel.Warning);
+					}
 				}
 			}
 			catch (Exception ex)
@@ -329,7 +361,19 @@ namespace SerialLogAnalyzer.Views
 
 		private void RefreshConfigsButton_Click(object sender, RoutedEventArgs e)
 		{
-			LoadAvailableConfigs();
+			try
+			{
+				logger.Log("Refreshing configuration list...", LogLevel.Info);
+				LoadAvailableConfigs();
+				MessageBox.Show($"Configuration list refreshed! Found {AvailableConfigs.Count} configurations.", "Refresh Complete", 
+					MessageBoxButton.OK, MessageBoxImage.Information);
+			}
+			catch (Exception ex)
+			{
+				logger.Log($"Error refreshing configs: {ex.Message}", LogLevel.Error);
+				MessageBox.Show($"Error refreshing configurations: {ex.Message}", "Error", 
+					MessageBoxButton.OK, MessageBoxImage.Error);
+			}
 		}
 
 		private void AboutButton_Click(object sender, RoutedEventArgs e)
